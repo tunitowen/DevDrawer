@@ -63,6 +63,7 @@
     <file path="/listview_button_selector.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359718341364" ignored="false" />
     <file path="/custom_ab_title.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359721969205" ignored="false" />
     <file path="/fragment.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359839654654" ignored="false" />
+    <file path="/README.md" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359884200944" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +121,17 @@
     <favorites_list name="DevDrawer" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="README.md" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="83" selection-start="96" selection-end="96" vertical-scroll-proportion="0.03663004">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -134,7 +145,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/ClickHandlingActivity.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/WidgetViewsFactory.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/AppInstalledReceiver.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/AppUninstalledReceiver.java" />
@@ -150,6 +160,7 @@
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/appwidget/DDWidgetViewsFactory.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/EditDialog.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -502,14 +513,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
-      <provider editor-type-id="text-editor">
-        <state line="46" column="50" selection-start="2097" selection-end="2097" vertical-scroll-proportion="0.0" />
-      </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/widget_layout.xml">
       <provider editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
@@ -588,6 +591,13 @@
     <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="4" column="36" selection-start="221" selection-end="221" vertical-scroll-proportion="0.07194245">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="83" selection-start="96" selection-end="96" vertical-scroll-proportion="0.03663004">
           <folding />
         </state>
       </provider>
