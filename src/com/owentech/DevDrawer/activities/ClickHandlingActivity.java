@@ -67,6 +67,7 @@ public class ClickHandlingActivity extends Activity {
 								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 								intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 								startActivity(intent);
+								dialog.dismiss();
 								finish();
 							}
 						});
