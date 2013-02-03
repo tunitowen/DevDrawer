@@ -13,4 +13,8 @@ public class Constants
 	public static int EDIT_DIALOG_CHANGE = 1;
 	public static int EDIT_DIALOG_CANCEL = 2;
 
+    public static final int LAUNCH_APP = 1;
+    public static final int LAUNCH_APP_DETAILS = 2;
+    public static final int LAUNCH_UNINSTALL = 3;
+
 }

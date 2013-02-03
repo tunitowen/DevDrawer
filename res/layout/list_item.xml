@@ -10,7 +10,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="false"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/appDetailsImageButton"
+            android:layout_toLeftOf="@+id/uninstallImageButton"
             android:background="@drawable/listview_button_selector"/>
     <ImageView
             android:layout_width="48dp"
@@ -35,10 +35,18 @@
             android:textAppearance="@android:style/TextAppearance.Medium" android:layout_marginLeft="5dp"
             android:paddingBottom="5dp" android:textColor="#333333" android:fontFamily="sans-serif-light"/>
     <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/appDetailsImageButton" android:layout_alignParentRight="true"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/uninstallImageButton"
             android:layout_alignTop="@+id/imageView"
             android:layout_alignBottom="@+id/imageView"
-            android:src="@drawable/settings_imageview" android:scaleType="centerInside"/>
+            android:src="@drawable/delete_imageview" android:scaleType="centerInside"
+            android:layout_toLeftOf="@+id/appDetailsImageButton"/>
+    <ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/appDetailsImageButton" android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_alignBottom="@+id/imageView"
+        android:src="@drawable/settings_imageview" android:scaleType="centerInside"/>
 </RelativeLayout>

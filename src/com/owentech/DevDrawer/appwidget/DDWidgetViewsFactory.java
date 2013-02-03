@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.R;
 
@@ -67,16 +68,26 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
         row.setTextViewText(R.id.appNameTextView, applicationNames.get(position));
         row.setImageViewBitmap(R.id.imageView, convertFromDrawable(applicationIcons.get(position)));
 
-        Intent menuClickIntent=new Intent();
-        Bundle menuClickExtras=new Bundle();
-        menuClickExtras.putBoolean("appDetails", true);
-        menuClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
-        menuClickIntent.putExtras(menuClickExtras);
-        row.setOnClickFillInIntent(R.id.appDetailsImageButton, menuClickIntent);
+        Intent appDetailsClickIntent=new Intent();
+        Bundle appDetailsClickExtras=new Bundle();
+        //appDetailsClickExtras.putBoolean("appDetails", true);
+        appDetailsClickExtras.putInt("launchType", Constants.LAUNCH_APP_DETAILS);
+        appDetailsClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+        appDetailsClickIntent.putExtras(appDetailsClickExtras);
+        row.setOnClickFillInIntent(R.id.appDetailsImageButton, appDetailsClickIntent);
+
+        Intent uninstallClickIntent=new Intent();
+        Bundle uninstallClickExtras=new Bundle();
+        //appDetailsClickExtras.putBoolean("appDetails", true);
+        uninstallClickExtras.putInt("launchType", Constants.LAUNCH_UNINSTALL);
+        uninstallClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+        uninstallClickIntent.putExtras(uninstallClickExtras);
+        row.setOnClickFillInIntent(R.id.uninstallImageButton, uninstallClickIntent);
 
         Intent rowClickIntent=new Intent();
         Bundle rowClickExtras=new Bundle();
-        rowClickExtras.putBoolean("appDetails", false);
+        //rowClickExtras.putBoolean("appDetails", false);
+        rowClickExtras.putInt("launchType", Constants.LAUNCH_APP);
         rowClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
         rowClickIntent.putExtras(rowClickExtras);
         row.setOnClickFillInIntent(R.id.touchArea, rowClickIntent);
