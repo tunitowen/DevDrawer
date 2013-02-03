@@ -319,13 +319,13 @@ public class Database {
             if (packageFilter.contains("*"))
             {
                 if (p.toLowerCase().startsWith(packageFilter.toLowerCase().substring(0, packageFilter.indexOf("*"))))
-                    match = Integer.valueOf(getAllCursor.getString(2));
+                    match = Integer.valueOf(getAllCursor.getString(0));
 
             }
             else
             {
                 if (p.toLowerCase().equals(packageFilter.toLowerCase()))
-					match = Integer.valueOf(getAllCursor.getString(2));
+					match = Integer.valueOf(getAllCursor.getString(0));
 
             }
 
