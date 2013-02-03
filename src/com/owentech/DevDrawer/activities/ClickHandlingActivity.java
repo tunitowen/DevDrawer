@@ -35,11 +35,11 @@ public class ClickHandlingActivity extends Activity {
             }
             else
             {
-				// Laumnch the app
+				// Launch the app
                 Intent LaunchIntent = getApplicationContext().getPackageManager()
                         .getLaunchIntentForPackage(packageName);
 				LaunchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-				LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(LaunchIntent);
             }
         }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.*;
 import com.owentech.DevDrawer.*;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.utils.AddAllAppsAsync;
 import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
@@ -73,7 +74,7 @@ public class MainActivity extends Activity
 						database.addFilterToDatabase(addPackageEditText.getText().toString());
 
 						// Check existing apps and add to installed apps table if they match new filter
-						getAllAppsInstalledAndAdd(addPackageEditText.getText().toString());
+                        new AddAllAppsAsync(getApplicationContext(), addPackageEditText.getText().toString()).execute();
 
 						addPackageEditText.setText("");
 						updateListView();
@@ -144,56 +145,4 @@ public class MainActivity extends Activity
 		finish();
 	}
 
-	// Method to check existing installed apps and add to apps table if they match the filter
-	// TODO: Move to AsyncTask, something like "com.*" can hang the UI
-	public void getAllAppsInstalledAndAdd(String newFilter)
-	{
-
-		List<String> appPackages = new ArrayList<String>();
-		PackageManager pm;
-		List<ResolveInfo> list;
-
-		// get installed applications
-		pm = this.getPackageManager();
-		Intent intent = new Intent(Intent.ACTION_MAIN, null);
-		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-		list = pm.queryIntentActivities(intent,
-				PackageManager.PERMISSION_GRANTED);
-
-		// Loop through the installed apps and check if they match the new filter
-		for (ResolveInfo rInfo : list)
-		{
-
-			String currentPackage = rInfo.activityInfo.applicationInfo.packageName.toLowerCase();
-
-			if (newFilter.contains("*"))
-			{
-				if (currentPackage.toLowerCase().startsWith(newFilter.toLowerCase().substring(0, newFilter.indexOf("*"))))
-					appPackages.add(currentPackage);
-
-			}
-			else
-			{
-				if (currentPackage.toLowerCase().equals(newFilter.toLowerCase()))
-					appPackages.add(currentPackage);
-
-			}
-
-		}
-
-		// If the list is > 0 add the packages to the database
-		if(appPackages.size() != 0)
-		{
-			for (String s : appPackages)
-			{
-				List<PackageCollection> packageCollections = database.getAllFiltersInDatabase();
-
-				database.addAppToDatabase(s, packageCollections.get(packageCollections.size()-1).mId);
-
-				AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getBaseContext());
-				int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getBaseContext(), DDWidgetProvider.class));
-				appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
-			}
-		}
-	}
 }
