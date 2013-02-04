@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Activity Launcher">
+        <CheckBoxPreference android:key="showActivityChoice"
+                            android:title="Show activity choice on launch"
+                            android:defaultValue="false"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

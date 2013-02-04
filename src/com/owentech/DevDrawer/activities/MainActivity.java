@@ -1,27 +1,21 @@
 package com.owentech.DevDrawer.activities;
 
 import android.app.Activity;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
-import com.owentech.DevDrawer.*;
-import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Toast;
+import com.owentech.DevDrawer.R;
+import com.owentech.DevDrawer.adapters.FilterListAdapter;
 import com.owentech.DevDrawer.utils.AddAllAppsAsync;
 import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
-import com.owentech.DevDrawer.adapters.FilterListAdapter;
-import com.owentech.DevDrawer.utils.PackageCollection;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity
 {
@@ -131,7 +125,8 @@ public class MainActivity extends Activity
 		{
 			case 0:
 			{
-				Toast.makeText(this, "Import/Export options coming soon..", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(this, "Import/Export options coming soon..", Toast.LENGTH_SHORT).show();
+				startActivity(new Intent(MainActivity.this, PrefActivity.class));
 			}
 		}
 		return false;
