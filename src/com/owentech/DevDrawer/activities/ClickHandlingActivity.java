@@ -1,14 +1,22 @@
 package com.owentech.DevDrawer.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +28,7 @@ import com.owentech.DevDrawer.utils.Constants;
 public class ClickHandlingActivity extends Activity {
 
 	SharedPreferences sp;
+	CharSequence[] Packageitems = null;
 
     @Override
     public void onCreate(Bundle state) {
@@ -39,7 +48,47 @@ public class ClickHandlingActivity extends Activity {
 					if (sp.getBoolean("showActivityChoice", false))
 					{
 						// Show the activity choice dialog
-						Toast.makeText(getApplicationContext(), "Activity Choice Here", Toast.LENGTH_SHORT).show();
+						try
+						{
+							List<String> adapter = getActivityList(packageName);
+							Packageitems = adapter.toArray(new CharSequence[adapter
+									.size()]);
+						}
+						catch (PackageManager.NameNotFoundException e)
+						{
+							e.printStackTrace();
+						}
+
+						AlertDialog.Builder alert = new AlertDialog.Builder(this);
+						alert.setTitle("Choose:");
+						alert.setCancelable(false);
+						alert.setSingleChoiceItems(Packageitems, -1,
+								new DialogInterface.OnClickListener()
+								{
+									public void onClick(DialogInterface dialog, int item) {
+										Intent intent = new Intent();
+										intent.setComponent(new ComponentName(
+												packageName, Packageitems[item]
+												.toString()));
+										intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+										startActivity(intent);
+										dialog.dismiss();
+										finish();
+									}
+								});
+
+						alert.setNegativeButton("Cancel",
+								new DialogInterface.OnClickListener()
+								{
+									public void onClick(DialogInterface dialog, int id) {
+										dialog.cancel();
+										finish();
+									}
+								});
+
+						AlertDialog ad = alert.create();
+						ad.show();
 
 					}
 					else
@@ -48,7 +97,7 @@ public class ClickHandlingActivity extends Activity {
 						Intent LaunchIntent = getApplicationContext().getPackageManager()
 								.getLaunchIntentForPackage(packageName);
 						LaunchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-						LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(LaunchIntent);
 						finish();
 					}
@@ -80,5 +129,24 @@ public class ClickHandlingActivity extends Activity {
         }
 
     }
+
+	private List<String> getActivityList(String packageName)
+			throws PackageManager.NameNotFoundException {
+
+		PackageManager pm = this.getPackageManager();
+
+		List<String> adapter = new ArrayList<String>();
+
+		PackageInfo info = pm.getPackageInfo(packageName,
+				PackageManager.GET_ACTIVITIES);
+		ActivityInfo[] list = info.activities;
+
+		for (ActivityInfo string : list)
+		{
+			adapter.add(string.name.toString());
+		}
+
+		return adapter;
+	}
 
 }
