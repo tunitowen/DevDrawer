@@ -28,13 +28,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DevDrawer.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/AndroidManifest.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359998049307" ignored="false" />
-    <file path="/Dummy.txt" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360012424160" ignored="false" />
+    <file path="/Dummy.txt" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360014581902" ignored="false" />
     <file path="/widget_layout.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359719626268" ignored="false" />
     <file path="/AppInstalledReceiver.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359879067375" ignored="false" />
     <file path="/UpdateWidgetService.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359391577826" ignored="false" />
@@ -138,10 +138,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClickHandlingActivity.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ClickHandlingActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="37" selection-start="1473" selection-end="1473" vertical-scroll-proportion="0.27477476">
+            <state line="51" column="37" selection-start="1473" selection-end="1473" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1914#2405#0" expanded="true" />
@@ -184,10 +184,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="59" selection-start="1299" selection-end="1299" vertical-scroll-proportion="0.0">
+            <state line="4" column="36" selection-start="221" selection-end="221" vertical-scroll-proportion="0.13513513">
               <folding />
             </state>
           </provider>
@@ -237,9 +237,9 @@
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/PrefActivity.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/MainActivity.java" />
         <option value="$PROJECT_DIR$/res/xml/preferences.xml" />
-        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/res/values/devdrawertheme_styles.xml" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
       </list>
     </option>
   </component>
@@ -660,7 +660,11 @@
       <created>1360012440321</created>
       <updated>1360012440321</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Fix: When launching app from widget, press home, launch DevDrawer showing launched app.">
+      <created>1360014587575</created>
+      <updated>1360014587575</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -731,7 +735,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of https://github.com/lithid/DevDrawer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix: When launching app from widget, press home, launch DevDrawer showing launched app." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -746,6 +750,7 @@
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
     <MESSAGE value="Preferences added in prep for merge from lithid" />
     <MESSAGE value="Merge branch 'master' of https://github.com/lithid/DevDrawer" />
+    <MESSAGE value="Fix: When launching app from widget, press home, launch DevDrawer showing launched app." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -846,13 +851,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="59" selection-start="1299" selection-end="1299" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
       <provider editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -872,7 +870,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="37" selection-start="1473" selection-end="1473" vertical-scroll-proportion="0.27477476">
+        <state line="51" column="37" selection-start="1473" selection-end="1473" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1914#2405#0" expanded="true" />
@@ -881,6 +879,13 @@
             <element signature="e#2624#2625#0" expanded="true" />
             <element signature="e#4364#4372#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="36" selection-start="221" selection-end="221" vertical-scroll-proportion="0.13513513">
+          <folding />
         </state>
       </provider>
     </entry>
