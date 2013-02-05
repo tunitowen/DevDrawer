@@ -1,5 +1,8 @@
 package com.owentech.DevDrawer.activities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -12,11 +15,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.Constants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -65,7 +66,8 @@ public class ClickHandlingActivity extends Activity {
 						alert.setSingleChoiceItems(Packageitems, -1,
 								new DialogInterface.OnClickListener()
 								{
-									public void onClick(DialogInterface dialog, int item) {
+									@Override
+                                    public void onClick(DialogInterface dialog, int item) {
 										Intent intent = new Intent();
 										intent.setComponent(new ComponentName(
 												packageName, Packageitems[item]
@@ -81,7 +83,8 @@ public class ClickHandlingActivity extends Activity {
 						alert.setNegativeButton("Cancel",
 								new DialogInterface.OnClickListener()
 								{
-									public void onClick(DialogInterface dialog, int id) {
+									@Override
+                                    public void onClick(DialogInterface dialog, int id) {
 										dialog.cancel();
 										finish();
 									}
@@ -141,10 +144,11 @@ public class ClickHandlingActivity extends Activity {
 				PackageManager.GET_ACTIVITIES);
 		ActivityInfo[] list = info.activities;
 
-		for (ActivityInfo string : list)
-		{
-			adapter.add(string.name.toString());
-		}
+                for (ActivityInfo activity : list) {
+                    if (activity.exported) {
+                        adapter.add(activity.name.toString());
+                    }
+                }
 
 		return adapter;
 	}
