@@ -17,4 +17,7 @@ public class Constants
     public static final int LAUNCH_APP_DETAILS = 2;
     public static final int LAUNCH_UNINSTALL = 3;
 
+	public static final String ORDER_ORIGINAL = "added";
+	public static final String ORDER_ALPHABETICAL = "alphabetically";
+
 }

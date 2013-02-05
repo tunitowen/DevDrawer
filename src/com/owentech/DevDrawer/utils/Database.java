@@ -169,13 +169,15 @@ public class Database {
     ////////////////////////////////////////////////////////////////
     // Method to get all the packages in the installed apps table
     ////////////////////////////////////////////////////////////////
-    public String[] getAllAppsInDatabase()
+    public String[] getAllAppsInDatabase(String order)
     {
         String[] packages;
 
         connectDB();
 
-        Cursor getAllCursor = db.query("devdrawer_app", null, null, null, null, null, null, null);
+        Cursor getAllCursor = db.query("devdrawer_app", null, null, null, null, null,
+										(order.equals(Constants.ORDER_ORIGINAL)) ? null : "package ASC",
+										null);
 
         Log.d("DATABASE", "getAllAppsInDatabase: " + Integer.toString(getAllCursor.getCount()) );
 

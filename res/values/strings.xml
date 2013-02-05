@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DevDrawer</string>
+    <array name="sorting_options">
+        <item>Order Added</item>
+        <item>Alphabetically</item>
+    </array>
+    <array name="sorting_options_values">
+        <item>added</item>
+        <item>alphabetically</item>
+    </array>
 </resources>

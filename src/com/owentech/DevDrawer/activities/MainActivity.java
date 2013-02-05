@@ -2,30 +2,37 @@ package com.owentech.DevDrawer.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.*;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
 import com.owentech.DevDrawer.utils.AddAllAppsAsync;
 import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
 
-public class MainActivity extends Activity
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class MainActivity extends Activity implements TextWatcher
 {
 
 	Database database;
 
 	ImageView addButton;
-	EditText addPackageEditText;
+	AutoCompleteTextView addPackageAutoComplete;
 	FilterListAdapter lviewAdapter;
 	ListView listView;
+
+	List<String> appPackages = new ArrayList<String>();
 
 	@Override
 	public void onCreate(Bundle state)
@@ -47,8 +54,12 @@ public class MainActivity extends Activity
 
 		// Setup view components
 		addButton = (ImageView) findViewById(R.id.addButton);
-		addPackageEditText = (EditText) findViewById(R.id.addPackageEditText);
+		addPackageAutoComplete = (AutoCompleteTextView) findViewById(R.id.addPackageEditText);
 		listView = (ListView) findViewById(R.id.packagesListView);
+
+		appPackages = getExistingPackages();
+		addPackageAutoComplete.setAdapter(new ArrayAdapter<String>(this, R.layout.dropdown_list_item, appPackages));
+		addPackageAutoComplete.addTextChangedListener(this);
 
 		// Update the ListView from the database
 		updateListView();
@@ -59,18 +70,18 @@ public class MainActivity extends Activity
 			public void onClick(View view)
 			{
 
-				if(addPackageEditText.getText().length() != 0) // Check something entered
+				if(addPackageAutoComplete.getText().length() != 0) // Check something entered
 				{
 					// Check filter doesn't exist
-					if(!database.doesFilterExist(addPackageEditText.getText().toString()))
+					if(!database.doesFilterExist(addPackageAutoComplete.getText().toString()))
 					{
 						// Add the filter to the database
-						database.addFilterToDatabase(addPackageEditText.getText().toString());
+						database.addFilterToDatabase(addPackageAutoComplete.getText().toString());
 
 						// Check existing apps and add to installed apps table if they match new filter
-                        new AddAllAppsAsync(getApplicationContext(), addPackageEditText.getText().toString()).execute();
+                        new AddAllAppsAsync(getApplicationContext(), addPackageAutoComplete.getText().toString()).execute();
 
-						addPackageEditText.setText("");
+						addPackageAutoComplete.setText("");
 						updateListView();
 
 					}
@@ -125,7 +136,6 @@ public class MainActivity extends Activity
 		{
 			case 0:
 			{
-				//Toast.makeText(this, "Import/Export options coming soon..", Toast.LENGTH_SHORT).show();
 				startActivity(new Intent(MainActivity.this, PrefActivity.class));
 			}
 		}
@@ -140,4 +150,38 @@ public class MainActivity extends Activity
 		finish();
 	}
 
+	// Method to get all apps installed and return as List
+	List<String> getExistingPackages()
+	{
+		// get installed applications
+		PackageManager pm = this.getPackageManager();
+		Intent intent = new Intent(Intent.ACTION_MAIN, null);
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		List<ResolveInfo> list= pm.queryIntentActivities(intent,
+				PackageManager.PERMISSION_GRANTED);
+
+		// sort the list alphabetically
+		Collections.sort(list, new ResolveInfo.DisplayNameComparator(pm));
+
+		appPackages.clear();
+
+		for (ResolveInfo rInfo : list)
+		{
+			appPackages.add(rInfo.activityInfo.applicationInfo.packageName.toString());
+		}
+
+		return appPackages;
+	}
+
+	@Override
+	public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
+	{}
+
+	@Override
+	public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
+	{}
+
+	@Override
+	public void afterTextChanged(Editable editable)
+	{}
 }

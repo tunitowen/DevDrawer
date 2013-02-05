@@ -3,6 +3,7 @@ package com.owentech.DevDrawer.appwidget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -38,7 +40,10 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 		AppWidgetManager.INVALID_APPWIDGET_ID);
 
+		// Create the database tables
 		database = new Database(context);
+		database.createTables();
+
 		onDataSetChanged();
 
     }
@@ -124,8 +129,11 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 	// Method to get all apps from the app database and add to the dataset
     public void getApps()
     {
+
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
         // Get all apps from the app table
-		String[] packages = database.getAllAppsInDatabase();
+		String[] packages = database.getAllAppsInDatabase(sp.getString("widgetSorting", "added"));
         pm = context.getPackageManager();
 
 		// Defensive code, was getting some strange behaviour and forcing the lists seems to fix

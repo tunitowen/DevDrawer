@@ -10,6 +10,8 @@
     <item name="android:buttonStyle">@style/ButtonDevDrawerTheme</item>
 
     <item name="android:imageButtonStyle">@style/ImageButtonDevDrawerTheme</item>
+	
+	<item name="android:autoCompleteTextViewStyle">@style/AutoCompleteDevDrawerTheme</item>
 
   </style>
 

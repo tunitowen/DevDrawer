@@ -7,5 +7,13 @@
                             android:title="Show activity choice on launch"
                             android:defaultValue="false"/>
     </PreferenceCategory>
+    <PreferenceCategory android:title="Sorting">
+        <ListPreference android:key="widgetSorting"
+                        android:title="Widget Sorting Options"
+                        android:entries="@array/sorting_options"
+                        android:entryValues="@array/sorting_options_values"
+                        android:defaultValue="added"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>
