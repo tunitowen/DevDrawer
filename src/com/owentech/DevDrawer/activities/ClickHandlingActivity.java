@@ -1,5 +1,6 @@
 package com.owentech.DevDrawer.activities;
 
+import com.owentech.DevDrawer.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -11,7 +12,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
+
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.Constants;
 
@@ -94,11 +98,25 @@ public class ClickHandlingActivity extends Activity {
 					else
 					{
 						// Launch the app
-						Intent LaunchIntent = getApplicationContext().getPackageManager()
-								.getLaunchIntentForPackage(packageName);
-						LaunchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-						LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						startActivity(LaunchIntent);
+						try
+						{
+							Intent LaunchIntent = getApplicationContext().getPackageManager()
+									.getLaunchIntentForPackage(packageName);
+							LaunchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+							LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+									Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(LaunchIntent);
+						} 
+						catch (NullPointerException e)
+						{
+							Toast.makeText(this, this.getString(
+									R.string.error_no_main_activity), Toast.LENGTH_SHORT)
+									.show();
+							Intent intent = new Intent(this, PrefActivity.class);
+							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+									Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(intent);
+						}
 						finish();
 					}
                     break;
@@ -141,9 +159,11 @@ public class ClickHandlingActivity extends Activity {
 				PackageManager.GET_ACTIVITIES);
 		ActivityInfo[] list = info.activities;
 
-		for (ActivityInfo string : list)
+		for (ActivityInfo activity : list)
 		{
-			adapter.add(string.name.toString());
+			if (activity.exported) {
+				adapter.add(activity.name.toString());
+			}
 		}
 
 		return adapter;
