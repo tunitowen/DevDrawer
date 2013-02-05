@@ -9,4 +9,5 @@
         <item>added</item>
         <item>alphabetically</item>
     </array>
+    <string name="error_no_main_activity">No main activity, please enable activity chooser</string>
 </resources>

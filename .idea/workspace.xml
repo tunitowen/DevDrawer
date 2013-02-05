@@ -27,25 +27,15 @@
     <option name="TOOL_WINDOW_LOG_LEVEL" value="ERROR" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" name="Default" comment="Version 1.0.4 for Google Play">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/dropdown_list_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Constants.java" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/owentech/DevDrawer/appwidget/DDWidgetViewsFactory.java" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/appwidget/DDWidgetViewsFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Database.java" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Database.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/MainActivity.java" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/PrefActivity.java" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/PrefActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/devdrawertheme_styles.xml" afterPath="$PROJECT_DIR$/res/values/devdrawertheme_styles.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/devdrawertheme_themes.xml" afterPath="$PROJECT_DIR$/res/values/devdrawertheme_themes.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/main.xml" afterPath="$PROJECT_DIR$/res/layout/main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/xml/preferences.xml" afterPath="$PROJECT_DIR$/res/xml/preferences.xml" />
+    <list default="true" id="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DevDrawer.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/AndroidManifest.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359998049307" ignored="false" />
-    <file path="/Dummy.txt" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360093477081" ignored="false" />
+    <file path="/Dummy.txt" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360094461958" ignored="false" />
     <file path="/widget_layout.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359719626268" ignored="false" />
     <file path="/AppInstalledReceiver.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359879067375" ignored="false" />
     <file path="/UpdateWidgetService.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359391577826" ignored="false" />
@@ -142,7 +132,40 @@
     <favorites_list name="DevDrawer" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="11" column="99" selection-start="432" selection-end="432" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClickHandlingActivity.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="32" selection-start="638" selection-end="638" vertical-scroll-proportion="-3.8929336">
+              <folding>
+                <element signature="e#1976#2513#0" expanded="true" />
+                <element signature="e#2502#2503#0" expanded="true" />
+                <element signature="e#2565#2789#0" expanded="true" />
+                <element signature="e#2778#2779#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="preferences.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="10" column="0" selection-start="448" selection-end="448" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -157,6 +180,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitLogSettings">
+    <option name="myStructureFilterPaths" />
     <option name="myDateState">
       <MyDateState />
     </option>
@@ -171,15 +195,15 @@
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/MainActivity.java" />
         <option value="$PROJECT_DIR$/res/layout/dropdown_list_item.xml" />
         <option value="$PROJECT_DIR$/res/values/devdrawertheme_styles.xml" />
-        <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/res/xml/preferences.xml" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ActivityChoiceDialog.java" />
-        <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Constants.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Database.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/PrefActivity.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/appwidget/DDWidgetViewsFactory.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java" />
       </list>
     </option>
   </component>
@@ -630,7 +654,15 @@
       <created>1360014648177</created>
       <updated>1360014648177</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Commit in prep for metge with lithid&#10;* Added autocomplete for package filter&#10;* Added basic sorting options for widget (as added, and alphabetical)&#10;* Fixed bug where if widget was added before MainActivity opened database &amp; tables had not been created causing FC.">
+      <created>1360093596476</created>
+      <updated>1360093596476</updated>
+    </task>
+    <task id="LOCAL-00006" summary="-">
+      <created>1360094465288</created>
+      <updated>1360094465288</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -645,20 +677,20 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3184" sideWeight="0.49773756" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32" sideWeight="0.48190045" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31578946" sideWeight="0.4969834" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19457014" sideWeight="0.792" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.208" sideWeight="0.9012066" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.208" sideWeight="0.9012066" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21870287" sideWeight="0.792" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32352942" sideWeight="0.792" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32969433" sideWeight="0.670977" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3267442" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32" sideWeight="0.48190045" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -701,7 +733,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Version 1.0.4 for Google Play" />
+    <option name="LAST_COMMIT_MESSAGE" value="-" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -718,6 +750,9 @@
     <MESSAGE value="Merge branch 'master' of https://github.com/lithid/DevDrawer" />
     <MESSAGE value="Fix: When launching app from widget, press home, launch DevDrawer showing launched app." />
     <MESSAGE value="Version 1.0.4 for Google Play" />
+    <MESSAGE value="Commit in prep for metge with lithid&#10;* Added autocomplete for package filter&#10;* Added basic sorting options for widget (as added, and alphabetical)&#10;* Fixed bug where if widget was added before MainActivity opened database &amp; tables had not been created causing FC." />
+    <MESSAGE value="Merge branch 'master' of https://github.com/lithid/DevDrawer&#10;&#10;* Fixes issue when launching an app without a launch intent&#10;v1.0.5 for Google Play" />
+    <MESSAGE value="-" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -771,13 +806,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="69" column="51" selection-start="2088" selection-end="2088" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/appwidget/DDWidgetViewsFactory.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="43" column="39" selection-start="1443" selection-end="1443" vertical-scroll-proportion="0.5989583">
@@ -820,13 +848,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="50" selection-start="485" selection-end="498" vertical-scroll-proportion="0.25041735">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="20" column="69" selection-start="573" selection-end="573" vertical-scroll-proportion="0.5008347">
@@ -834,10 +855,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="448" selection-end="448" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="28" selection-start="298" selection-end="312" vertical-scroll-proportion="0.22537562">
+        <state line="11" column="99" selection-start="432" selection-end="432" vertical-scroll-proportion="0.0">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="32" selection-start="638" selection-end="638" vertical-scroll-proportion="-3.8929336">
+          <folding>
+            <element signature="e#1976#2513#0" expanded="true" />
+            <element signature="e#2502#2503#0" expanded="true" />
+            <element signature="e#2565#2789#0" expanded="true" />
+            <element signature="e#2778#2779#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

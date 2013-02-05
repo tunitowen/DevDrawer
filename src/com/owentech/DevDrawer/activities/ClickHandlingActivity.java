@@ -1,8 +1,5 @@
 package com.owentech.DevDrawer.activities;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -15,9 +12,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
+import android.widget.Toast;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.Constants;
+import com.owentech.DevDrawer.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -97,11 +98,26 @@ public class ClickHandlingActivity extends Activity {
 					else
 					{
 						// Launch the app
-						Intent LaunchIntent = getApplicationContext().getPackageManager()
-								.getLaunchIntentForPackage(packageName);
-						LaunchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-						LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						startActivity(LaunchIntent);
+						// Launch the app
+						try
+						{
+							Intent LaunchIntent = getApplicationContext().getPackageManager()
+									.getLaunchIntentForPackage(packageName);
+							LaunchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+							LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+									Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(LaunchIntent);
+						}
+						catch (NullPointerException e)
+						{
+							Toast.makeText(this, this.getString(
+									R.string.error_no_main_activity), Toast.LENGTH_SHORT)
+									.show();
+							Intent intent = new Intent(this, PrefActivity.class);
+							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+									Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(intent);
+						}
 						finish();
 					}
                     break;
