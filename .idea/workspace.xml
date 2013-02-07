@@ -28,14 +28,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/adapters/ActivityListAdapter.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ChooseActivityDialog.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/activity_choice.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/res/layout/activity_choice_list_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/owentech/DevDrawer/receivers/AppUninstalledReceiver.java" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/receivers/AppUninstalledReceiver.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java" afterPath="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/dropdown_list_item.xml" afterPath="$PROJECT_DIR$/res/layout/dropdown_list_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/list_item.xml" afterPath="$PROJECT_DIR$/res/layout/list_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/package_list_item.xml" afterPath="$PROJECT_DIR$/res/layout/package_list_item.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DevDrawer.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/AndroidManifest.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359998049307" ignored="false" />
-    <file path="/Dummy.txt" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360094461958" ignored="false" />
+    <file path="/AndroidManifest.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360134651738" ignored="false" />
+    <file path="/Dummy.txt" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360264463313" ignored="false" />
     <file path="/widget_layout.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359719626268" ignored="false" />
     <file path="/AppInstalledReceiver.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359879067375" ignored="false" />
     <file path="/UpdateWidgetService.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359391577826" ignored="false" />
@@ -46,9 +55,9 @@
     <file path="/WidgetProvider.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359881357280" ignored="false" />
     <file path="/WidgetService.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359881372233" ignored="false" />
     <file path="/widget_info.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359841668650" ignored="false" />
-    <file path="/list_item.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359926534672" ignored="false" />
+    <file path="/list_item.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360256438844" ignored="false" />
     <file path="/MainActivity.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360047226470" ignored="false" />
-    <file path="/ClickHandlingActivity.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360081841525" ignored="false" />
+    <file path="/ClickHandlingActivity.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360265761419" ignored="false" />
     <file path="/main.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360046518679" ignored="false" />
     <file path="/package_list_item.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1359714048749" ignored="false" />
     <file path="/Database.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360083481606" ignored="false" />
@@ -71,10 +80,15 @@
     <file path="/DDWidgetViewsFactory.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360084570765" ignored="false" />
     <file path="/preferences.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360048449805" ignored="false" />
     <file path="/PrefActivity.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360084262672" ignored="false" />
-    <file path="/devdrawertheme_styles.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360048059766" ignored="false" />
+    <file path="/devdrawertheme_styles.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360133243364" ignored="false" />
     <file path="/dropdown_list_item.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360047912860" ignored="false" />
-    <file path="/strings.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360048591812" ignored="false" />
+    <file path="/strings.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360264983860" ignored="false" />
     <file path="/ActivityChoiceDialog.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360081780097" ignored="false" />
+    <file path="/custom_alert_title.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360133599168" ignored="false" />
+    <file path="/activity_choice_list_item.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360168500264" ignored="false" />
+    <file path="/ChooseActivityDialog.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360255895203" ignored="false" />
+    <file path="/ActivityListAdapter.java" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360169122763" ignored="false" />
+    <file path="/activity_choice.xml" changelist="6c75b3ae-0f50-4867-b6a4-94a58a88f19d" time="1360169584676" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,33 +147,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="99" selection-start="432" selection-end="432" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClickHandlingActivity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="32" selection-start="638" selection-end="638" vertical-scroll-proportion="-3.8929336">
-              <folding>
-                <element signature="e#1976#2513#0" expanded="true" />
-                <element signature="e#2502#2503#0" expanded="true" />
-                <element signature="e#2565#2789#0" expanded="true" />
-                <element signature="e#2778#2779#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="preferences.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="0" selection-start="448" selection-end="448" vertical-scroll-proportion="0.0">
+            <state line="4" column="36" selection-start="221" selection-end="221" vertical-scroll-proportion="0.114503816">
               <folding />
             </state>
           </provider>
@@ -188,29 +179,29 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/res/layout/edit_dialog.xml" />
-        <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/AddAllAppsAsync.java" />
-        <option value="$PROJECT_DIR$/res/layout/list_item.xml" />
-        <option value="$PROJECT_DIR$/res/layout/main.xml" />
-        <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/MainActivity.java" />
-        <option value="$PROJECT_DIR$/res/layout/dropdown_list_item.xml" />
-        <option value="$PROJECT_DIR$/res/values/devdrawertheme_styles.xml" />
-        <option value="$PROJECT_DIR$/res/xml/preferences.xml" />
-        <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ActivityChoiceDialog.java" />
-        <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Constants.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Database.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/PrefActivity.java" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/appwidget/DDWidgetViewsFactory.java" />
+        <option value="$PROJECT_DIR$/res/values/devdrawertheme_styles.xml" />
+        <option value="$PROJECT_DIR$/res/layout/custom_alert_title.xml" />
+        <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/adapters/ActivityListAdapter.java" />
         <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/res/layout/package_list_item.xml" />
+        <option value="$PROJECT_DIR$/res/layout/list_item.xml" />
+        <option value="$PROJECT_DIR$/res/layout/dropdown_list_item.xml" />
+        <option value="$PROJECT_DIR$/res/layout/activity_choice_list_item.xml" />
+        <option value="$PROJECT_DIR$/res/layout/activity_choice.xml" />
         <option value="$PROJECT_DIR$/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/receivers/AppUninstalledReceiver.java" />
+        <option value="$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ChooseActivityDialog.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="25" />
-    <option name="width" value="1372" />
-    <option name="height" value="745" />
+    <option name="y" value="22" />
+    <option name="width" value="1440" />
+    <option name="height" value="816" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -239,6 +230,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -272,10 +264,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="DevDrawer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="utils" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -319,65 +307,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="appwidget" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevDrawer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevDrawer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevDrawer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevDrawer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevDrawer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevDrawer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="activities" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevDrawer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="DevDrawer" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="xml" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -433,7 +363,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -448,18 +377,18 @@
     <property name="recentsLimit" value="5" />
     <property name="ExportedModule" value="DevDrawer" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="AndroidLayoutSelectedEditor" value="text-editor" />
+    <property name="AndroidLayoutSelectedEditor" value="android-designer" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="4df1638f1db88faf" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="AndroidRunProguardForReleaseBuild" value="false" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="GalaxyNexus" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -499,19 +428,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -537,6 +453,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -662,11 +591,15 @@
       <created>1360094465288</created>
       <updated>1360094465288</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Merge from github.com/lithis/DevDrawer master">
+      <created>1360095515323</created>
+      <updated>1360095515323</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="25" width="1372" height="745" extended-state="0" />
+    <frame x="0" y="22" width="1440" height="816" extended-state="0" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -677,17 +610,17 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3184" sideWeight="0.49773756" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32" sideWeight="0.48190045" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31578946" sideWeight="0.4969834" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31752872" sideWeight="0.48190045" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3141946" sideWeight="0.4969834" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19457014" sideWeight="0.792" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.208" sideWeight="0.9012066" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21870287" sideWeight="0.792" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16642755" sideWeight="0.79310346" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20689656" sideWeight="0.9012066" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32352942" sideWeight="0.792" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21807748" sideWeight="0.79310346" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32352942" sideWeight="0.79310346" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32969433" sideWeight="0.670977" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3267442" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -733,7 +666,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="-" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge from github.com/lithis/DevDrawer master" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -753,6 +686,7 @@
     <MESSAGE value="Commit in prep for metge with lithid&#10;* Added autocomplete for package filter&#10;* Added basic sorting options for widget (as added, and alphabetical)&#10;* Fixed bug where if widget was added before MainActivity opened database &amp; tables had not been created causing FC." />
     <MESSAGE value="Merge branch 'master' of https://github.com/lithid/DevDrawer&#10;&#10;* Fixes issue when launching an app without a launch intent&#10;v1.0.5 for Google Play" />
     <MESSAGE value="-" />
+    <MESSAGE value="Merge from github.com/lithis/DevDrawer master" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -762,122 +696,126 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/layout/main.xml">
+    <entry file="file://$PROJECT_DIR$/res/layout/custom_ab_title.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="403" vertical-scroll-proportion="-0.0" />
+      </provider>
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="90" selection-start="1192" selection-end="1192" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/AddAllAppsAsync.java">
+    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/adapters/FilterListAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="13" selection-start="636" selection-end="636" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/list_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="108" selection-start="1449" selection-end="2033" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values/devdrawertheme_styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="61" selection-start="1209" selection-end="1209" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/dropdown_list_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="57" selection-start="613" selection-end="613" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="136" column="5" selection-start="924" selection-end="3585" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/appwidget/DDWidgetViewsFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="39" selection-start="1443" selection-end="1443" vertical-scroll-proportion="0.5989583">
+        <state line="24" column="13" selection-start="804" selection-end="804" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/adapters/ActivityListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="0" selection-start="730" selection-end="730" vertical-scroll-proportion="0.335" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/widget_layout.xml">
+      <provider editor-type-id="text-editor">
+        <state line="18" column="57" selection-start="0" selection-end="669" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="32" selection-start="553" selection-end="553" vertical-scroll-proportion="0.26041666">
+    <entry file="file://$PROJECT_DIR$/res/layout/package_list_item.xml">
+      <provider editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Database.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="175" column="20" selection-start="4750" selection-end="4750" vertical-scroll-proportion="0.025041737">
+    <entry file="file://$PROJECT_DIR$/res/layout/list_item.xml">
+      <provider editor-type-id="text-editor">
+        <state line="36" column="63" selection-start="1888" selection-end="1888" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/PrefActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="38" selection-start="974" selection-end="974" vertical-scroll-proportion="0.3739566">
+    <entry file="file://$PROJECT_DIR$/res/layout/dropdown_list_item.xml">
+      <provider editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="32" selection-start="1449" selection-end="1538" vertical-scroll-proportion="0.025041737">
+    <entry file="file://$PROJECT_DIR$/res/layout/activity_choice_list_item.xml">
+      <provider editor-type-id="text-editor">
+        <state line="19" column="128" selection-start="1122" selection-end="1122" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/receivers/AppInstalledReceiver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="95" selection-start="1329" selection-end="1620" vertical-scroll-proportion="0.57429045">
+    <entry file="file://$PROJECT_DIR$/res/layout/activity_choice.xml">
+      <provider editor-type-id="text-editor">
+        <state line="11" column="60" selection-start="468" selection-end="468" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/utils/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="69" selection-start="573" selection-end="573" vertical-scroll-proportion="0.5008347">
-          <folding />
-        </state>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/xml/preferences.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/receivers/AppUninstalledReceiver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="448" selection-end="448" vertical-scroll-proportion="0.0">
+        <state line="45" column="91" selection-start="1433" selection-end="1433" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="99" selection-start="432" selection-end="432" vertical-scroll-proportion="0.0">
+        <state line="14" column="43" selection-start="693" selection-end="693" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ChooseActivityDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="0" selection-start="1056" selection-end="1056" vertical-scroll-proportion="0.114503816">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/owentech/DevDrawer/activities/ClickHandlingActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="32" selection-start="638" selection-end="638" vertical-scroll-proportion="-3.8929336">
+        <state line="138" column="15" selection-start="4428" selection-end="4428" vertical-scroll-proportion="1.658397">
           <folding>
-            <element signature="e#1976#2513#0" expanded="true" />
-            <element signature="e#2502#2503#0" expanded="true" />
-            <element signature="e#2565#2789#0" expanded="true" />
-            <element signature="e#2778#2779#0" expanded="true" />
+            <element signature="e#3679#4213#0" expanded="true" />
+            <element signature="e#4207#4208#0" expanded="true" />
+            <element signature="e#4279#4426#0" expanded="true" />
+            <element signature="e#4420#4421#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="36" selection-start="221" selection-end="221" vertical-scroll-proportion="0.114503816">
+          <folding />
         </state>
       </provider>
     </entry>

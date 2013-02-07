@@ -9,5 +9,8 @@
         <item>added</item>
         <item>alphabetically</item>
     </array>
-    <string name="error_no_main_activity">No main activity, please enable activity chooser</string>
+    <string name="no_main_activity_could_be_found">No main activity could be found.\nEnable the activity chooser dialog.</string>
+    <string name="package_does_not_exist">The package selected is no longer installed, if this has been uninstalled please click remove</string>
+    <string name="remove">Remove</string>
+    <string name="uninstalled">Uninstalled?</string>
 </resources>

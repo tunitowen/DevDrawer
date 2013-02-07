@@ -6,9 +6,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.Database;
-import com.owentech.DevDrawer.R;
 
 /**
  * Created with IntelliJ IDEA.

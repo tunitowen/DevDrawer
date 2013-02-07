@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.owentech.DevDrawer"
-          android:versionCode="6"
-          android:versionName="1.0.5">
+          android:versionCode="7"
+          android:versionName="1.0.6">
     <uses-sdk android:minSdkVersion="14"/>
     <uses-permission android:name="android.permission.BIND_REMOTEVIEWS"/>
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
@@ -29,6 +29,7 @@
 
         <activity android:name=".activities.EditDialog" android:theme='@android:style/Theme.Holo.Light.Dialog.NoActionBar'/>
         <activity android:name=".activities.PrefActivity"/>
+        <activity android:name=".activities.ChooseActivityDialog" android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"/>
 
         <receiver android:name=".receivers.AppInstalledReceiver">
             <intent-filter>

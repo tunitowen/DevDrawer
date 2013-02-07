@@ -5,7 +5,7 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:minHeight="48dp"
-          android:ellipsize="marquee" android:text="com.facebook.katana" android:fontFamily="sans-serif-light"
+          android:ellipsize="end" android:text="com.facebook.katana" android:fontFamily="sans-serif-light"
           android:textAppearance="@android:style/TextAppearance.Medium" android:textColor="#333333"
           android:padding="5dp"
           android:background="@drawable/background_repeat"

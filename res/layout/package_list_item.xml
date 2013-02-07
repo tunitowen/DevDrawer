@@ -31,5 +31,6 @@
             android:layout_alignTop="@+id/deleteImageButton"
             android:layout_toLeftOf="@+id/deleteImageButton"
             android:layout_alignBottom="@+id/deleteImageButton"
-            android:gravity="center_vertical" android:layout_marginLeft="10dp" android:fontFamily="sans-serif-light"/>
+            android:gravity="center_vertical" android:layout_marginLeft="10dp" android:fontFamily="sans-serif-light"
+            android:ellipsize="end"/>
 </RelativeLayout>

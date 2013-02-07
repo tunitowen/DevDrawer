@@ -21,19 +21,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Package Name"
-            android:id="@+id/packageNameTextView" android:layout_toRightOf="@+id/imageView" android:layout_alignParentTop="true"
+            android:id="@+id/packageNameTextView"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toLeftOf="@+id/uninstallImageButton"
+            android:layout_alignParentTop="true"
             android:textAppearance="@android:style/TextAppearance.Holo.Small" android:textSize="10dp"
             android:layout_marginLeft="5dp" android:paddingTop="5dp" android:textColor="#f80"
-            android:fontFamily="sans-serif-light"/>
+            android:fontFamily="sans-serif-light" android:ellipsize="end" android:maxLines="1"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="App Name"
-            android:id="@+id/appNameTextView" android:layout_toRightOf="@+id/imageView" android:layout_below="@+id/packageNameTextView"
+            android:id="@+id/appNameTextView"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toLeftOf="@+id/uninstallImageButton"
+            android:layout_below="@+id/packageNameTextView"
             android:layout_alignBottom="@id/imageView"
             android:gravity="bottom"
             android:textAppearance="@android:style/TextAppearance.Medium" android:layout_marginLeft="5dp"
-            android:paddingBottom="5dp" android:textColor="#333333" android:fontFamily="sans-serif-light"/>
+            android:paddingBottom="5dp" android:textColor="#333333" android:fontFamily="sans-serif-light"
+            android:ellipsize="end" android:maxLines="1"/>
     <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"

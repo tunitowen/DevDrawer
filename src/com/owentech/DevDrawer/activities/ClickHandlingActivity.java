@@ -2,23 +2,20 @@ package com.owentech.DevDrawer.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
+import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.Constants;
-import com.owentech.DevDrawer.R;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.owentech.DevDrawer.utils.Database;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,77 +24,40 @@ import java.util.List;
  * Time: 06:31
  * To change this template use File | Settings | File Templates.
  */
-public class ClickHandlingActivity extends Activity {
+public class ClickHandlingActivity extends Activity
+{
 
 	SharedPreferences sp;
-	CharSequence[] Packageitems = null;
+	String[] Packageitems = null;
 
-    @Override
-    public void onCreate(Bundle state) {
-        super.onCreate(state);
+	@Override
+	public void onCreate(Bundle state)
+	{
+		super.onCreate(state);
 
-        final String packageName = getIntent().getStringExtra(DDWidgetProvider.PACKAGE_STRING);
-        int launchType = getIntent().getIntExtra("launchType", 0);
+		final String packageName = getIntent().getStringExtra(DDWidgetProvider.PACKAGE_STRING);
+		int launchType = getIntent().getIntExtra("launchType", 0);
 
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (packageName != null) {
+		if(packageName != null && isAppInstalled(packageName))
+		{
 
-            switch (launchType)
-            {
-                case Constants.LAUNCH_APP:
-                {
-					if (sp.getBoolean("showActivityChoice", false))
+			switch(launchType)
+			{
+				case Constants.LAUNCH_APP:
+				{
+					if(sp.getBoolean("showActivityChoice", false))
 					{
 						// Show the activity choice dialog
-						try
-						{
-							List<String> adapter = getActivityList(packageName);
-							Packageitems = adapter.toArray(new CharSequence[adapter
-									.size()]);
-						}
-						catch (PackageManager.NameNotFoundException e)
-						{
-							e.printStackTrace();
-						}
+						Intent intent = new Intent(this, ChooseActivityDialog.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+						intent.putExtra("packageName", packageName);
+						startActivity(intent);
 
-						AlertDialog.Builder alert = new AlertDialog.Builder(this);
-						alert.setTitle("Choose:");
-						alert.setCancelable(false);
-						alert.setSingleChoiceItems(Packageitems, -1,
-								new DialogInterface.OnClickListener()
-								{
-									@Override
-                                    public void onClick(DialogInterface dialog, int item) {
-										Intent intent = new Intent();
-										intent.setComponent(new ComponentName(
-												packageName, Packageitems[item]
-												.toString()));
-										intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-										intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-										startActivity(intent);
-										dialog.dismiss();
-										finish();
-									}
-								});
 
-						alert.setNegativeButton("Cancel",
-								new DialogInterface.OnClickListener()
-								{
-									@Override
-                                    public void onClick(DialogInterface dialog, int id) {
-										dialog.cancel();
-										finish();
-									}
-								});
-
-						AlertDialog ad = alert.create();
-						ad.show();
-
-					}
-					else
+					}else
 					{
-						// Launch the app
 						// Launch the app
 						try
 						{
@@ -108,10 +68,12 @@ public class ClickHandlingActivity extends Activity {
 									Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							startActivity(LaunchIntent);
 						}
-						catch (NullPointerException e)
+						catch(NullPointerException e)
 						{
+
+
 							Toast.makeText(this, this.getString(
-									R.string.error_no_main_activity), Toast.LENGTH_SHORT)
+									R.string.no_main_activity_could_be_found), Toast.LENGTH_SHORT)
 									.show();
 							Intent intent = new Intent(this, PrefActivity.class);
 							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
@@ -120,53 +82,83 @@ public class ClickHandlingActivity extends Activity {
 						}
 						finish();
 					}
-                    break;
-                }
-                case Constants.LAUNCH_APP_DETAILS:
-                {
-                    // Launch the app details settings screen for the app
-                    Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    i.addCategory(Intent.CATEGORY_DEFAULT);
-                    i.setData(Uri.parse("package:" + packageName));
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(i);
+					break;
+				}
+				case Constants.LAUNCH_APP_DETAILS:
+				{
+					// Launch the app details settings screen for the app
+					Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+					i.addCategory(Intent.CATEGORY_DEFAULT);
+					i.setData(Uri.parse("package:" + packageName));
+					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(i);
 					finish();
-                    break;
-                }
-                case Constants.LAUNCH_UNINSTALL:
-                {
-                    Uri packageUri = Uri.parse("package:" + packageName);
-                    Intent uninstallIntent =
-                            new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-                    uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(uninstallIntent);
-                    break;
-                }
+					break;
+				}
+				case Constants.LAUNCH_UNINSTALL:
+				{
 
-            }
+					Uri packageUri = Uri.parse("package:" + packageName);
+					Intent uninstallIntent =
+							new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+					uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(uninstallIntent);
+					break;
+				}
+			}
+		}
+		else
+		{
+			Toast.makeText(getApplicationContext(), "Package is not installed", Toast.LENGTH_SHORT).show();
 
-        }
+			AlertDialog.Builder builder = new AlertDialog.Builder(ClickHandlingActivity.this);
+			builder.setTitle(getResources().getString(R.string.uninstalled));
+			builder.setMessage(getResources().getString(R.string.package_does_not_exist));
+			builder.setPositiveButton(getResources().getString(R.string.remove), new DialogInterface.OnClickListener()
+			{
+				@Override
+				public void onClick(DialogInterface dialogInterface, int i)
+				{
+					new Database(getApplicationContext()).deleteAppFromDb(packageName);
 
-    }
+					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getApplicationContext(), DDWidgetProvider.class));
+					appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
 
-	private List<String> getActivityList(String packageName)
-			throws PackageManager.NameNotFoundException {
+					finish();
+				}
+			});
+			builder.setCancelable(true);
+			builder.setOnCancelListener(new DialogInterface.OnCancelListener()
+			{
+				@Override
+				public void onCancel(DialogInterface dialogInterface)
+				{
+					finish();
+				}
+			});
 
-		PackageManager pm = this.getPackageManager();
-
-		List<String> adapter = new ArrayList<String>();
-
-		PackageInfo info = pm.getPackageInfo(packageName,
-				PackageManager.GET_ACTIVITIES);
-		ActivityInfo[] list = info.activities;
-
-                for (ActivityInfo activity : list) {
-                    if (activity.exported) {
-                        adapter.add(activity.name.toString());
-                    }
-                }
-
-		return adapter;
+			AlertDialog alert = builder.create();
+			alert.show();
+		}
 	}
+
+	// Method to check whether the Facebook App is installed
+	private boolean isAppInstalled(String uri)
+	{
+		PackageManager pm = getPackageManager();
+		boolean app_installed = false;
+		try
+		{
+			pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+			app_installed = true;
+		}
+		catch(PackageManager.NameNotFoundException e)
+		{
+			app_installed = false;
+		}
+		return app_installed;
+	}
+
 
 }
