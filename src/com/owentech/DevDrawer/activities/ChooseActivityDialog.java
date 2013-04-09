@@ -65,9 +65,12 @@ public class ChooseActivityDialog extends Activity implements ListView.OnItemCli
 				PackageManager.GET_ACTIVITIES);
 		ActivityInfo[] list = info.activities;
 
-		for (ActivityInfo activity : list) {
-			if (activity.exported) {
-				adapter.add(activity.name.toString());
+		if (list != null && list.length != 0)
+		{
+			for (ActivityInfo activity : list) {
+				if (activity.exported) {
+					adapter.add(activity.name.toString());
+				}
 			}
 		}
 
