@@ -69,35 +69,42 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 		// Setup the list item and intents for on click
 		RemoteViews row = new RemoteViews(context.getPackageName(), R.layout.list_item);
 
-        row.setTextViewText(R.id.packageNameTextView, packageNames.get(position));
-        row.setTextViewText(R.id.appNameTextView, applicationNames.get(position));
-        row.setImageViewBitmap(R.id.imageView, convertFromDrawable(applicationIcons.get(position)));
+		try
+		{
+			row.setTextViewText(R.id.packageNameTextView, packageNames.get(position));
+			row.setTextViewText(R.id.appNameTextView, applicationNames.get(position));
+			row.setImageViewBitmap(R.id.imageView, convertFromDrawable(applicationIcons.get(position)));
 
-        Intent appDetailsClickIntent=new Intent();
-        Bundle appDetailsClickExtras=new Bundle();
-        //appDetailsClickExtras.putBoolean("appDetails", true);
-        appDetailsClickExtras.putInt("launchType", Constants.LAUNCH_APP_DETAILS);
-        appDetailsClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
-        appDetailsClickIntent.putExtras(appDetailsClickExtras);
-        row.setOnClickFillInIntent(R.id.appDetailsImageButton, appDetailsClickIntent);
+			Intent appDetailsClickIntent=new Intent();
+			Bundle appDetailsClickExtras=new Bundle();
+			//appDetailsClickExtras.putBoolean("appDetails", true);
+			appDetailsClickExtras.putInt("launchType", Constants.LAUNCH_APP_DETAILS);
+			appDetailsClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+			appDetailsClickIntent.putExtras(appDetailsClickExtras);
+			row.setOnClickFillInIntent(R.id.appDetailsImageButton, appDetailsClickIntent);
 
-        Intent uninstallClickIntent=new Intent();
-        Bundle uninstallClickExtras=new Bundle();
-        //appDetailsClickExtras.putBoolean("appDetails", true);
-        uninstallClickExtras.putInt("launchType", Constants.LAUNCH_UNINSTALL);
-        uninstallClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
-        uninstallClickIntent.putExtras(uninstallClickExtras);
-        row.setOnClickFillInIntent(R.id.uninstallImageButton, uninstallClickIntent);
+			Intent uninstallClickIntent=new Intent();
+			Bundle uninstallClickExtras=new Bundle();
+			//appDetailsClickExtras.putBoolean("appDetails", true);
+			uninstallClickExtras.putInt("launchType", Constants.LAUNCH_UNINSTALL);
+			uninstallClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+			uninstallClickIntent.putExtras(uninstallClickExtras);
+			row.setOnClickFillInIntent(R.id.uninstallImageButton, uninstallClickIntent);
 
-        Intent rowClickIntent=new Intent();
-        Bundle rowClickExtras=new Bundle();
-        //rowClickExtras.putBoolean("appDetails", false);
-        rowClickExtras.putInt("launchType", Constants.LAUNCH_APP);
-        rowClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
-        rowClickIntent.putExtras(rowClickExtras);
-        row.setOnClickFillInIntent(R.id.touchArea, rowClickIntent);
+			Intent rowClickIntent=new Intent();
+			Bundle rowClickExtras=new Bundle();
+			//rowClickExtras.putBoolean("appDetails", false);
+			rowClickExtras.putInt("launchType", Constants.LAUNCH_APP);
+			rowClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+			rowClickIntent.putExtras(rowClickExtras);
+			row.setOnClickFillInIntent(R.id.touchArea, rowClickIntent);
 
-        return(row);
+			return(row);
+		}
+		catch (IndexOutOfBoundsException e)
+		{
+			return null;
+		}
     }
 
     @Override
