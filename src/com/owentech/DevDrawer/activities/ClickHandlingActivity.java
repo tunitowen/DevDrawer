@@ -3,12 +3,10 @@ package com.owentech.DevDrawer.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
@@ -47,62 +45,17 @@ public class ClickHandlingActivity extends Activity
 			{
 				case Constants.LAUNCH_APP:
 				{
-					if(sp.getBoolean("showActivityChoice", false))
-					{
-						// Show the activity choice dialog
-						Intent intent = new Intent(this, ChooseActivityDialog.class);
-						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
-						intent.putExtra("packageName", packageName);
-						startActivity(intent);
-
-
-					}else
-					{
-						// Launch the app
-						try
-						{
-							Intent LaunchIntent = getApplicationContext().getPackageManager()
-									.getLaunchIntentForPackage(packageName);
-							LaunchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-							LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-									Intent.FLAG_ACTIVITY_CLEAR_TOP);
-							startActivity(LaunchIntent);
-						}
-						catch(NullPointerException e)
-						{
-
-
-							Toast.makeText(this, this.getString(
-									R.string.no_main_activity_could_be_found), Toast.LENGTH_SHORT)
-									.show();
-							Intent intent = new Intent(this, PrefActivity.class);
-							intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-									Intent.FLAG_ACTIVITY_CLEAR_TOP);
-							startActivity(intent);
-						}
-						finish();
-					}
+					startApp(this, packageName);
 					break;
 				}
 				case Constants.LAUNCH_APP_DETAILS:
 				{
-					// Launch the app details settings screen for the app
-					Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-					i.addCategory(Intent.CATEGORY_DEFAULT);
-					i.setData(Uri.parse("package:" + packageName));
-					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					startActivity(i);
-					finish();
+					startAppDetails(this, packageName);
 					break;
 				}
 				case Constants.LAUNCH_UNINSTALL:
 				{
-
-					Uri packageUri = Uri.parse("package:" + packageName);
-					Intent uninstallIntent =
-							new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-					uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(uninstallIntent);
+					startUninstall(this, packageName);
 					break;
 				}
 			}
@@ -147,7 +100,7 @@ public class ClickHandlingActivity extends Activity
 	private boolean isAppInstalled(String uri)
 	{
 		PackageManager pm = getPackageManager();
-		boolean app_installed = false;
+		boolean app_installed;
 		try
 		{
 			pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
@@ -159,6 +112,96 @@ public class ClickHandlingActivity extends Activity
 		}
 		return app_installed;
 	}
+
+	public static void startApp(Activity activity, String packageName)
+	{
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+		if(sp.getBoolean("showActivityChoice", false))
+		{
+			// Show the activity choice dialog
+			Intent intent = new Intent(activity, ChooseActivityDialog.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+			intent.putExtra("packageName", packageName);
+			activity.startActivity(intent);
+			activity.finish();
+
+
+		}else
+		{
+			// Launch the app
+			try
+			{
+				Intent LaunchIntent = activity.getPackageManager()
+						.getLaunchIntentForPackage(packageName);
+				LaunchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+				LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+						Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				activity.startActivity(LaunchIntent);
+			}
+			catch(NullPointerException e)
+			{
+				Toast.makeText(activity, activity.getString(
+						R.string.no_main_activity_could_be_found), Toast.LENGTH_SHORT)
+						.show();
+				Intent intent = new Intent(activity, PrefActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+						Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				activity.startActivity(intent);
+			}
+			activity.finish();
+		}
+	}
+
+	public static void startAppDetails(Activity activity, String packageName)
+	{
+		// Launch the app details settings screen for the app
+		if (Build.VERSION.SDK_INT >= 9)
+		{
+			Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+			i.addCategory(Intent.CATEGORY_DEFAULT);
+			i.setData(Uri.parse("package:" + packageName));
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			activity.startActivity(i);
+			activity.finish();
+		}
+		else
+		{
+			// Froyo and lower, just start the manage apps screen (no intent found to get to app)
+			Intent i = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
+			i.addCategory(Intent.CATEGORY_DEFAULT);
+			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			activity.startActivity(i);
+		}
+
+
+	}
+
+	public static void startUninstall(Activity activity, String packageName)
+	{
+		if (Build.VERSION.SDK_INT > 10)
+		{
+			try
+			{
+				Uri packageUri = Uri.parse("package:" + packageName);
+				Intent uninstallIntent =
+						new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+				uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				activity.startActivity(uninstallIntent);
+				activity.finish();
+			}
+			catch (ActivityNotFoundException e)
+			{
+				Toast.makeText(activity, "Application cannot be uninstalled / possibly system app", Toast.LENGTH_SHORT).show();
+			}
+		}
+		else
+		{
+			Intent intent = new Intent(Intent.ACTION_DELETE);
+			intent.setData(Uri.parse("package:" + packageName));
+			activity.startActivity(intent);
+		}
+	}
+
 
 
 }

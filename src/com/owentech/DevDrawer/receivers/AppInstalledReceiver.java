@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.Database;
@@ -40,9 +41,12 @@ public class AppInstalledReceiver extends BroadcastReceiver {
                 Log.d(TAG, "Matches Filter");
                 database.addAppToDatabase(intent.getData().getSchemeSpecificPart(), Integer.toString(match));
 
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
-                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+				if(Build.VERSION.SDK_INT >= 11)
+				{
+					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
+					appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+				}
             }
             else
             {

@@ -1,9 +1,11 @@
 package com.owentech.DevDrawer.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,11 +44,14 @@ public class MainActivity extends Activity implements TextWatcher
 		setContentView(R.layout.main);
 
 		// Set up ActionBar to use custom view (Robot Light font)
-		getActionBar().setDisplayShowTitleEnabled(false);
-		LayoutInflater inflater = LayoutInflater.from(this);
-		View customView = inflater.inflate(R.layout.custom_ab_title, null);
-		getActionBar().setCustomView(customView);
-		getActionBar().setDisplayShowCustomEnabled(true);
+		if (Build.VERSION.SDK_INT > 11)
+		{
+			getActionBar().setDisplayShowTitleEnabled(false);
+			LayoutInflater inflater = LayoutInflater.from(this);
+			View customView = inflater.inflate(R.layout.custom_ab_title, null);
+			getActionBar().setCustomView(customView);
+			getActionBar().setDisplayShowCustomEnabled(true);
+		}
 
 		// Create the database tables
 		database = new Database(this);
@@ -125,7 +130,16 @@ public class MainActivity extends Activity implements TextWatcher
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		menu.add(0, 0, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		if(Build.VERSION.SDK_INT >= 11)
+		{
+			menu.add(0, 0, 0, "Create Legacy Shortcut").setIcon(R.drawable.ic_action_link).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+			menu.add(0, 1, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		}
+		else
+		{
+			menu.add(0, 0, 0, "Create Shortcut").setIcon(R.drawable.ic_action_link);
+			menu.add(0, 1, 0, "Settings").setIcon(R.drawable.ic_action_settings_white);
+		}
 		return true;
 	}
 
@@ -136,10 +150,30 @@ public class MainActivity extends Activity implements TextWatcher
 		{
 			case 0:
 			{
+				addShortcut(this);
+				break;
+			}
+			case 1:
+			{
 				startActivity(new Intent(MainActivity.this, PrefActivity.class));
+				break;
 			}
 		}
 		return false;
+	}
+
+	public void addShortcut(Context context) {
+		Intent shortcutIntent = new Intent(this, LegacyDialog.class);
+		shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+		Intent intent = new Intent();
+		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "^DevDrawer");
+		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context, R.drawable.shortcut_icon));
+		intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+		String shortcutUri = intent.toUri(MODE_WORLD_WRITEABLE);
+		context.sendBroadcast(intent);
 	}
 
 	@Override

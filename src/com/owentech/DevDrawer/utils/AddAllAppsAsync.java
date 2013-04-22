@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 
@@ -89,9 +90,12 @@ public class AddAllAppsAsync extends AsyncTask
 
                 database.addAppToDatabase(s, packageCollections.get(packageCollections.size()-1).mId);
 
-                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
-                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+				if(Build.VERSION.SDK_INT >= 11)
+				{
+					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
+					appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+				}
             }
         }
     }

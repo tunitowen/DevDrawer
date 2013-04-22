@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.owentech.DevDrawer"
-          android:versionCode="7"
-          android:versionName="1.0.6">
-    <uses-sdk android:minSdkVersion="14"/>
+          android:versionCode="8"
+          android:versionName="1.1">
+    <uses-sdk android:minSdkVersion="7"/>
     <uses-permission android:name="android.permission.BIND_REMOTEVIEWS"/>
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher"
                  android:theme="@android:style/Theme.Holo.Light.DarkActionBar"
             >
@@ -30,6 +31,7 @@
         <activity android:name=".activities.EditDialog" android:theme='@android:style/Theme.Holo.Light.Dialog.NoActionBar'/>
         <activity android:name=".activities.PrefActivity"/>
         <activity android:name=".activities.ChooseActivityDialog" android:theme="@android:style/Theme.Holo.Dialog.NoActionBar"/>
+        <activity android:name=".activities.LegacyDialog" android:theme="@android:style/Theme.Dialog" android:exported="true"/>
 
         <receiver android:name=".receivers.AppInstalledReceiver">
             <intent-filter>
@@ -49,7 +51,8 @@
 
         <receiver android:icon="@drawable/ic_launcher"
                   android:label="@string/app_name"
-                  android:name=".appwidget.DDWidgetProvider">
+                  android:name=".appwidget.DDWidgetProvider"
+                  android:enabled="@bool/widgetEnabled">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>

@@ -7,11 +7,11 @@
             android:layout_height="wrap_content"
             android:text=""
             android:id="@+id/touchArea"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="false"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@+id/uninstallImageButton"
-            android:background="@drawable/listview_button_selector"/>
+            android:background="@drawable/listview_button_selector"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignBottom="@+id/imageView"/>
     <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"

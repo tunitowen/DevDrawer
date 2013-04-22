@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,9 +100,12 @@ public class FilterListAdapter extends BaseAdapter
 				database.removeAppFromDatabase(packageCollections.get(position).mId);
 				notifyDataSetChanged();
 
-				AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(activity);
-				int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(activity, DDWidgetProvider.class));
-				appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+				if(Build.VERSION.SDK_INT >= 11)
+				{
+					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(activity);
+					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(activity, DDWidgetProvider.class));
+					appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+				}
 
 			}
 

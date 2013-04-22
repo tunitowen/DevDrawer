@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
@@ -40,9 +41,12 @@ public class AppUninstalledReceiver extends BroadcastReceiver
 				Log.d(TAG, "App Exists");
 				database.deleteAppFromDb(uninstalledPackage);
 
-				AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-				int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
-				appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+				if(Build.VERSION.SDK_INT >= 11)
+				{
+					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
+					appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+				}
 			}
 			else
 			{
