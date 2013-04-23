@@ -155,25 +155,31 @@ public class ClickHandlingActivity extends Activity
 	public static void startAppDetails(Activity activity, String packageName)
 	{
 		// Launch the app details settings screen for the app
-		if (Build.VERSION.SDK_INT >= 9)
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 9)
 		{
-			Intent i = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-			i.addCategory(Intent.CATEGORY_DEFAULT);
-			i.setData(Uri.parse("package:" + packageName));
-			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			activity.startActivity(i);
-			activity.finish();
+            intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.setData(Uri.parse("package:" + packageName));
 		}
 		else
 		{
-			// Froyo and lower, just start the manage apps screen (no intent found to get to app)
-			Intent i = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
-			i.addCategory(Intent.CATEGORY_DEFAULT);
-			i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			activity.startActivity(i);
+            // on FroYo and Eclair it's just horrible...
+            final String APP_PKG_NAME_21 = "com.android.settings.ApplicationPkgName";
+            final String APP_PKG_NAME_22 = "pkg";
+            final String APP_DETAILS_PACKAGE_NAME = "com.android.settings";
+            final String APP_DETAILS_CLASS_NAME = "com.android.settings.InstalledAppDetails";
+            final String appPkgName = (Build.VERSION.SDK_INT == 8 ? APP_PKG_NAME_22 : APP_PKG_NAME_21);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setClassName(APP_DETAILS_PACKAGE_NAME, APP_DETAILS_CLASS_NAME);
+            intent.putExtra(appPkgName, packageName);
 		}
+        activity.startActivity(intent);
 
-
+        if (Build.VERSION.SDK_INT >= 11) {
+            activity.finish();
+        }
 	}
 
 	public static void startUninstall(Activity activity, String packageName)
