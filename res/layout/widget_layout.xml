@@ -15,5 +15,7 @@
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/orangeImage"
         android:id="@+id/listView"
-        android:background="@drawable/background_repeat_semi"/>
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:background="@drawable/background_repeat"/>
 </RelativeLayout>

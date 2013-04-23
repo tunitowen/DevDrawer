@@ -15,9 +15,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
-import com.owentech.DevDrawer.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +74,21 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 			row.setTextViewText(R.id.packageNameTextView, packageNames.get(position));
 			row.setTextViewText(R.id.appNameTextView, applicationNames.get(position));
 			row.setImageViewBitmap(R.id.imageView, convertFromDrawable(applicationIcons.get(position)));
+
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+			if(sp.getString("theme", "Light").equals("Light"))
+			{
+				row.setTextColor(R.id.appNameTextView, context.getResources().getColor(R.color.app_name_light));
+				row.setImageViewResource(R.id.appDetailsImageButton, R.drawable.settings_imageview);
+				row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview);
+			}
+			else
+			{
+				row.setTextColor(R.id.appNameTextView, context.getResources().getColor(R.color.app_name_dark));
+				row.setImageViewResource(R.id.appDetailsImageButton, R.drawable.settings_imageview_dark);
+				row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview_dark);
+			}
+
 
 			Intent appDetailsClickIntent=new Intent();
 			Bundle appDetailsClickExtras=new Bundle();

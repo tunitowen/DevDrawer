@@ -13,7 +13,9 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 import com.owentech.DevDrawer.activities.ClickHandlingActivity;
 import com.owentech.DevDrawer.R;
@@ -35,8 +37,18 @@ public class DDWidgetProvider extends AppWidgetProvider {
             svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
             svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
-            RemoteViews widget=new RemoteViews(context.getPackageName(),
-                    R.layout.widget_layout);
+			RemoteViews widget;
+
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+			if(sp.getString("theme", "Light").equals("Light"))
+			{
+				widget = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+			}
+			else
+			{
+				widget = new RemoteViews(context.getPackageName(), R.layout.widget_layout_dark);
+			}
 
             widget.setRemoteAdapter(R.id.listView, svcIntent);
 

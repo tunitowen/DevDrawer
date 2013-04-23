@@ -98,6 +98,19 @@ public class LegacyListAdapter extends BaseAdapter
 		holder.packageName.setText(packageNames.get(position));
 		holder.appName.setText(applicationNames.get(position));
 
+		if(sp.getString("theme", "Light").equals("Light"))
+		{
+			holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_light));
+			holder.settings.setImageResource(R.drawable.settings_imageview);
+			holder.delete.setImageResource(R.drawable.delete_imageview);
+		}
+		else
+		{
+			holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_dark));
+			holder.settings.setImageResource(R.drawable.settings_imageview_dark);
+			holder.delete.setImageResource(R.drawable.delete_imageview_dark);
+		}
+
 		holder.delete.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
