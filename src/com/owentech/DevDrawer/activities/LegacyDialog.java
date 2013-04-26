@@ -1,7 +1,9 @@
 package com.owentech.DevDrawer.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Window;
@@ -25,16 +27,30 @@ public class LegacyDialog extends Activity
 
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+		int bgResId = -1;
 		if(sharedPreferences.getString("theme", "Light").equals("Light"))
 		{
-			legacyListView.setBackground(getResources().getDrawable(R.drawable.background_repeat));
+		   bgResId = R.drawable.background_repeat;
 		}
 		else
 		{
-			legacyListView.setBackground(getResources().getDrawable(R.drawable.background_repeat_dark));
+		   bgResId = R.drawable.background_repeat_dark;
+		}
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+	      legacyListView.setBackgroundDrawable(getResources().getDrawable(bgResId));
+		}
+		else {
+         setLegacyBackGroundPostJB(bgResId);
 		}
 
 		LegacyListAdapter listAdapter = new LegacyListAdapter(this);
 		legacyListView.setAdapter(listAdapter);
 	}
+	
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+   private void setLegacyBackGroundPostJB(int bgResId) {
+      legacyListView.setBackground(getResources().getDrawable(bgResId));
+	}
+	
+	
 }
