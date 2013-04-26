@@ -40,7 +40,7 @@ public class LegacyDialog extends Activity
 	      legacyListView.setBackgroundDrawable(getResources().getDrawable(bgResId));
 		}
 		else {
-         setLegacyBackGroundPostJB(bgResId);
+         setLegacyBackgroundPostJB(bgResId);
 		}
 
 		LegacyListAdapter listAdapter = new LegacyListAdapter(this);
@@ -48,7 +48,7 @@ public class LegacyDialog extends Activity
 	}
 	
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-   private void setLegacyBackGroundPostJB(int bgResId) {
+   private void setLegacyBackgroundPostJB(int bgResId) {
       legacyListView.setBackground(getResources().getDrawable(bgResId));
 	}
 	
