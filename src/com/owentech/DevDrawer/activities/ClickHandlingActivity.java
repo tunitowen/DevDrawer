@@ -59,6 +59,11 @@ public class ClickHandlingActivity extends Activity
 					startUninstall(this, packageName);
 					break;
 				}
+                case Constants.LAUNCH_CLEAR:
+                {
+                    startClearCache(this, packageName);
+                    break;
+                }
 			}
 		}
 		else
@@ -182,6 +187,20 @@ public class ClickHandlingActivity extends Activity
             activity.finish();
         }
 	}
+    public static void startClearCache(Activity activity, String packageName)
+    {
+        final Context context = activity.getApplicationContext();
+        activity.finish();
+        RootFeatures.clearCache(packageName, new RootFeatures.Listener() {
+
+            @Override
+            public void onFinished(boolean result) {
+                if (result == false) {
+                    Toast.makeText(context, "No root access available", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 
 	public static void startUninstall(Activity activity, String packageName)
 	{

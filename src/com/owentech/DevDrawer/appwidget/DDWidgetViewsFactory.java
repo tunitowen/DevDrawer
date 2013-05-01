@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import com.owentech.DevDrawer.R;
@@ -89,6 +90,8 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 				row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview_dark);
 			}
 
+            boolean rootClearCache = sp.getBoolean("rootClearCache", false);
+            row.setViewVisibility(R.id.clearImageButton, rootClearCache ? View.VISIBLE : View.GONE);
 
 			Intent appDetailsClickIntent=new Intent();
 			Bundle appDetailsClickExtras=new Bundle();
@@ -105,6 +108,13 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 			uninstallClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
 			uninstallClickIntent.putExtras(uninstallClickExtras);
 			row.setOnClickFillInIntent(R.id.uninstallImageButton, uninstallClickIntent);
+
+            Intent clearClickIntent=new Intent();
+            Bundle clearClickExtras=new Bundle();
+            clearClickExtras.putInt("launchType", Constants.LAUNCH_CLEAR);
+            clearClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+            clearClickIntent.putExtras(clearClickExtras);
+            row.setOnClickFillInIntent(R.id.clearImageButton, clearClickIntent);
 
 			Intent rowClickIntent=new Intent();
 			Bundle rowClickExtras=new Bundle();

@@ -66,6 +66,7 @@ public class LegacyListAdapter extends BaseAdapter
 		TextView appName;
 		ImageView delete;
 		ImageView settings;
+        ImageView clear;
 		Button touchArea;
 	}
 
@@ -84,6 +85,7 @@ public class LegacyListAdapter extends BaseAdapter
 			holder.appName = (TextView) convertView.findViewById(R.id.appNameTextView);
 			holder.delete = (ImageView) convertView.findViewById(R.id.uninstallImageButton);
 			holder.settings = (ImageView) convertView.findViewById(R.id.appDetailsImageButton);
+            holder.clear = (ImageView) convertView.findViewById(R.id.clearImageButton);
 			holder.touchArea = (Button) convertView.findViewById(R.id.touchArea);
 
 			convertView.setTag(holder);
@@ -103,12 +105,14 @@ public class LegacyListAdapter extends BaseAdapter
 			holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_light));
 			holder.settings.setImageResource(R.drawable.settings_imageview);
 			holder.delete.setImageResource(R.drawable.delete_imageview);
+            holder.clear.setImageResource(R.drawable.clear_imageview);
 		}
 		else
 		{
 			holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_dark));
 			holder.settings.setImageResource(R.drawable.settings_imageview_dark);
 			holder.delete.setImageResource(R.drawable.delete_imageview_dark);
+            holder.clear.setImageResource(R.drawable.clear_imageview_dark);
 		}
 
 		holder.delete.setOnClickListener(new View.OnClickListener()
@@ -128,6 +132,15 @@ public class LegacyListAdapter extends BaseAdapter
 				ClickHandlingActivity.startAppDetails(activity, packageNames.get(position));
 			}
 		});
+
+        holder.clear.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ClickHandlingActivity.startClearCache(activity, packageNames.get(position));
+            }
+        });
 
 		holder.touchArea.setOnClickListener(new View.OnClickListener()
 		{

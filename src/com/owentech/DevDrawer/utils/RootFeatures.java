@@ -63,11 +63,11 @@ public class RootFeatures {
                 result = Shell.SU.available();
             }
             else if (cmds[0].id == UNINSTALL) {
-                List<String> res = Shell.SU.run("pm uninstall " + cmds[0].param);
+                List<String> res = Shell.SU.run(new String[] { "pm uninstall " + cmds[0].param, "echo \"OK\"" });
                 result = (res != null && res.size() > 0);
             }
             else if (cmds[0].id == CLEAR_CACHE) {
-                List<String> res = Shell.SU.run("pm clear " + cmds[0].param);
+                List<String> res = Shell.SU.run(new String[] { "pm clear " + cmds[0].param, "echo \"OK\"" });
                 result = (res != null && res.size() > 0);
             }
             return result;
