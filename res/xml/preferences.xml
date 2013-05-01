@@ -23,4 +23,16 @@
                         android:defaultValue="Light"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="Root access">
+        <SwitchPreference android:key="rootEnabled"
+                          android:title="Enable advanced features"
+                          android:defaultValue="false"/>
+        <CheckBoxPreference android:key="rootQuickUninstall"
+                            android:title="Quick uninstall"
+                            android:defaultValue="false" />
+        <CheckBoxPreference android:key="rootClearCache"
+                            android:title="Clear cache"
+                            android:defaultValue="false" />
+    </PreferenceCategory>
+
 </PreferenceScreen>

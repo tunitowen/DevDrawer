@@ -14,6 +14,7 @@ import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RootFeatures;
 
 /**
  * Created with IntelliJ IDEA.
@@ -184,28 +185,44 @@ public class ClickHandlingActivity extends Activity
 
 	public static void startUninstall(Activity activity, String packageName)
 	{
-		if (Build.VERSION.SDK_INT > 10)
-		{
-			try
-			{
-				Uri packageUri = Uri.parse("package:" + packageName);
-				Intent uninstallIntent =
-						new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-				uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				activity.startActivity(uninstallIntent);
-				activity.finish();
-			}
-			catch (ActivityNotFoundException e)
-			{
-				Toast.makeText(activity, "Application cannot be uninstalled / possibly system app", Toast.LENGTH_SHORT).show();
-			}
-		}
-		else
-		{
-			Intent intent = new Intent(Intent.ACTION_DELETE);
-			intent.setData(Uri.parse("package:" + packageName));
-			activity.startActivity(intent);
-		}
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        if(sp.getBoolean("rootQuickUninstall", true)) {
+            final Context context = activity.getApplicationContext();
+            activity.finish();
+            RootFeatures.uninstall(packageName, new RootFeatures.Listener() {
+
+                @Override
+                public void onFinished(boolean result) {
+                    if (result == false) {
+                        Toast.makeText(context, "No root access available", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+        else {
+            if (Build.VERSION.SDK_INT > 10)
+            {
+                try
+                {
+                    Uri packageUri = Uri.parse("package:" + packageName);
+                    Intent uninstallIntent =
+                            new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+                    uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    activity.startActivity(uninstallIntent);
+                    activity.finish();
+                }
+                catch (ActivityNotFoundException e)
+                {
+                    Toast.makeText(activity, "Application cannot be uninstalled / possibly system app", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else
+            {
+                Intent intent = new Intent(Intent.ACTION_DELETE);
+                intent.setData(Uri.parse("package:" + packageName));
+                activity.startActivity(intent);
+            }
+        }
 	}
 
 

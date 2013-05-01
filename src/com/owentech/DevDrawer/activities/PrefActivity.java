@@ -1,15 +1,17 @@
 package com.owentech.DevDrawer.activities;
 
+import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.preference.*;
 import android.widget.Toast;
+
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.utils.RootFeatures;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,8 +22,8 @@ import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
  */
 public class PrefActivity extends PreferenceActivity
 {
-
 	SharedPreferences sp;
+    SwitchPreference rootPref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -73,7 +75,57 @@ public class PrefActivity extends PreferenceActivity
 			}
 		});
 
+        rootPref = (SwitchPreference)findPreference("rootEnabled");
+        rootPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                toggleRootAccess((Boolean)newValue);
+                return true;
+            }
+        });
 	}
+
+    private void toggleRootAccess(final boolean enabled) {
+        if (enabled) {
+            RootFeatures.checkAccess(new RootFeatures.Listener() {
+                @Override
+                public void onFinished(boolean result) {
+                    if (result == Boolean.FALSE) {
+                        rootPref.setChecked(false);
+                        noRootAccessError(PrefActivity.this);
+                    }
+                    else {
+                        toggleRootViews(enabled);
+                    }
+                }
+            });
+        }
+        else {
+            toggleRootViews(false);
+        }
+    }
+
+    private static void noRootAccessError(Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("No root access available!")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle("Error")
+                .setNegativeButton("OK", null);
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void toggleRootViews(boolean enabled) {
+        CheckBoxPreference rootQuickUninstall = (CheckBoxPreference)findPreference("rootQuickUninstall");
+        CheckBoxPreference rootClearCache = (CheckBoxPreference)findPreference("rootClearCache");
+
+        rootQuickUninstall.setEnabled(enabled);
+        rootClearCache.setEnabled(enabled);
+
+        rootQuickUninstall.setChecked(enabled);
+        rootClearCache.setChecked(enabled);
+    }
 
 	private String nameFromValue(String value, Preference preference)
 	{
