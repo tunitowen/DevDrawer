@@ -2,6 +2,7 @@ package com.owentech.DevDrawer.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.content.pm.PackageManager;
@@ -62,6 +63,11 @@ public class ClickHandlingActivity extends Activity
                 case Constants.LAUNCH_CLEAR:
                 {
                     startClearCache(this, packageName);
+                    break;
+                }
+                case Constants.LAUNCH_MORE:
+                {
+                    startMoreOverflowMenu(this, packageName);
                     break;
                 }
 			}
@@ -200,6 +206,36 @@ public class ClickHandlingActivity extends Activity
                 }
             }
         });
+    }
+
+    public static void startMoreOverflowMenu(final Activity activity, final String packageName)
+    {
+        try {
+            PackageManager pm = activity.getPackageManager();
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            Dialog dlg = builder.setTitle(pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0)))
+                   .setItems(new CharSequence[] { "View details", "Clear cache"}, new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int which) {
+                           if (which == 0) {
+                               startAppDetails(activity, packageName);
+                           }
+                           else if (which == 1) {
+                               startClearCache(activity, packageName);
+                           }
+                       }
+                   })
+                   .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                       @Override
+                       public void onCancel(DialogInterface dialog) {
+                           activity.finish();
+                       }
+                   })
+                   .create();
+            dlg.show();
+        }
+        catch(PackageManager.NameNotFoundException e) {
+        }
     }
 
 	public static void startUninstall(Activity activity, String packageName)
