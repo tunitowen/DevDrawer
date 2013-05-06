@@ -26,9 +26,7 @@ import com.owentech.DevDrawer.utils.RootFeatures;
  */
 public class ClickHandlingActivity extends Activity
 {
-
 	SharedPreferences sp;
-	String[] Packageitems = null;
 
 	@Override
 	public void onCreate(Bundle state)

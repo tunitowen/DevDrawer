@@ -6,12 +6,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.*;
 import android.widget.Toast;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.RootFeatures;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created with IntelliJ IDEA.
@@ -85,18 +89,48 @@ public class PrefActivity extends PreferenceActivity
         });
 	}
 
+    /*
+     * Handler to receive result from AsyncTask
+     *
+     * When the screen orientation changes right after switching Root featues ON/OFF
+     * then we won't receive the result from the AsyncTask, and therefore the Root
+     * features would be enabled even though there's no root available.
+     *
+     * Inspired from the following article
+     * http://www.androiddesignpatterns.com/2013/01/inner-class-handler-memory-leak.html
+     */
+    private static class RootResultHandler extends Handler {
+        private final WeakReference<PrefActivity> mActivity;
+
+        public RootResultHandler(PrefActivity activity) {
+            mActivity = new WeakReference<PrefActivity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            PrefActivity activity = mActivity.get();
+            if (activity != null) {
+                if (msg.arg1 == 1) {
+                    activity.toggleRootViews(true);
+                }
+                else {
+                    activity.rootPref.setChecked(false);
+                    noRootAccessError(activity);
+                }
+            }
+        }
+    }
+
+    private final RootResultHandler handler = new RootResultHandler(this);
+
     private void toggleRootAccess(final boolean enabled) {
         if (enabled) {
             RootFeatures.checkAccess(new RootFeatures.Listener() {
                 @Override
                 public void onFinished(boolean result) {
-                    if (result == Boolean.FALSE) {
-                        rootPref.setChecked(false);
-                        noRootAccessError(PrefActivity.this);
-                    }
-                    else {
-                        toggleRootViews(enabled);
-                    }
+                    Message msg = new Message();
+                    msg.arg1 = result ? 1 : 0;
+                    handler.sendMessage(msg);
                 }
             });
         }

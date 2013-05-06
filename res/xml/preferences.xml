@@ -25,7 +25,7 @@
 
     <PreferenceCategory android:title="Root access">
         <SwitchPreference android:key="rootEnabled"
-                          android:title="Enable advanced features"
+                          android:title="Advanced features"
                           android:defaultValue="false"/>
         <CheckBoxPreference android:key="rootQuickUninstall"
                             android:title="Quick uninstall"
