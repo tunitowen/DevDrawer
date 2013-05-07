@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.*;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.owentech.DevDrawer.R;
@@ -28,6 +29,8 @@ public class PrefActivity extends PreferenceActivity
 {
 	SharedPreferences sp;
     SwitchPreference rootPref;
+    CheckBoxPreference rootQuickUninstall;
+    CheckBoxPreference rootClearCache;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -87,6 +90,17 @@ public class PrefActivity extends PreferenceActivity
                 return true;
             }
         });
+
+        rootQuickUninstall = (CheckBoxPreference)findPreference("rootQuickUninstall");
+
+        rootClearCache = (CheckBoxPreference)findPreference("rootClearCache");
+        rootClearCache.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                Toast.makeText(PrefActivity.this, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
 	}
 
     /*
@@ -112,8 +126,10 @@ public class PrefActivity extends PreferenceActivity
             if (activity != null) {
                 if (msg.arg1 == 1) {
                     activity.toggleRootViews(true);
+                    Toast.makeText(activity, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
                 }
                 else {
+                    // no root access: reset UI
                     activity.rootPref.setChecked(false);
                     noRootAccessError(activity);
                 }
@@ -136,6 +152,7 @@ public class PrefActivity extends PreferenceActivity
         }
         else {
             toggleRootViews(false);
+            Toast.makeText(PrefActivity.this, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
         }
     }
 
