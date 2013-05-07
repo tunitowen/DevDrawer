@@ -56,5 +56,12 @@
             android:layout_alignTop="@+id/imageView"
             android:layout_alignBottom="@+id/imageView"
             android:src="@drawable/settings_imageview" android:scaleType="centerInside"/>
-
+    <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/clearImageButton"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignBottom="@+id/imageView"
+            android:src="@drawable/clear_imageview" android:scaleType="centerInside"
+            android:layout_toLeftOf="@+id/uninstallImageButton"/>
 </RelativeLayout>
