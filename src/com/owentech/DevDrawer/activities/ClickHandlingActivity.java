@@ -2,6 +2,7 @@ package com.owentech.DevDrawer.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.*;
 import android.content.pm.PackageManager;
@@ -14,6 +15,7 @@ import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RootFeatures;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,9 +26,7 @@ import com.owentech.DevDrawer.utils.Database;
  */
 public class ClickHandlingActivity extends Activity
 {
-
 	SharedPreferences sp;
-	String[] Packageitems = null;
 
 	@Override
 	public void onCreate(Bundle state)
@@ -58,6 +58,16 @@ public class ClickHandlingActivity extends Activity
 					startUninstall(this, packageName);
 					break;
 				}
+                case Constants.LAUNCH_CLEAR:
+                {
+                    startClearCache(this, packageName);
+                    break;
+                }
+                case Constants.LAUNCH_MORE:
+                {
+                    startMoreOverflowMenu(this, packageName);
+                    break;
+                }
 			}
 		}
 		else
@@ -181,31 +191,91 @@ public class ClickHandlingActivity extends Activity
             activity.finish();
         }
 	}
+    public static void startClearCache(Activity activity, String packageName)
+    {
+        final Context context = activity.getApplicationContext();
+        activity.finish();
+        RootFeatures.clearCache(packageName, new RootFeatures.Listener() {
+
+            @Override
+            public void onFinished(boolean result) {
+                if (result == false) {
+                    Toast.makeText(context, "No root access available", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public static void startMoreOverflowMenu(final Activity activity, final String packageName)
+    {
+        try {
+            PackageManager pm = activity.getPackageManager();
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            Dialog dlg = builder.setTitle(pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0)))
+                   .setItems(new CharSequence[] { "View details", "Clear cache"}, new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialog, int which) {
+                           if (which == 0) {
+                               startAppDetails(activity, packageName);
+                           }
+                           else if (which == 1) {
+                               startClearCache(activity, packageName);
+                           }
+                       }
+                   })
+                   .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                       @Override
+                       public void onCancel(DialogInterface dialog) {
+                           activity.finish();
+                       }
+                   })
+                   .create();
+            dlg.show();
+        }
+        catch(PackageManager.NameNotFoundException e) {
+        }
+    }
 
 	public static void startUninstall(Activity activity, String packageName)
 	{
-		if (Build.VERSION.SDK_INT > 10)
-		{
-			try
-			{
-				Uri packageUri = Uri.parse("package:" + packageName);
-				Intent uninstallIntent =
-						new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-				uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				activity.startActivity(uninstallIntent);
-				activity.finish();
-			}
-			catch (ActivityNotFoundException e)
-			{
-				Toast.makeText(activity, "Application cannot be uninstalled / possibly system app", Toast.LENGTH_SHORT).show();
-			}
-		}
-		else
-		{
-			Intent intent = new Intent(Intent.ACTION_DELETE);
-			intent.setData(Uri.parse("package:" + packageName));
-			activity.startActivity(intent);
-		}
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        if(sp.getBoolean("rootQuickUninstall", true)) {
+            final Context context = activity.getApplicationContext();
+            activity.finish();
+            RootFeatures.uninstall(packageName, new RootFeatures.Listener() {
+
+                @Override
+                public void onFinished(boolean result) {
+                    if (result == false) {
+                        Toast.makeText(context, "No root access available", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+        else {
+            if (Build.VERSION.SDK_INT > 10)
+            {
+                try
+                {
+                    Uri packageUri = Uri.parse("package:" + packageName);
+                    Intent uninstallIntent =
+                            new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+                    uninstallIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    activity.startActivity(uninstallIntent);
+                    activity.finish();
+                }
+                catch (ActivityNotFoundException e)
+                {
+                    Toast.makeText(activity, "Application cannot be uninstalled / possibly system app", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else
+            {
+                Intent intent = new Intent(Intent.ACTION_DELETE);
+                intent.setData(Uri.parse("package:" + packageName));
+                activity.startActivity(intent);
+            }
+        }
 	}
 
 

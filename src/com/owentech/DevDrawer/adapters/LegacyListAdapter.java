@@ -33,6 +33,7 @@ public class LegacyListAdapter extends BaseAdapter
 	Activity activity;
 	Database database;
 	SharedPreferences sp;
+    boolean rootClearCache;
 
 	public LegacyListAdapter (Activity activity)
 	{
@@ -42,6 +43,7 @@ public class LegacyListAdapter extends BaseAdapter
 		getApps();
 		notifyDataSetChanged();
 		sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        rootClearCache = sp.getBoolean("rootClearCache", false);
 	}
 
 	public int getCount()
@@ -66,6 +68,8 @@ public class LegacyListAdapter extends BaseAdapter
 		TextView appName;
 		ImageView delete;
 		ImageView settings;
+        ImageView clear;
+        ImageView more;
 		Button touchArea;
 	}
 
@@ -76,7 +80,7 @@ public class LegacyListAdapter extends BaseAdapter
 
 		if(convertView == null)
 		{
-			convertView = inflater.inflate(R.layout.list_item, null);
+			convertView = inflater.inflate(rootClearCache ? R.layout.list_item_more_legacy : R.layout.list_item, null);
 			holder = new ViewHolder();
 
 			holder.icon = (ImageView) convertView.findViewById(R.id.imageView);
@@ -84,6 +88,8 @@ public class LegacyListAdapter extends BaseAdapter
 			holder.appName = (TextView) convertView.findViewById(R.id.appNameTextView);
 			holder.delete = (ImageView) convertView.findViewById(R.id.uninstallImageButton);
 			holder.settings = (ImageView) convertView.findViewById(R.id.appDetailsImageButton);
+            holder.clear = (ImageView) convertView.findViewById(R.id.clearImageButton);
+            holder.more = (ImageView) convertView.findViewById(R.id.moreImageButton);
 			holder.touchArea = (Button) convertView.findViewById(R.id.touchArea);
 
 			convertView.setTag(holder);
@@ -101,17 +107,21 @@ public class LegacyListAdapter extends BaseAdapter
 		if(sp.getString("theme", "Light").equals("Light"))
 		{
 			holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_light));
-			holder.settings.setImageResource(R.drawable.settings_imageview);
-			holder.delete.setImageResource(R.drawable.delete_imageview);
+			if (holder.delete != null) holder.delete.setImageResource(R.drawable.delete_imageview);
+            if (holder.settings != null) holder.settings.setImageResource(R.drawable.settings_imageview);
+            if (holder.clear != null) holder.clear.setImageResource(R.drawable.clear_imageview);
+            if (holder.more != null) holder.more.setImageResource(R.drawable.more_imageview);
 		}
 		else
 		{
 			holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_dark));
-			holder.settings.setImageResource(R.drawable.settings_imageview_dark);
-			holder.delete.setImageResource(R.drawable.delete_imageview_dark);
+            if (holder.delete != null) holder.delete.setImageResource(R.drawable.delete_imageview_dark);
+            if (holder.settings != null) holder.settings.setImageResource(R.drawable.settings_imageview_dark);
+            if (holder.clear != null) holder.clear.setImageResource(R.drawable.clear_imageview_dark);
+            if (holder.more != null) holder.more.setImageResource(R.drawable.more_imageview_dark);
 		}
 
-		holder.delete.setOnClickListener(new View.OnClickListener()
+        if (holder.delete != null) holder.delete.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
@@ -120,7 +130,7 @@ public class LegacyListAdapter extends BaseAdapter
 			}
 		});
 
-		holder.settings.setOnClickListener(new View.OnClickListener()
+        if (holder.settings != null) holder.settings.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View view)
@@ -128,6 +138,24 @@ public class LegacyListAdapter extends BaseAdapter
 				ClickHandlingActivity.startAppDetails(activity, packageNames.get(position));
 			}
 		});
+
+        if (holder.clear != null) holder.clear.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ClickHandlingActivity.startClearCache(activity, packageNames.get(position));
+            }
+        });
+
+        if (holder.more != null) holder.more.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                ClickHandlingActivity.startMoreOverflowMenu(activity, packageNames.get(position));
+            }
+        });
 
 		holder.touchArea.setOnClickListener(new View.OnClickListener()
 		{
