@@ -21,7 +21,6 @@ public class EditDialog extends Activity
 
 	EditText editText;
 	Button changeButton;
-	Button cancelButton;
 
 	String originalText;
 	String id;
@@ -34,7 +33,6 @@ public class EditDialog extends Activity
 
 		editText = (EditText) findViewById(R.id.editDialogEditText);
 		changeButton = (Button) findViewById(R.id.changeButton);
-		cancelButton = (Button) findViewById(R.id.cancelButton);
 
 		Bundle bundle = getIntent().getExtras();
 
@@ -59,16 +57,6 @@ public class EditDialog extends Activity
 				setResult(Constants.EDIT_DIALOG_CHANGE, intent);
 				finish();
 
-			}
-		});
-
-		cancelButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				setResult(Constants.EDIT_DIALOG_CANCEL);
-				finish();
 			}
 		});
 

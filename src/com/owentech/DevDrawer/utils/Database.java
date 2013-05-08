@@ -5,10 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -63,6 +60,10 @@ public class Database {
         String CREATE_TABLE_APPS = "CREATE TABLE IF NOT EXISTS devdrawer_app ("
                 + "id INTEGER PRIMARY KEY, package TEXT, filterid INTEGER);";
         db.execSQL(CREATE_TABLE_APPS);
+
+		String CREATE_TABLE_LOCALES = "CREATE TABLE IF NOT EXISTS devdrawer_locales ("
+				+ "name TEXT);";
+		db.execSQL(CREATE_TABLE_LOCALES);
 
         closeDB();
 
@@ -358,4 +359,48 @@ public class Database {
 		db.execSQL("UPDATE devdrawer_filter SET package='" + newString + "' WHERE id ='" + id + "'");
 		closeDB();
 	}
+
+	///////////////////////////////
+	// Method to add all locales
+	///////////////////////////////
+	public void addLocale(String localeDescriptor)
+	{
+		connectDB();
+
+		db.execSQL("INSERT INTO devdrawer_locales (name) VALUES ('" + localeDescriptor + "');");
+
+		closeDB();
+	}
+
+	public List<String> getLocales()
+	{
+		connectDB();
+
+		List<String> list = new ArrayList<String>();
+
+		Cursor getAllCursor = db.query("devdrawer_locales", null, null, null, null, null, "name ASC", null);
+
+		if (getAllCursor.getCount() != 0)
+		{
+			getAllCursor.moveToFirst();
+
+			while(!getAllCursor.isAfterLast())
+			{
+				list.add(getAllCursor.getString(0));
+				getAllCursor.moveToNext();
+			}
+		}
+
+		return list;
+	}
+
+	public void deleteLocale(String localeDescriptor)
+	{
+		connectDB();
+
+		db.execSQL("DELETE FROM devdrawer_locales WHERE name = '" + localeDescriptor + "';");
+
+		closeDB();
+	}
+
 }

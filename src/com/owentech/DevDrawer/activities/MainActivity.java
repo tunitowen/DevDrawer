@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.*;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
+import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
 import com.owentech.DevDrawer.utils.AddAllAppsAsync;
 import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
@@ -33,6 +34,7 @@ public class MainActivity extends Activity implements TextWatcher
 	AutoCompleteTextView addPackageAutoComplete;
 	FilterListAdapter lviewAdapter;
 	ListView listView;
+	PartialMatchAdapter partialMatchAdapter;
 
 	List<String> appPackages = new ArrayList<String>();
 
@@ -63,7 +65,8 @@ public class MainActivity extends Activity implements TextWatcher
 		listView = (ListView) findViewById(R.id.packagesListView);
 
 		appPackages = getExistingPackages();
-		addPackageAutoComplete.setAdapter(new ArrayAdapter<String>(this, R.layout.dropdown_list_item, appPackages));
+		partialMatchAdapter = new PartialMatchAdapter(this, appPackages);
+		addPackageAutoComplete.setAdapter(partialMatchAdapter);
 		addPackageAutoComplete.addTextChangedListener(this);
 
 		// Update the ListView from the database
@@ -132,13 +135,15 @@ public class MainActivity extends Activity implements TextWatcher
 	{
 		if(Build.VERSION.SDK_INT >= 11)
 		{
-			menu.add(0, 0, 0, "Create Legacy Shortcut").setIcon(R.drawable.ic_action_link).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-			menu.add(0, 1, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Legacy Shortcut").setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+			menu.add(0, Constants.MENU_SETTINGS, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+			menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher").setIcon(R.drawable.ic_action_globe).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		}
 		else
 		{
-			menu.add(0, 0, 0, "Create Shortcut").setIcon(R.drawable.ic_action_link);
-			menu.add(0, 1, 0, "Settings").setIcon(R.drawable.ic_action_settings_white);
+			menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Shortcut");
+			menu.add(0, Constants.MENU_SETTINGS, 0, "Settings");
+			menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher");
 		}
 		return true;
 	}
@@ -148,14 +153,46 @@ public class MainActivity extends Activity implements TextWatcher
 	{
 		switch(item.getItemId())
 		{
-			case 0:
+			case Constants.MENU_SHORTCUT:
 			{
 				addShortcut(this);
 				break;
 			}
-			case 1:
+			case Constants.MENU_SETTINGS:
 			{
 				startActivity(new Intent(MainActivity.this, PrefActivity.class));
+				break;
+			}
+			case Constants.MENU_LOCALE_SWITCHER:
+			{
+
+				startActivity(new Intent(this, LocaleSwitcher.class));
+//
+//				Locale baseLocale = new Locale("en");
+//
+//				String[] languageCodes = getAssets().getLocales();
+//				Arrays.sort(languageCodes);
+//
+//				for (String string : languageCodes)
+//				{
+//					Locale locale = new Locale(string);
+//					Log.d("Lang", locale.getDisplayName(baseLocale) + " ("+string+")");
+////					Log.d("Lang", string);
+//				}
+
+//				Locale locale = new Locale("en");
+//
+//				try {
+//					IActivityManager am = ActivityManagerNative.getDefault();
+//
+//					Configuration config = am.getConfiguration();
+//					config.locale = locale;
+//					am.updateConfiguration(config);
+//
+//
+//				} catch (Exception e) {
+//					Log.e("LS", "Error while changing the language!", e);
+//				}
 				break;
 			}
 		}
@@ -213,7 +250,9 @@ public class MainActivity extends Activity implements TextWatcher
 
 	@Override
 	public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
-	{}
+	{
+		partialMatchAdapter.getFilter().filter(charSequence.toString());
+	}
 
 	@Override
 	public void afterTextChanged(Editable editable)
