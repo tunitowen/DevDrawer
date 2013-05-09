@@ -167,32 +167,6 @@ public class MainActivity extends Activity implements TextWatcher
 			{
 
 				startActivity(new Intent(this, LocaleSwitcher.class));
-//
-//				Locale baseLocale = new Locale("en");
-//
-//				String[] languageCodes = getAssets().getLocales();
-//				Arrays.sort(languageCodes);
-//
-//				for (String string : languageCodes)
-//				{
-//					Locale locale = new Locale(string);
-//					Log.d("Lang", locale.getDisplayName(baseLocale) + " ("+string+")");
-////					Log.d("Lang", string);
-//				}
-
-//				Locale locale = new Locale("en");
-//
-//				try {
-//					IActivityManager am = ActivityManagerNative.getDefault();
-//
-//					Configuration config = am.getConfiguration();
-//					config.locale = locale;
-//					am.updateConfiguration(config);
-//
-//
-//				} catch (Exception e) {
-//					Log.e("LS", "Error while changing the language!", e);
-//				}
 				break;
 			}
 		}

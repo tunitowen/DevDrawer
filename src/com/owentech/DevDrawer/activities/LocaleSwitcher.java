@@ -2,7 +2,9 @@ package com.owentech.DevDrawer.activities;
 
 import android.app.Activity;
 import android.app.ActivityManagerNative;
+import android.app.AlertDialog;
 import android.app.IActivityManager;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -32,8 +34,8 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 	Database database;
 	LocaleListAdapter localeListAdapter;
 	Button defaultLocale;
-	String baseLang, baseLangName;
 	Locale baseLocale;
+	SharedPreferences sharedPreferences;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -43,28 +45,18 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 
 		setTitle("Locale Switcher");
 
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 		defaultLocale = (Button) findViewById(R.id.defaultLocaleButton);
 
-		if (sharedPreferences.getString("baseLocale", null) == null)
-		{
-
-			baseLocale = getResources().getConfiguration().locale;
-
-			Gson gson = new Gson();
-			String jsonLocale = gson.toJson(baseLocale, Locale.class);
-			SharedPreferences.Editor editor = sharedPreferences.edit();
-			editor.putString("baseLocale", jsonLocale);
-			editor.commit();
-			defaultLocale.setText(baseLocale.getDisplayLanguage() + " (" + baseLocale.getLanguage() + ")");
-
+		if (sharedPreferences.getString("baseLocale", null) == null) {
+			setBaseLocaleFromSystem();
+			saveLocaleToSharedPrefs();
+			setDefaultLocaleButtonText();
 		}
-		else
-		{
-			Gson gson = new Gson();
-			baseLocale = gson.fromJson(sharedPreferences.getString("baseLocale", null), Locale.class);
-			defaultLocale.setText(baseLocale.getDisplayLanguage(baseLocale) + " (" + baseLocale.getLanguage() + ")");
+		else {
+			getLocaleFromSharedPrefs();
+			setDefaultLocaleButtonText();
 		}
 
 		defaultLocale.setOnClickListener(new View.OnClickListener()
@@ -84,7 +76,26 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 			@Override
 			public boolean onLongClick(View view)
 			{
-				Toast.makeText(LocaleSwitcher.this, "TODO: Dialog to change default Locale", Toast.LENGTH_SHORT).show();
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(LocaleSwitcher.this)
+						.setTitle(getResources().getString(R.string.change_locale_dialog_title))
+						.setMessage(getResources().getString(R.string.change_locale_dialog_text) +
+								LocaleSwitcher.this.getResources().getConfiguration().locale.getDisplayLanguage() + " ?")
+						.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener()
+						{
+							@Override
+							public void onClick(DialogInterface dialogInterface, int i)
+							{
+							 	setBaseLocaleFromSystem();
+								saveLocaleToSharedPrefs();
+								setDefaultLocaleButtonText();
+
+							}
+						});
+
+				AlertDialog alertDialog = builder.create();
+				alertDialog.show();
+
 				return true;
 			}
 		});
@@ -124,7 +135,6 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 				language = language.substring(0, language.indexOf(')'));
 
 				String[] localeArray = language.split("_");
-				//Toast.makeText(LocaleSwitcher.this, "Lang: " + localeArray[0] + " Country: " + localeArray[1] , Toast.LENGTH_SHORT).show();
 
 				if(localeArray.length > 1)
 				{
@@ -230,5 +240,30 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 		} catch (Exception e) {
 			Log.e("LS", "Error while changing the language!", e);
 		}
+	}
+
+	private void setBaseLocaleFromSystem()
+	{
+		baseLocale = getResources().getConfiguration().locale;
+	}
+
+	private void saveLocaleToSharedPrefs()
+	{
+		Gson gson = new Gson();
+		String jsonLocale = gson.toJson(baseLocale, Locale.class);
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString("baseLocale", jsonLocale);
+		editor.commit();
+	}
+
+	private void getLocaleFromSharedPrefs()
+	{
+		Gson gson = new Gson();
+		baseLocale = gson.fromJson(sharedPreferences.getString("baseLocale", null), Locale.class);
+	}
+
+	private void setDefaultLocaleButtonText()
+	{
+		defaultLocale.setText(baseLocale.getDisplayLanguage(baseLocale) + " (" + baseLocale.getLanguage() + ")");
 	}
 }
