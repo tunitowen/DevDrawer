@@ -26,7 +26,6 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 {
 
 	ListView localeListView;
-	List<HashMap<String, String>> localeList;
 	List<String> localeAutoCompleteList;
 	AutoCompleteTextView addLocaleEditText;
 	PartialMatchAdapter partialMatchAdapter;
@@ -47,7 +46,7 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-		defaultLocale = (Button) findViewById(R.id.defaultLocaleButton);
+		setupView();
 
 		if (sharedPreferences.getString("baseLocale", null) == null) {
 			setBaseLocaleFromSystem();
@@ -102,14 +101,10 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 
 		database = new Database(this);
 
-		localeListView = (ListView) findViewById(R.id.localeListView);
 		localeListAdapter = new LocaleListAdapter(this);
 		localeListView.setAdapter(localeListAdapter);
 
-		addImageView = (ImageView) findViewById(R.id.addButton);
-		localeList = getLocales();
 		localeAutoCompleteList = localeAutoCompleteList();
-		addLocaleEditText = (AutoCompleteTextView) findViewById(R.id.addLocaleEditText);
 		partialMatchAdapter = new PartialMatchAdapter(this, localeAutoCompleteList);
 		addLocaleEditText.setAdapter(partialMatchAdapter);
 		addLocaleEditText.addTextChangedListener(this);
@@ -149,36 +144,21 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 
 	}
 
+	private void setupView()
+	{
+		defaultLocale = (Button) findViewById(R.id.defaultLocaleButton);
+		localeListView = (ListView) findViewById(R.id.localeListView);
+		addImageView = (ImageView) findViewById(R.id.addButton);
+		addLocaleEditText = (AutoCompleteTextView) findViewById(R.id.addLocaleEditText);
+	}
+
 	// Method to re-populate the ListView
-	public void updateListView()
+	private void updateListView()
 	{
 		localeListAdapter = null;
 		localeListAdapter = new LocaleListAdapter(this);
 		localeListView.setAdapter(localeListAdapter);
 		localeListAdapter.notifyDataSetChanged();
-	}
-
-	private List<HashMap<String, String>> getLocales()
-	{
-
-		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
-
-		Locale baseLocale = new Locale("en");
-
-		String[] languageCodes = getAssets().getLocales();
-		Arrays.sort(languageCodes);
-
-		for (String langCode : languageCodes)
-		{
-			Locale locale = new Locale(langCode);
-
-			HashMap<String, String> hashMap = new HashMap<String, String>();
-			hashMap.put("code", langCode);
-			hashMap.put("name", locale.getDisplayName(baseLocale));
-		}
-
-		return list;
-
 	}
 
 	private List<String> localeAutoCompleteList()
