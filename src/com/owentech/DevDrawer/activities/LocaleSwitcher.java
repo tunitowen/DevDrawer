@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManagerNative;
 import android.app.AlertDialog;
 import android.app.IActivityManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -14,17 +15,19 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
+
 import com.google.gson.Gson;
+
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.LocaleListAdapter;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RootFeatures;
 
 import java.util.*;
 
 public class LocaleSwitcher extends Activity implements TextWatcher
 {
-
 	ListView localeListView;
 	List<String> localeAutoCompleteList;
 	AutoCompleteTextView addLocaleEditText;
@@ -163,7 +166,6 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 
 	private List<String> localeAutoCompleteList()
 	{
-
 		List<String> list = new ArrayList<String>();
 
 		Locale baseLocale = new Locale("en");
@@ -216,8 +218,19 @@ public class LocaleSwitcher extends Activity implements TextWatcher
 			config.locale = locale;
 			am.updateConfiguration(config);
 
+        } catch (SecurityException e) {
+            // need a little root magic to change it on Android 4.2
+            final Context context = getApplicationContext();
+            RootFeatures.changeSystemLocale(getPackageCodePath(), language, country, new RootFeatures.Listener() {
+                @Override
+                public void onFinished(boolean result) {
+                    if (result == false) {
+                        Toast.makeText(context, "No root access available", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
-		} catch (Exception e) {
+        } catch (Exception e) {
 			Log.e("LS", "Error while changing the language!", e);
 		}
 	}
