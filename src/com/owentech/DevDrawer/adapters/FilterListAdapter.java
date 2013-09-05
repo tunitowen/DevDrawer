@@ -100,7 +100,7 @@ public class FilterListAdapter extends BaseAdapter
 				database.removeAppFromDatabase(packageCollections.get(position).mId);
 				notifyDataSetChanged();
 
-				if(Build.VERSION.SDK_INT >= 11)
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				{
 					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(activity);
 					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(activity, DDWidgetProvider.class));

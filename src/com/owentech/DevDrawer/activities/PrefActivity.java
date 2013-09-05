@@ -2,6 +2,7 @@ package com.owentech.DevDrawer.activities;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -75,7 +76,14 @@ public class PrefActivity extends PreferenceActivity
 
 	}
 
-	private String nameFromValue(String value, Preference preference)
+    @Override
+    public void onBackPressed() {
+        //TODO check the todo on MainActivity. This is a workaround to it
+        startActivity(new Intent(PrefActivity.this,MainActivity.class));
+        finish();
+    }
+
+    private String nameFromValue(String value, Preference preference)
 	{
 		String ofTheSpaceCowboy = "";
 

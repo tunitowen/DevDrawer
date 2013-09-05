@@ -41,7 +41,7 @@ public class AppInstalledReceiver extends BroadcastReceiver {
                 Log.d(TAG, "Matches Filter");
                 database.addAppToDatabase(intent.getData().getSchemeSpecificPart(), Integer.toString(match));
 
-				if(Build.VERSION.SDK_INT >= 11)
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				{
 					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
