@@ -90,7 +90,7 @@ public class AddAllAppsAsync extends AsyncTask
 
                 database.addAppToDatabase(s, packageCollections.get(packageCollections.size()-1).mId);
 
-				if(Build.VERSION.SDK_INT >= 11)
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				{
 					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));

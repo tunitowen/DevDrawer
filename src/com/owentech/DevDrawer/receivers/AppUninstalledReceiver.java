@@ -41,7 +41,7 @@ public class AppUninstalledReceiver extends BroadcastReceiver
 				Log.d(TAG, "App Exists");
 				database.deleteAppFromDb(uninstalledPackage);
 
-				if(Build.VERSION.SDK_INT >= 11)
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				{
 					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
 					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));

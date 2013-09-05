@@ -157,10 +157,11 @@ public class ClickHandlingActivity extends Activity
 		// Launch the app details settings screen for the app
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (Build.VERSION.SDK_INT >= 9)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD)
 		{
             intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             intent.setData(Uri.parse("package:" + packageName));
 		}
 		else
@@ -170,21 +171,21 @@ public class ClickHandlingActivity extends Activity
             final String APP_PKG_NAME_22 = "pkg";
             final String APP_DETAILS_PACKAGE_NAME = "com.android.settings";
             final String APP_DETAILS_CLASS_NAME = "com.android.settings.InstalledAppDetails";
-            final String appPkgName = (Build.VERSION.SDK_INT == 8 ? APP_PKG_NAME_22 : APP_PKG_NAME_21);
+            final String appPkgName = (Build.VERSION.SDK_INT == Build.VERSION_CODES.FROYO ? APP_PKG_NAME_22 : APP_PKG_NAME_21);
             intent.setAction(Intent.ACTION_VIEW);
             intent.setClassName(APP_DETAILS_PACKAGE_NAME, APP_DETAILS_CLASS_NAME);
             intent.putExtra(appPkgName, packageName);
 		}
         activity.startActivity(intent);
 
-        if (Build.VERSION.SDK_INT >= 11) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             activity.finish();
         }
 	}
 
 	public static void startUninstall(Activity activity, String packageName)
 	{
-		if (Build.VERSION.SDK_INT > 10)
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1)
 		{
 			try
 			{

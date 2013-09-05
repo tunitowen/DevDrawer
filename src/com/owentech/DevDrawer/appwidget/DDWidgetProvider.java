@@ -31,34 +31,8 @@ public class DDWidgetProvider extends AppWidgetProvider {
 
         for (int i=0; i<appWidgetIds.length; i++)
         {
-			// Setup the widget, and data source / adapter
-            Intent svcIntent=new Intent(context, DDWidgetService.class);
+            RemoteViews widget = getRemoteViews(context, appWidgetIds[i]);
 
-            svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[i]);
-            svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
-
-			RemoteViews widget;
-
-			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-
-			if(sp.getString("theme", "Light").equals("Light"))
-			{
-				widget = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
-			}
-			else
-			{
-				widget = new RemoteViews(context.getPackageName(), R.layout.widget_layout_dark);
-			}
-
-            widget.setRemoteAdapter(R.id.listView, svcIntent);
-
-            Intent clickIntent=new Intent(context, ClickHandlingActivity.class);
-            PendingIntent clickPI=PendingIntent
-                    .getActivity(context, 0,
-                            clickIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT);
-
-            widget.setPendingIntentTemplate(R.id.listView, clickPI);
 
             appWidgetManager.updateAppWidget(appWidgetIds[i], widget);
 
@@ -66,6 +40,38 @@ public class DDWidgetProvider extends AppWidgetProvider {
 
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
+    }
+
+    public static RemoteViews getRemoteViews(Context context, int appWidgetId) {
+        // Setup the widget, and data source / adapter
+        Intent svcIntent=new Intent(context, DDWidgetService.class);
+
+        svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
+        RemoteViews widget;
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if(sp.getString("theme", "Light").equals("Light"))
+        {
+            widget = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+        }
+        else
+        {
+            widget = new RemoteViews(context.getPackageName(), R.layout.widget_layout_dark);
+        }
+
+        widget.setRemoteAdapter(R.id.listView, svcIntent);
+
+        Intent clickIntent=new Intent(context, ClickHandlingActivity.class);
+        PendingIntent clickPI=PendingIntent
+                .getActivity(context, 0,
+                        clickIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+        widget.setPendingIntentTemplate(R.id.listView, clickPI);
+        return widget;
     }
 
 }
