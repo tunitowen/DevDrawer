@@ -1,30 +1,40 @@
 package com.owentech.DevDrawer.activities;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.RemoteViews;
+import android.widget.Toast;
+
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
+import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.AddAllAppsAsync;
 import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class MainActivity extends Activity implements TextWatcher
+public class MainActivity extends Activity
 {
 
 	Database database;
@@ -34,9 +44,9 @@ public class MainActivity extends Activity implements TextWatcher
 	FilterListAdapter lviewAdapter;
 	ListView listView;
 
-	List<String> appPackages = new ArrayList<String>();
+	List<String> appPackages;
 
-	@Override
+    @Override
 	public void onCreate(Bundle state)
 	{
 		super.onCreate(state);
@@ -44,7 +54,7 @@ public class MainActivity extends Activity implements TextWatcher
 		setContentView(R.layout.main);
 
 		// Set up ActionBar to use custom view (Robot Light font)
-		if (Build.VERSION.SDK_INT > 11)
+		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB)
 		{
 			getActionBar().setDisplayShowTitleEnabled(false);
 			LayoutInflater inflater = LayoutInflater.from(this);
@@ -64,7 +74,6 @@ public class MainActivity extends Activity implements TextWatcher
 
 		appPackages = getExistingPackages();
 		addPackageAutoComplete.setAdapter(new ArrayAdapter<String>(this, R.layout.dropdown_list_item, appPackages));
-		addPackageAutoComplete.addTextChangedListener(this);
 
 		// Update the ListView from the database
 		updateListView();
@@ -102,7 +111,32 @@ public class MainActivity extends Activity implements TextWatcher
 
 	}
 
-	// Method to re-populate the ListView
+    @Override
+    public void onBackPressed() {
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+        if (extras != null) {
+            appWidgetId = extras.getInt(
+                    AppWidgetManager.EXTRA_APPWIDGET_ID,
+                    AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
+
+        if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+            RemoteViews widget = DDWidgetProvider.getRemoteViews(this,appWidgetId);
+            appWidgetManager.updateAppWidget(appWidgetId, widget);
+            Intent resultValue = new Intent();
+            resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            setResult(RESULT_OK, resultValue);
+            finish();
+        }
+
+        super.onBackPressed();
+    }
+
+    // Method to re-populate the ListView
 	public void updateListView()
 	{
 		lviewAdapter = null;
@@ -130,7 +164,7 @@ public class MainActivity extends Activity implements TextWatcher
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		if(Build.VERSION.SDK_INT >= 11)
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{
 			menu.add(0, 0, 0, "Create Legacy Shortcut").setIcon(R.drawable.ic_action_link).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 			menu.add(0, 1, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -180,6 +214,7 @@ public class MainActivity extends Activity implements TextWatcher
 	protected void onStop()
 	{
 		super.onStop();
+        //TODO is this really needed? It makes the prefActivity to close the app on backpress
 		// this is called to prevent a new app, back pressed, opening this activity
 		finish();
 	}
@@ -194,28 +229,25 @@ public class MainActivity extends Activity implements TextWatcher
 		List<ResolveInfo> list= pm.queryIntentActivities(intent,
 				PackageManager.PERMISSION_GRANTED);
 
-		// sort the list alphabetically
-		Collections.sort(list, new ResolveInfo.DisplayNameComparator(pm));
+        Set<String> appSet = new HashSet<String>();
 
-		appPackages.clear();
-
-		for (ResolveInfo rInfo : list)
-		{
-			appPackages.add(rInfo.activityInfo.applicationInfo.packageName.toString());
+		for (ResolveInfo rInfo : list) {
+            String appName = rInfo.activityInfo.applicationInfo.packageName.toString();
+            appSet.add(appName);
+            while (appName.length() > 0) {
+                int lastIndex = appName.lastIndexOf(".");
+                if (lastIndex > 0) {
+                    appName = appName.substring(0,lastIndex);
+                    appSet.add(appName+".*");
+                } else {
+                    appName = "";
+                }
+            }
 		}
 
-		return appPackages;
+        Collator collator = Collator.getInstance();
+        ArrayList<String> appList = new ArrayList<String>(appSet);
+        Collections.sort(appList, collator);
+		return appList;
 	}
-
-	@Override
-	public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
-	{}
-
-	@Override
-	public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
-	{}
-
-	@Override
-	public void afterTextChanged(Editable editable)
-	{}
 }
