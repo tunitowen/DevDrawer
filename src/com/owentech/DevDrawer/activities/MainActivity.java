@@ -9,6 +9,8 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
 import com.owentech.DevDrawer.utils.AddAllAppsAsync;
 import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
@@ -34,7 +37,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements TextWatcher
 {
 
 	Database database;
@@ -43,6 +46,7 @@ public class MainActivity extends Activity
 	AutoCompleteTextView addPackageAutoComplete;
 	FilterListAdapter lviewAdapter;
 	ListView listView;
+	PartialMatchAdapter partialMatchAdapter;
 
 	List<String> appPackages;
 
@@ -73,7 +77,12 @@ public class MainActivity extends Activity
 		listView = (ListView) findViewById(R.id.packagesListView);
 
 		appPackages = getExistingPackages();
-		addPackageAutoComplete.setAdapter(new ArrayAdapter<String>(this, R.layout.dropdown_list_item, appPackages));
+
+		//addPackageAutoComplete.setAdapter(new ArrayAdapter<String>(this, R.layout.dropdown_list_item, appPackages));
+
+		partialMatchAdapter = new PartialMatchAdapter(this, appPackages);
+		addPackageAutoComplete.setAdapter(partialMatchAdapter);
+		addPackageAutoComplete.addTextChangedListener(this);
 
 		// Update the ListView from the database
 		updateListView();
@@ -166,13 +175,15 @@ public class MainActivity extends Activity
 	{
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{
-			menu.add(0, 0, 0, "Create Legacy Shortcut").setIcon(R.drawable.ic_action_link).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-			menu.add(0, 1, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Legacy Shortcut").setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+			menu.add(0, Constants.MENU_SETTINGS, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+			menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher").setIcon(R.drawable.ic_action_globe).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		}
 		else
 		{
-			menu.add(0, 0, 0, "Create Shortcut").setIcon(R.drawable.ic_action_link);
-			menu.add(0, 1, 0, "Settings").setIcon(R.drawable.ic_action_settings_white);
+			menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Shortcut");
+			menu.add(0, Constants.MENU_SETTINGS, 0, "Settings");
+			menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher");
 		}
 		return true;
 	}
@@ -182,14 +193,20 @@ public class MainActivity extends Activity
 	{
 		switch(item.getItemId())
 		{
-			case 0:
+			case Constants.MENU_SHORTCUT:
 			{
 				addShortcut(this);
 				break;
 			}
-			case 1:
+			case Constants.MENU_SETTINGS:
 			{
 				startActivity(new Intent(MainActivity.this, PrefActivity.class));
+				break;
+			}
+			case Constants.MENU_LOCALE_SWITCHER:
+			{
+
+				startActivity(new Intent(this, LocaleSwitcher.class));
 				break;
 			}
 		}
@@ -250,4 +267,19 @@ public class MainActivity extends Activity
         Collections.sort(appList, collator);
 		return appList;
 	}
+
+	@Override
+	public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3)
+	{}
+
+	@Override
+	public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
+	{
+		partialMatchAdapter.getFilter().filter(charSequence.toString());
+	}
+
+	@Override
+	public void afterTextChanged(Editable editable)
+	{}
+
 }

@@ -48,13 +48,14 @@
             android:layout_alignTop="@+id/imageView"
             android:layout_alignBottom="@+id/imageView"
             android:src="@drawable/delete_imageview" android:scaleType="centerInside"
-            android:layout_toLeftOf="@+id/appDetailsImageButton"/>
+            android:layout_toLeftOf="@+id/moreImageButton"/>
     <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:id="@+id/appDetailsImageButton" android:layout_alignParentRight="true"
+            android:id="@+id/moreImageButton" android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/imageView"
             android:layout_alignBottom="@+id/imageView"
-            android:src="@drawable/settings_imageview" android:scaleType="centerInside"/>
+            android:src="@drawable/more_imageview" android:scaleType="centerInside"/>
+
 
 </RelativeLayout>

@@ -16,8 +16,14 @@ public class Constants
     public static final int LAUNCH_APP = 1;
     public static final int LAUNCH_APP_DETAILS = 2;
     public static final int LAUNCH_UNINSTALL = 3;
+    public static final int LAUNCH_CLEAR = 4;
+    public static final int LAUNCH_MORE = 5;
 
-	public static final String ORDER_ORIGINAL = "added";
-	public static final String ORDER_ALPHABETICAL = "alphabetically";
+	public static final String ORDER_ORIGINAL 		= "added";
+	public static final String ORDER_ALPHABETICAL 	= "alphabetically";
+
+	public static final int MENU_SHORTCUT 			= 0;
+	public static final int MENU_SETTINGS 			= 1;
+	public static final int MENU_LOCALE_SWITCHER 	= 2;
 
 }

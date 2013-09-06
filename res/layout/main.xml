@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/filterTitle"
-        android:text="PACKAGE FILTER:"
+        android:text="@string/packagefilter"
         android:layout_alignParentTop="true"
         android:textSize="12sp"
         android:layout_marginLeft="20dp"
@@ -20,7 +20,7 @@
     <AutoCompleteTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="your.company.*"
+            android:hint="@string/yourcompanyhint"
             android:id="@+id/addPackageEditText"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/filterTitle"

@@ -17,4 +17,15 @@
     <string name="package_does_not_exist">The package selected is no longer installed, if this has been uninstalled please click remove</string>
     <string name="remove">Remove</string>
     <string name="uninstalled">Uninstalled?</string>
+
+    <!-- New -->
+    <string name="packagefilter">PACKAGE FILTER:</string>
+    <string name="yourcompanyhint">your.company.*</string>
+    <string name="addlocales">ADD LOCALES:</string>
+    <string name="localeHint">Language name or code</string>
+    <string name="change">Change</string>
+    <string name="change_locale_dialog_title">Change Default Locale?</string>
+    <string name="change_locale_dialog_text">Change the phones default locale to </string>
+    <string name="yes">Yes</string>
+
 </resources>

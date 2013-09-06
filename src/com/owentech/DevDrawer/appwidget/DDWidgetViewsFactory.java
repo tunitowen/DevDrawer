@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import com.owentech.DevDrawer.R;
@@ -66,8 +67,14 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
     @Override
     public RemoteViews getViewAt(int position) {
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean rootClearCache = sp.getBoolean("rootClearCache", false);
+
 		// Setup the list item and intents for on click
-		RemoteViews row = new RemoteViews(context.getPackageName(), R.layout.list_item);
+		RemoteViews row = new RemoteViews(context.getPackageName(),
+                rootClearCache ?
+                        R.layout.list_item_more :
+                        R.layout.list_item);
 
 		try
 		{
@@ -75,20 +82,24 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 			row.setTextViewText(R.id.appNameTextView, applicationNames.get(position));
 			row.setImageViewBitmap(R.id.imageView, convertFromDrawable(applicationIcons.get(position)));
 
-			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 			if(sp.getString("theme", "Light").equals("Light"))
 			{
 				row.setTextColor(R.id.appNameTextView, context.getResources().getColor(R.color.app_name_light));
 				row.setImageViewResource(R.id.appDetailsImageButton, R.drawable.settings_imageview);
 				row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview);
+                row.setImageViewResource(R.id.clearImageButton, R.drawable.clear_imageview);
+                row.setImageViewResource(R.id.moreImageButton, R.drawable.more_imageview);
 			}
 			else
 			{
 				row.setTextColor(R.id.appNameTextView, context.getResources().getColor(R.color.app_name_dark));
 				row.setImageViewResource(R.id.appDetailsImageButton, R.drawable.settings_imageview_dark);
 				row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview_dark);
+                row.setImageViewResource(R.id.clearImageButton, R.drawable.clear_imageview_dark);
+                row.setImageViewResource(R.id.moreImageButton, R.drawable.more_imageview_dark);
 			}
 
+            row.setViewVisibility(R.id.clearImageButton, rootClearCache ? View.VISIBLE : View.GONE);
 
 			Intent appDetailsClickIntent=new Intent();
 			Bundle appDetailsClickExtras=new Bundle();
@@ -105,6 +116,20 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 			uninstallClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
 			uninstallClickIntent.putExtras(uninstallClickExtras);
 			row.setOnClickFillInIntent(R.id.uninstallImageButton, uninstallClickIntent);
+
+            Intent clearClickIntent=new Intent();
+            Bundle clearClickExtras=new Bundle();
+            clearClickExtras.putInt("launchType", Constants.LAUNCH_CLEAR);
+            clearClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+            clearClickIntent.putExtras(clearClickExtras);
+            row.setOnClickFillInIntent(R.id.clearImageButton, clearClickIntent);
+
+            Intent moreClickIntent=new Intent();
+            Bundle moreClickExtras=new Bundle();
+            moreClickExtras.putInt("launchType", Constants.LAUNCH_MORE);
+            moreClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+            moreClickIntent.putExtras(moreClickExtras);
+            row.setOnClickFillInIntent(R.id.moreImageButton, moreClickIntent);
 
 			Intent rowClickIntent=new Intent();
 			Bundle rowClickExtras=new Bundle();
