@@ -270,12 +270,12 @@ public class MainActivity extends Activity implements TextWatcher
 
 	@Override
 	public void onTextChanged(CharSequence charSequence, int i, int i2, int i3)
-	{
-		partialMatchAdapter.getFilter().filter(charSequence.toString());
-	}
+	{}
 
 	@Override
 	public void afterTextChanged(Editable editable)
-	{}
+	{
+		partialMatchAdapter.getFilter().filter(editable.toString());
+	}
 
 }
