@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -77,8 +75,6 @@ public class MainActivity extends Activity implements TextWatcher
 		listView = (ListView) findViewById(R.id.packagesListView);
 
 		appPackages = getExistingPackages();
-
-		//addPackageAutoComplete.setAdapter(new ArrayAdapter<String>(this, R.layout.dropdown_list_item, appPackages));
 
 		partialMatchAdapter = new PartialMatchAdapter(this, appPackages);
 		addPackageAutoComplete.setAdapter(partialMatchAdapter);
@@ -177,13 +173,13 @@ public class MainActivity extends Activity implements TextWatcher
 		{
 			menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Legacy Shortcut").setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 			menu.add(0, Constants.MENU_SETTINGS, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-			menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher").setIcon(R.drawable.ic_action_globe).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			//menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher").setIcon(R.drawable.ic_action_globe).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		}
 		else
 		{
 			menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Shortcut");
 			menu.add(0, Constants.MENU_SETTINGS, 0, "Settings");
-			menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher");
+			//menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher");
 		}
 		return true;
 	}
