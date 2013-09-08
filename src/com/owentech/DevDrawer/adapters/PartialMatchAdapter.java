@@ -101,12 +101,13 @@ public class PartialMatchAdapter extends BaseAdapter implements Filterable
 				{
 
 					filteredItems = new ArrayList<String>();
-
-					for (String item : items)
-					{
-						if (item.toLowerCase().contains(charSequence.toString().toLowerCase()))
+					if(charSequence != null){
+						for (String item : items)
 						{
-							filteredItems.add(item);
+							if (item.toLowerCase().contains(charSequence.toString().toLowerCase()))
+							{
+								filteredItems.add(item);
+							}
 						}
 					}
 
