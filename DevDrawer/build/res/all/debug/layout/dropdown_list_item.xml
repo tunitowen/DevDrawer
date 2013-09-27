@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@android:id/text1"
+          android:singleLine="true"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:minHeight="48dp"
+          android:ellipsize="end"
+          android:text="com.facebook.katana"
+          android:fontFamily="sans-serif-light"
+          android:textAppearance="@android:style/TextAppearance.Medium"
+          android:textColor="#333333"
+          android:padding="5dp"
+          android:background="@drawable/background_repeat"
+          android:gravity="center_vertical"/><!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/layout/dropdown_list_item.xml -->

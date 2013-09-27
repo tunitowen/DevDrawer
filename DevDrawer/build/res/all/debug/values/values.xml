@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/values/strings.xml -->
+    <array name="launching_intents">
+        <item>AOSP Launcher</item>
+        <item>DevDrawer Original Config</item>
+    </array>
+    <array name="launching_intents_values">
+        <item>aosp</item>
+        <item>devdrawer</item>
+    </array>
+    <array name="sorting_options">
+        <item>Order Added</item>
+        <item>Alphabetically</item>
+    </array>
+    <array name="sorting_options_values">
+        <item>added</item>
+        <item>alphabetically</item>
+    </array>
+    <array name="widget_themes">
+        <item>Light</item>
+        <item>Dark</item>
+    </array>
+    <!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/values/bools.xml -->
+    <bool name="widgetEnabled">false</bool>
+    <!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/values/colors.xml -->
+    <color name="app_name_dark">#EBEBEB</color>
+    <color name="app_name_light">#333333</color>
+    <!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/values/strings.xml -->
+    <string name="addlocales">ADD LOCALES:</string>
+    <string name="app_name">DevDrawer</string>
+    <string name="change">Change</string>
+    <string name="change_locale_dialog_text">Change the phones default locale to </string>
+    <string name="change_locale_dialog_title">Change Default Locale?</string>
+    <string name="localeHint">Language name or code</string>
+    <string name="no_main_activity_could_be_found">No main activity could be found.\nEnable the activity chooser dialog.</string>
+    <string name="package_does_not_exist">The package selected is no longer installed, if this has been uninstalled please click remove</string>
+    <string name="packagefilter">PACKAGE FILTER:</string>
+    <string name="remove">Remove</string>
+    <string name="uninstalled">Uninstalled?</string>
+    <string name="yes">Yes</string>
+    <string name="yourcompanyhint">your.company.*</string>
+    <!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/values/devdrawertheme_styles.xml -->
+    <style name="AutoCompleteDevDrawerTheme" parent="android:Widget.Holo.Light.AutoCompleteTextView">
+        <item name="android:dropDownSelector">@drawable/list_selector_holo_light</item>
+        <item name="android:background">@drawable/edit_text_holo_light</item>
+        <item name="android:textColor">#333333</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="ButtonDevDrawerTheme" parent="android:Widget.Button">
+        <item name="android:background">@drawable/btn_default_holo_light</item>
+        <item name="android:minHeight">48dip</item>
+        <item name="android:minWidth">64dip</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+    <!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/values/devdrawertheme_themes.xml -->
+    <style name="DevDrawerTheme" parent="android:Theme.Light">
+        <item name="android:editTextStyle">@style/EditTextDevDrawerTheme</item>
+        <item name="android:buttonStyle">@style/ButtonDevDrawerTheme</item>
+        <item name="android:imageButtonStyle">@style/ImageButtonDevDrawerTheme</item>
+        <item name="android:autoCompleteTextViewStyle">@style/AutoCompleteDevDrawerTheme</item>
+    </style>
+    <!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/values/devdrawertheme_styles.xml -->
+    <style name="EditTextDevDrawerTheme" parent="android:Widget.EditText">
+        <item name="android:background">@drawable/edit_text_holo_light</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="ImageButtonDevDrawerTheme" parent="android:Widget.ImageButton">
+        <item name="android:background">@drawable/btn_default_holo_light</item>
+    </style>
+
+</resources>

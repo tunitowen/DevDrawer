@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:minWidth="250dp"
+                    android:minHeight="110dp"
+                    android:minResizeWidth="180dp"
+                    android:minResizeHeight="40dp"
+                    android:updatePeriodMillis="0"
+                    android:initialLayout="@layout/widget_layout"
+                    android:autoAdvanceViewId="@+id/words"
+                    android:resizeMode="horizontal|vertical"
+                    android:widgetCategory="keyguard|home_screen"
+                    android:previewImage="@drawable/devdrawer_widget_preview"
+                    android:configure="com.owentech.DevDrawer.activities.MainActivity"
+
+        /><!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/xml/widget_info.xml -->

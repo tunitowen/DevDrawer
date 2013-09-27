@@ -1,0 +1,26 @@
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+        android:padding="5dp">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="com.rentalcars.handset.activities"
+            android:id="@+id/activityPathTextView" android:layout_toRightOf="@+id/imageView" android:layout_alignParentTop="true"
+            android:textAppearance="@android:style/TextAppearance.Holo.Small" android:textSize="10dp"
+            android:layout_marginLeft="5dp" android:paddingTop="5dp" android:paddingRight="5dp" android:textColor="#f80"
+            android:fontFamily="sans-serif-light"
+            android:layout_alignParentLeft="true" android:ellipsize="end"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text=".CarDetails"
+            android:id="@+id/activityNameTextView" android:layout_toRightOf="@+id/imageView" android:layout_below="@+id/activityPathTextView"
+            android:layout_alignBottom="@id/imageView"
+            android:gravity="bottom"
+            android:textAppearance="@android:style/TextAppearance.Medium" android:layout_marginLeft="5dp"
+            android:paddingBottom="5dp" android:paddingRight="5dp" android:textColor="#333333" android:fontFamily="sans-serif-light"
+            android:ellipsize="end"/>
+</RelativeLayout><!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/layout/activity_choice_list_item.xml -->

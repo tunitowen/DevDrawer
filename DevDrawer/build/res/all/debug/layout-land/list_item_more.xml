@@ -1,0 +1,67 @@
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+        android:padding="5dp">
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/touchArea"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/uninstallImageButton"
+            android:background="@drawable/listview_button_selector"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignBottom="@+id/imageView"/>
+    <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/imageView" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+            android:src="@drawable/ic_launcher"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Package Name"
+            android:id="@+id/packageNameTextView"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toLeftOf="@+id/uninstallImageButton"
+            android:layout_alignParentTop="true"
+            android:textAppearance="@android:style/TextAppearance.Holo.Small" android:textSize="10dp"
+            android:layout_marginLeft="5dp" android:paddingTop="5dp" android:textColor="#f80"
+            android:fontFamily="sans-serif-light" android:ellipsize="end" android:maxLines="1"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="App Name"
+            android:id="@+id/appNameTextView"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_toLeftOf="@+id/uninstallImageButton"
+            android:layout_below="@+id/packageNameTextView"
+            android:layout_alignBottom="@id/imageView"
+            android:gravity="bottom"
+            android:textAppearance="@android:style/TextAppearance.Medium" android:layout_marginLeft="5dp"
+            android:paddingBottom="5dp" android:textColor="@color/app_name_light" android:fontFamily="sans-serif-light"
+            android:ellipsize="end" android:maxLines="1"/>
+    <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/uninstallImageButton"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignBottom="@+id/imageView"
+            android:src="@drawable/delete_imageview" android:scaleType="centerInside"
+            android:layout_toLeftOf="@+id/appDetailsImageButton"/>
+    <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/appDetailsImageButton" android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignBottom="@+id/imageView"
+            android:src="@drawable/settings_imageview" android:scaleType="centerInside"/>
+    <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/clearImageButton"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignBottom="@+id/imageView"
+            android:src="@drawable/clear_imageview" android:scaleType="centerInside"
+            android:layout_toLeftOf="@+id/uninstallImageButton"/>
+</RelativeLayout><!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/layout-land/list_item_more.xml -->
