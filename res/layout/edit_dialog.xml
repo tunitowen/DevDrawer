@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/editDialogEditText" android:layout_gravity="left|center_vertical"
             style="@style/EditTextDevDrawerTheme" android:layout_marginTop="10dp" android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp" android:layout_marginLeft="10dp" android:inputType="textNoSuggestions"/>
+            android:layout_marginRight="10dp" android:layout_marginLeft="10dp" android:inputType="textVisiblePassword"/>
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"

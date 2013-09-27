@@ -25,7 +25,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/filterTitle"
             android:layout_toLeftOf="@+id/addButton"
-            android:inputType="textNoSuggestions" style="@style/AutoCompleteDevDrawerTheme"
+            android:inputType="textVisiblePassword" style="@style/AutoCompleteDevDrawerTheme"
             android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp" android:fontFamily="sans-serif-light"/>
     <ListView
