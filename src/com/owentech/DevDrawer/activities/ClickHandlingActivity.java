@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
@@ -130,7 +131,12 @@ public class ClickHandlingActivity extends Activity
 		{
 			// Show the activity choice dialog
 			Intent intent = new Intent(activity, ChooseActivityDialog.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+			if(sp.getString("launchingIntents", "aosp").equals("aosp")){
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+			}
+			else{
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+			}
 			intent.putExtra("packageName", packageName);
 			activity.startActivity(intent);
 			activity.finish();
@@ -144,8 +150,13 @@ public class ClickHandlingActivity extends Activity
 				Intent LaunchIntent = activity.getPackageManager()
 						.getLaunchIntentForPackage(packageName);
 				LaunchIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-				LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-						Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				if(sp.getString("launchingIntents", "aosp").equals("aosp")){
+					LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+				}
+				else{
+					LaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+				}
+
 				activity.startActivity(LaunchIntent);
 			}
 			catch(NullPointerException e)
@@ -241,7 +252,7 @@ public class ClickHandlingActivity extends Activity
 	{
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        if(sp.getBoolean("rootQuickUninstall", true)) {
+        if(sp.getBoolean("rootQuickUninstall", false)) {
             final Context context = activity.getApplicationContext();
             activity.finish();
             RootFeatures.uninstall(packageName, new RootFeatures.Listener() {

@@ -28,4 +28,13 @@
     <string name="change_locale_dialog_text">Change the phones default locale to </string>
     <string name="yes">Yes</string>
 
+    <array name="launching_intents">
+        <item>AOSP Launcher</item>
+        <item>DevDrawer Original Config</item>
+    </array>
+    <array name="launching_intents_values">
+        <item>aosp</item>
+        <item>devdrawer</item>
+    </array>
+
 </resources>

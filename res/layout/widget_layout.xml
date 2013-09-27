@@ -5,6 +5,13 @@
         android:layout_height="match_parent"
         >
 
+    <ImageView
+            android:layout_height="match_parent"
+            android:layout_width="5dp"
+            android:id="@+id/orangeImage"
+            android:background="#FF8800"
+            />
+
 <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

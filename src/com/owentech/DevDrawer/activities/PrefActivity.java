@@ -42,9 +42,11 @@ public class PrefActivity extends PreferenceActivity
 
 		ListPreference activityChoicePref = (ListPreference)findPreference("widgetSorting");
 		ListPreference themePref = (ListPreference)findPreference("theme");
+		ListPreference intentsPref = (ListPreference)findPreference("launchingIntents");
 
 		activityChoicePref.setSummary(nameFromValue(sp.getString("widgetSorting", "order"), activityChoicePref));
 		themePref.setSummary(sp.getString("theme", "Light"));
+		intentsPref.setSummary(intentNameFromValue(sp.getString("launchingIntents", "aosp"), intentsPref));
 
 		activityChoicePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
 		{
@@ -77,6 +79,21 @@ public class PrefActivity extends PreferenceActivity
 				preference.setSummary(newValue.toString());
 
 				Toast.makeText(PrefActivity.this, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
+
+				return false;
+			}
+		});
+
+		intentsPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+		{
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue)
+			{
+				SharedPreferences.Editor editor = sp.edit();
+				editor.putString(preference.getKey(), newValue.toString());
+				editor.commit();
+
+				preference.setSummary(intentNameFromValue(newValue.toString(), preference));
 
 				return false;
 			}
@@ -191,6 +208,24 @@ public class PrefActivity extends PreferenceActivity
 
 		String[] values = getResources().getStringArray(R.array.sorting_options_values);
 		String[] names = getResources().getStringArray(R.array.sorting_options);
+
+		for (int i=0; i < names.length; i++)
+		{
+			if(value.equals(values[i]))
+			{
+				ofTheSpaceCowboy = names[i];
+			}
+		}
+
+		return ofTheSpaceCowboy;
+	}
+
+	private String intentNameFromValue(String value, Preference preference)
+	{
+		String ofTheSpaceCowboy = "";
+
+		String[] values = getResources().getStringArray(R.array.launching_intents_values);
+		String[] names = getResources().getStringArray(R.array.launching_intents);
 
 		for (int i=0; i < names.length; i++)
 		{
