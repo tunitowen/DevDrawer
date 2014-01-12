@@ -90,7 +90,13 @@ public class Database {
     public void removeWidgetFromDatabase(int widgetId) {
         connectDB();
 
-        String query = "DELETE FROM 'devdrawer_widgets' WHERE id = '" + widgetId + "'";
+        String query = "DELETE FROM 'devdrawer_widgets' WHERE id = " + widgetId;
+        db.execSQL(query);
+
+        query = "DELETE FROM 'devdrawer_filter' WHERE widgetId = " + widgetId;
+        db.execSQL(query);
+
+        query = "DELETE FROM 'devdrawer_app' WHERE widgetId = " + widgetId;
         db.execSQL(query);
 
         closeDB();

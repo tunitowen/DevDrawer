@@ -65,4 +65,13 @@ public class DDWidgetProvider extends AppWidgetProvider {
         widget.setPendingIntentTemplate(R.id.listView, clickPI);
         return widget;
     }
+
+    @Override
+    public void onDeleted(Context context, int[] appWidgetIds) {
+        super.onDeleted(context, appWidgetIds);
+
+        for (int appWidgetId : appWidgetIds) {
+            new Database(context).removeWidgetFromDatabase(appWidgetId);
+        }
+    }
 }
