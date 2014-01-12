@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/legacyListView"
-        android:background="@drawable/background_repeat"/>
-<!-- From: file:/Users/tonyowen/Dev/Android/DevDrawer/DevDrawer/src/main/res/layout/legacy_dialog.xml -->
