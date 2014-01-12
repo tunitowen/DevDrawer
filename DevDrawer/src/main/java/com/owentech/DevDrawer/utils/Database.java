@@ -53,7 +53,7 @@ public class Database {
 
         // create tables
         String CREATE_TABLE_FILTER = "CREATE TABLE IF NOT EXISTS devdrawer_filter ("
-                + "id INTEGER PRIMARY KEY, package TEXT);";
+                + "id INTEGER PRIMARY KEY, package TEXT, widgetid INTEGER);";
         db.execSQL(CREATE_TABLE_FILTER);
 
         String CREATE_TABLE_APPS = "CREATE TABLE IF NOT EXISTS devdrawer_app ("
@@ -143,6 +143,32 @@ public class Database {
         connectDB();
 
         Cursor getAllCursor = db.query("devdrawer_filter", null, null, null, null, null, null, null);
+
+        List<PackageCollection> packageCollections = new ArrayList<PackageCollection>();
+
+        getAllCursor.moveToFirst();
+
+        while (!getAllCursor.isAfterLast()) {
+
+            packageCollections.add(new PackageCollection(getAllCursor.getString(0), getAllCursor.getString(1)));
+            getAllCursor.moveToNext();
+        }
+
+        getAllCursor.close();
+        closeDB();
+
+        return packageCollections;
+
+    }
+
+    //////////////////////////////////////////////////////
+    // Method to get all the entries in the filter table for given widgetId
+    //////////////////////////////////////////////////////
+    public List<PackageCollection> getAllFiltersInDatabase(int widgetId) {
+
+        connectDB();
+
+        Cursor getAllCursor = db.query("devdrawer_filter", null, "widgetid = " + widgetId, null, null, null, null, null);
 
         List<PackageCollection> packageCollections = new ArrayList<PackageCollection>();
 
@@ -338,7 +364,44 @@ public class Database {
             if (packageFilter.contains("*")) {
                 if (p.toLowerCase().startsWith(packageFilter.toLowerCase().substring(0, packageFilter.indexOf("*"))))
                     match = Integer.valueOf(getAllCursor.getString(0));
+            } else {
+                if (p.toLowerCase().equals(packageFilter.toLowerCase()))
+                    match = Integer.valueOf(getAllCursor.getString(0));
 
+            }
+
+            getAllCursor.moveToNext();
+
+        }
+
+        getAllCursor.close();
+        closeDB();
+
+        return match;
+
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    // Method to parse each row and return if the new package matches
+    /////////////////////////////////////////////////////////////////////
+    // TODO: Make this work for exact package name
+    public int parseAndMatch(String p, int widgetId) {
+
+        int match = NOT_FOUND;
+
+        connectDB();
+
+        Cursor getAllCursor = db.query("devdrawer_filter", null, "widgetid = " + widgetId, null, null, null, null, null);
+
+        getAllCursor.moveToFirst();
+
+        while (!getAllCursor.isAfterLast()) {
+
+            String packageFilter = getAllCursor.getString(1).toLowerCase();
+
+            if (packageFilter.contains("*")) {
+                if (p.toLowerCase().startsWith(packageFilter.toLowerCase().substring(0, packageFilter.indexOf("*"))))
+                    match = Integer.valueOf(getAllCursor.getString(0));
             } else {
                 if (p.toLowerCase().equals(packageFilter.toLowerCase()))
                     match = Integer.valueOf(getAllCursor.getString(0));
