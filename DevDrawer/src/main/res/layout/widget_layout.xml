@@ -1,26 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_repeat">
 
     <ImageView
-            android:layout_height="match_parent"
-            android:layout_width="5dp"
-            android:id="@+id/orangeImage"
-            android:background="#FF8800"
-            />
+        android:id="@+id/orangeImage"
+        android:layout_width="5dp"
+        android:layout_height="match_parent"
+        android:background="#FF8800" />
 
-<ListView
+    <TextView
+        android:id="@+id/widget_layout_titletv"
+        android:layout_width="match_parent"
+        android:textColor="@color/app_name_light"
+        android:textSize="18sp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:fontFamily="sans-serif-light"
+        android:paddingLeft="10dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:id="@+id/widget_layout_titledivider"
+        android:layout_below="@id/widget_layout_titletv"
+        android:background="#FF8800" />
+
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/widget_layout_titletv"
         android:layout_toRightOf="@+id/orangeImage"
-        android:id="@+id/listView"
         android:divider="@null"
-        android:dividerHeight="0dp"
-        android:background="@drawable/background_repeat"
-        />
+        android:dividerHeight="0dp" />
 
 
 </RelativeLayout>

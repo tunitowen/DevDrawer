@@ -21,122 +21,109 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.owentech.DevDrawer.activities.EditDialog;
+
 import com.owentech.DevDrawer.R;
+import com.owentech.DevDrawer.activities.EditDialog;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.PackageCollection;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class FilterListAdapter extends BaseAdapter
-{
+public class FilterListAdapter extends BaseAdapter {
 
-	Activity activity;
-	List<PackageCollection> packageCollections;
+    private Activity activity;
+    private List<PackageCollection> packageCollections;
+    private int mAppWidgetId;
 
-	public FilterListAdapter(Activity activity, List<PackageCollection> packageCollections)
-	{
-		super();
-		this.activity = activity;
-		this.packageCollections = packageCollections;
-	}
+    public FilterListAdapter(Activity activity, int appWidgetId) {
+        this.activity = activity;
+        packageCollections = new ArrayList<PackageCollection>();
+        mAppWidgetId = appWidgetId;
+    }
 
-	public int getCount()
-	{
-		return packageCollections.size();
-	}
+    @Override
+    public void notifyDataSetChanged() {
+        Database database = new Database(activity);
+        packageCollections = database.getAllFiltersInDatabase(mAppWidgetId);
 
-	public Object getItem(int position)
-	{
-		return null;
-	}
+        super.notifyDataSetChanged();
+    }
 
-	public long getItemId(int position)
-	{
-		return 0;
-	}
+    public int getCount() {
+        return packageCollections.size();
+    }
 
-	private class ViewHolder
-	{
-		TextView txtPackageName;
-		ImageView editButton;
-		ImageView deleteButton;
-	}
+    public Object getItem(int position) {
+        return null;
+    }
 
-	public View getView(final int position, View convertView, ViewGroup parent)
-	{
-		// Setup the list item text, onclicks etc
-		ViewHolder holder;
-		LayoutInflater inflater = activity.getLayoutInflater();
+    public long getItemId(int position) {
+        return 0;
+    }
 
-		if(convertView == null)
-		{
-			convertView = inflater.inflate(R.layout.package_list_item, null);
-			holder = new ViewHolder();
+    private class ViewHolder {
+        TextView txtPackageName;
+        ImageView editButton;
+        ImageView deleteButton;
+    }
 
-			holder.txtPackageName = (TextView) convertView.findViewById(R.id.packageNameTextView);
-			holder.deleteButton = (ImageView) convertView.findViewById(R.id.deleteImageButton);
-			holder.editButton = (ImageView) convertView.findViewById(R.id.editImageButton);
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        // Setup the list item text, onclicks etc
+        ViewHolder holder;
+        LayoutInflater inflater = activity.getLayoutInflater();
 
-			convertView.setTag(holder);
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.package_list_item, null);
+            holder = new ViewHolder();
 
-		}
-		else
-		{
-			holder = (ViewHolder) convertView.getTag();
-		}
+            holder.txtPackageName = (TextView) convertView.findViewById(R.id.packageNameTextView);
+            holder.deleteButton = (ImageView) convertView.findViewById(R.id.deleteImageButton);
+            holder.editButton = (ImageView) convertView.findViewById(R.id.editImageButton);
 
-		holder.txtPackageName.setText(packageCollections.get(position).mPackageName);
+            convertView.setTag(holder);
 
-		// OnClick action for Delete Button
-		holder.deleteButton.setOnClickListener(new OnClickListener()
-		{
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
-			public void onClick(View view)
-			{
-				Database database = new Database(activity);
-				database.removeFilterFromDatabase(packageCollections.get(position).mId);
-				database.removeAppFromDatabase(packageCollections.get(position).mId);
-				notifyDataSetChanged();
+        holder.txtPackageName.setText(packageCollections.get(position).mPackageName);
 
-				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-				{
-					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(activity);
-					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(activity, DDWidgetProvider.class));
-					appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
-				}
+        // OnClick action for Delete Button
+        holder.deleteButton.setOnClickListener(new OnClickListener() {
 
-			}
+            public void onClick(View view) {
+                Database database = new Database(activity);
+                database.removeFilterFromDatabase(packageCollections.get(position).mId);
+                database.removeAppFromDatabase(packageCollections.get(position).mId);
+                notifyDataSetChanged();
 
-		});
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(activity);
+                    int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(activity, DDWidgetProvider.class));
+                    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+                }
 
-		// OnClick action for Edit Button
-		holder.editButton.setOnClickListener(new OnClickListener()
-		{
+            }
 
-			public void onClick(View view)
-			{
-				Intent intent = new Intent(activity, EditDialog.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("text", packageCollections.get(position).mPackageName);
-				bundle.putString("id", packageCollections.get(position).mId);
-				intent.putExtras(bundle);
+        });
 
-				activity.startActivityForResult(intent, 0);
-			}
+        // OnClick action for Edit Button
+        holder.editButton.setOnClickListener(new OnClickListener() {
 
-		});
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, EditDialog.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("text", packageCollections.get(position).mPackageName);
+                bundle.putString("id", packageCollections.get(position).mId);
+                intent.putExtras(bundle);
 
-		return convertView;
-	}
+                activity.startActivityForResult(intent, 0);
+            }
 
-	@Override
-	public void notifyDataSetChanged()
-	{
-		Database database = new Database(activity);
-		packageCollections = database.getAllFiltersInDatabase();
+        });
 
-		super.notifyDataSetChanged();
-	}
+        return convertView;
+    }
 }

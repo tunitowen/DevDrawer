@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_repeat_gray">
+
+
+    <TextView
+        android:id="@+id/fragment_appwidget_nametv"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/widget_name"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-condensed" />
+
+    <EditText
+        android:id="@+id/fragment_appwidget_nameet"
+        style="@style/AutoCompleteDevDrawerTheme"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="10dp"
+        android:layout_toRightOf="@id/fragment_appwidget_nametv"
+        android:fontFamily="sans-serif-light"
+        android:hint="@string/name" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/fragment_appwidget_nameet"
+        android:background="#FF8800" />
+
+    <ListView
+        android:id="@+id/fragment_appwidget_packagesListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/fragment_appwidget_nameet"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/background_repeat"
+        android:fontFamily="sans-serif-light" />
+
+</RelativeLayout>

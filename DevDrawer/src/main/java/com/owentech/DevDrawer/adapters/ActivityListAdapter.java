@@ -84,7 +84,7 @@ public class ActivityListAdapter extends BaseAdapter
 	@Override
 	public void notifyDataSetChanged()
 	{
-//		Database database = new Database(activity);
+//		Database database = new Database(mContext);
 //		packageCollections = database.getAllFiltersInDatabase();
 
 		super.notifyDataSetChanged();

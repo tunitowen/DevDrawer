@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_repeat_gray"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+
+
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/activity_main_titlepageindicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/background_repeat_dark"
+        android:fontFamily="sans-serif-light"
+        app:footerColor="#FF8800" />
+
+    <LinearLayout
+        android:id="@+id/activity_main_packagefiltercontainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activity_main_titlepageindicator">
+
+        <TextView
+            android:id="@+id/activity_main_filterTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/packagefilter"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <AutoCompleteTextView
+            android:id="@+id/activity_main_addPackageEditText"
+            style="@style/AutoCompleteDevDrawerTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
+            android:hint="@string/yourcompanyhint"
+            android:inputType="textNoSuggestions" />
+
+        <ImageButton
+            android:id="@+id/activity_main_addButton"
+            style="?android:borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:minHeight="48dp"
+            android:minWidth="48dp"
+            android:src="@drawable/add_imageview" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/no_widgets" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/activity_main_packagefiltercontainer"
+        android:background="#ff8800" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/activity_main_packagefiltercontainer"
+        android:layout_marginTop="1dp" />
+
+
+</RelativeLayout>

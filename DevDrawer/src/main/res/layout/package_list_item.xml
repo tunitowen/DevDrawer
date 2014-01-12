@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:orientation="horizontal"
+    android:showDividers="middle"
+    android:dividerPadding="8dp"
+    android:divider="?android:dividerVertical"
+    android:layout_height="wrap_content">
 
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/editImageButton"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/edit_imageview" android:layout_marginRight="10dp"
-            android:background="@android:color/transparent" android:minHeight="48dp"
-            android:minWidth="48dp" android:padding="5dp" android:scaleType="centerInside"/>
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/deleteImageButton"
-            android:layout_toLeftOf="@+id/editImageButton"
-            android:layout_alignTop="@+id/editImageButton"
-            android:src="@drawable/delete_imageview" android:background="@android:color/transparent"
-            android:minHeight="48dp" android:minWidth="48dp"
-            android:padding="5dp" android:scaleType="centerInside"/>
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Package Name"
-            android:id="@+id/packageNameTextView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignTop="@+id/deleteImageButton"
-            android:layout_toLeftOf="@+id/deleteImageButton"
-            android:layout_alignBottom="@+id/deleteImageButton"
-            android:gravity="center_vertical" android:layout_marginLeft="10dp" android:fontFamily="sans-serif-light"
-            android:ellipsize="end"/>
-</RelativeLayout>
+        android:id="@+id/packageNameTextView"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif-light"
+        android:layout_gravity="center_vertical"
+        android:textSize="18sp" />
+
+    <ImageButton
+        style="?android:borderlessButtonStyle"
+        android:id="@+id/deleteImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:minWidth="48dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/delete_imageview" />
+
+    <ImageButton
+        style="?android:borderlessButtonStyle"
+        android:id="@+id/editImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:minWidth="48dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/edit_imageview" />
+
+</LinearLayout>

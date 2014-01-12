@@ -18,8 +18,10 @@
     <string name="remove">Remove</string>
     <string name="uninstalled">Uninstalled?</string>
 
+    <string name="name">Name</string>
+
     <!-- New -->
-    <string name="packagefilter">PACKAGE FILTER:</string>
+    <string name="packagefilter">PACKAGE:</string>
     <string name="yourcompanyhint">your.company.*</string>
     <string name="addlocales">ADD LOCALES:</string>
     <string name="localeHint">Language name or code</string>
@@ -27,6 +29,8 @@
     <string name="change_locale_dialog_title">Change Default Locale?</string>
     <string name="change_locale_dialog_text">Change the phones default locale to </string>
     <string name="yes">Yes</string>
+    <string name="no_widgets">There are no widgets yet.</string>
+    <string name="widget_name">WIDGET NAME:</string>
 
     <array name="launching_intents">
         <item>AOSP Launcher</item>

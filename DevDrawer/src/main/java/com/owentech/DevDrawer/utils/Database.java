@@ -8,7 +8,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,23 +66,71 @@ public class Database {
                 + "name TEXT);";
         db.execSQL(CREATE_TABLE_LOCALES);
 
+        String CREATE_TABLE_WIDGETS = "CREATE TABLE IF NOT EXISTS devdrawer_widgets (id INTEGER PRIMARY KEY, name TEXT);";
+        db.execSQL(CREATE_TABLE_WIDGETS);
+
+        closeDB();
+    }
+
+    public void addWidgetToDatabase(int widgetId, String name) {
+        connectDB();
+
+        String insertQuery = "INSERT INTO 'devdrawer_widgets' (id, name) VALUES (" + widgetId + ", '" + name + "')";
+        db.execSQL(insertQuery);
+
+        closeDB();
+    }
+
+    public void renameWidget(int widgetId, String name) {
+        connectDB();
+        db.execSQL("UPDATE devdrawer_widgets SET name='" + name + "' WHERE id ='" + widgetId + "'");
+        closeDB();
+    }
+
+    public void removeWidgetFromDatabase(int widgetId) {
+        connectDB();
+
+        String query = "DELETE FROM 'devdrawer_widgets' WHERE id = '" + widgetId + "'";
+        db.execSQL(query);
+
+        closeDB();
+    }
+
+    public Map<Integer, String> getWidgetNames() {
+        Map<Integer, String> result = new HashMap<Integer, String>();
+
+        connectDB();
+
+        Cursor getAllCursor = db.query("devdrawer_widgets", null, null, null, null, null, null, null);
+
+
+        getAllCursor.moveToFirst();
+
+        while (!getAllCursor.isAfterLast()) {
+
+            result.put(getAllCursor.getInt(0), getAllCursor.getString(1));
+            getAllCursor.moveToNext();
+        }
+
+        getAllCursor.close();
         closeDB();
 
+        closeDB();
+
+        return result;
     }
 
     // ////////////////////////////////////////////////
     // Method to add an entry into the filter table
     // ///////////////////////////////////////////////
-    public void addFilterToDatabase(String p) {
+    public void addFilterToDatabase(String p, int widgetId) {
         // connect
         connectDB();
 
         // add accident entry
-        String packageInsertQuery = "INSERT INTO 'devdrawer_filter' "
-                + "(package)" + "VALUES" + "('" + p + "');";
+        String packageInsertQuery = "INSERT INTO 'devdrawer_filter' (package, widgetid)" + "VALUES" + "('" + p + "', " + widgetId + ");";
 
         db.execSQL(packageInsertQuery);
-
 
         // close
         closeDB();
@@ -279,11 +329,11 @@ public class Database {
     ///////////////////////////////////////////////////////////////
     // Method to determine whether the new filter already exists
     ///////////////////////////////////////////////////////////////
-    public boolean doesFilterExist(String s) {
+    public boolean doesFilterExist(String s, int appWidgetId) {
         // connect
         connectDB();
 
-        Cursor countCursor = db.rawQuery("SELECT count(*) FROM devdrawer_filter WHERE package = '" + s + "'", null);
+        Cursor countCursor = db.rawQuery("SELECT count(*) FROM devdrawer_filter WHERE package = '" + s + "' AND widgetid = " + appWidgetId, null);
 
         // get number of rows
         countCursor.moveToFirst();
