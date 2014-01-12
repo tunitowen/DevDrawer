@@ -92,7 +92,8 @@ public class MainActivity extends Activity implements TextWatcher {
                         database.addFilterToDatabase(addPackageAutoComplete.getText().toString());
 
                         // Check existing apps and add to installed apps table if they match new filter
-                        new AddAllAppsAsync(getApplicationContext(), addPackageAutoComplete.getText().toString()).execute();
+                        int widgetId = 0; // TODO proper widget id
+                        new AddAllAppsAsync(getApplicationContext(), addPackageAutoComplete.getText().toString(), widgetId).execute();
 
                         addPackageAutoComplete.setText("");
                         updateListView();

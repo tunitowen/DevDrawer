@@ -22,22 +22,24 @@ import java.util.List;
  * Time: 20:34
  * To change this template use File | Settings | File Templates.
  */
-public class AddAllAppsAsync extends AsyncTask
+public class AddAllAppsAsync extends AsyncTask<Void, Void, Void>
 {
     ProgressDialog progressDialog;
     Context context;
     Database database;
     String newFilter;
+    int widgetId;
 
-    public AddAllAppsAsync(Context context, String newFilter)
+    public AddAllAppsAsync(Context context, String newFilter, int widgetId)
     {
         this.context = context;
         this.newFilter = newFilter;
+        this.widgetId = widgetId;
         progressDialog = new ProgressDialog(context);
     }
 
     @Override
-    protected Object doInBackground(Object... objects)
+    protected Void doInBackground(Void... objects)
     {
         getAllAppsInstalledAndAdd(newFilter);
         return null;
@@ -88,7 +90,7 @@ public class AddAllAppsAsync extends AsyncTask
             {
                 List<PackageCollection> packageCollections = database.getAllFiltersInDatabase();
 
-                database.addAppToDatabase(s, packageCollections.get(packageCollections.size()-1).mId);
+                database.addAppToDatabase(s, packageCollections.get(packageCollections.size()-1).mId, widgetId);
 
 				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				{

@@ -39,7 +39,8 @@ public class AppInstalledReceiver extends BroadcastReceiver {
             if(match != Database.NOT_FOUND)
             {
                 Log.d(TAG, "Matches Filter");
-                database.addAppToDatabase(intent.getData().getSchemeSpecificPart(), Integer.toString(match));
+                int widgetId = 0 ;// TODO proper widgetId
+                database.addAppToDatabase(intent.getData().getSchemeSpecificPart(), Integer.toString(match), widgetId);
 
 				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 				{
