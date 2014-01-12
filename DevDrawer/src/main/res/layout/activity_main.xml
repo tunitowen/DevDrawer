@@ -44,7 +44,7 @@
             android:layout_weight="1"
             android:fontFamily="sans-serif-light"
             android:hint="@string/yourcompanyhint"
-            android:inputType="textNoSuggestions" />
+            android:inputType="textVisiblePassword" />
 
         <ImageButton
             android:id="@+id/activity_main_addButton"
