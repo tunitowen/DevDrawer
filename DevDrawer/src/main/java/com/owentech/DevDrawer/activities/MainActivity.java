@@ -133,6 +133,14 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
                 database.addWidgetToDatabase(appWidgetId, "");
             }
         }
+
+
+        boolean hasWidgets = appWidgetIds.length > 0;
+        addPackageAutoComplete.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+        addButton.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+        mViewPager.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+        mTitlePageIndicator.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+        findViewById(R.id.activity_main_filterTitle).setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
     }
 
     @Override
