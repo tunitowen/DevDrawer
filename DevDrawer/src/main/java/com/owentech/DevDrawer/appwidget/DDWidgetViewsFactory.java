@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
@@ -38,15 +39,13 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 
     public DDWidgetViewsFactory(Context context, Intent intent) {
         this.context = context;
-        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                		AppWidgetManager.INVALID_APPWIDGET_ID);
+        appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
-		// Create the database tables
-		database = new Database(context);
-		database.createTables();
+        // Create the database tables
+        database = new Database(context);
+        database.createTables();
 
-		onDataSetChanged();
-
+        onDataSetChanged();
     }
 
     @Override
@@ -66,105 +65,95 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 
     @Override
     public RemoteViews getViewAt(int position) {
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean rootClearCache = sp.getBoolean("rootClearCache", false);
 
-		// Setup the list item and intents for on click
-		RemoteViews row = new RemoteViews(context.getPackageName(),
-                rootClearCache ?
-                        R.layout.list_item_more :
-                        R.layout.list_item);
+        // Setup the list item and intents for on click
+        RemoteViews row = new RemoteViews(context.getPackageName(), rootClearCache ? R.layout.list_item_more : R.layout.list_item);
 
-		try
-		{
-			row.setTextViewText(R.id.packageNameTextView, packageNames.get(position));
-			row.setTextViewText(R.id.appNameTextView, applicationNames.get(position));
-			row.setImageViewBitmap(R.id.imageView, convertFromDrawable(applicationIcons.get(position)));
+        try {
+            row.setTextViewText(R.id.packageNameTextView, packageNames.get(position));
+            row.setTextViewText(R.id.appNameTextView, applicationNames.get(position));
+            row.setImageViewBitmap(R.id.imageView, convertFromDrawable(applicationIcons.get(position)));
 
-			if(sp.getString("theme", "Light").equals("Light"))
-			{
-				row.setTextColor(R.id.appNameTextView, context.getResources().getColor(R.color.app_name_light));
-				row.setImageViewResource(R.id.appDetailsImageButton, R.drawable.settings_imageview);
-				row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview);
+            if (sp.getString("theme", "Light").equals("Light")) {
+                row.setTextColor(R.id.appNameTextView, context.getResources().getColor(R.color.app_name_light));
+                row.setImageViewResource(R.id.appDetailsImageButton, R.drawable.settings_imageview);
+                row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview);
                 row.setImageViewResource(R.id.clearImageButton, R.drawable.clear_imageview);
                 row.setImageViewResource(R.id.moreImageButton, R.drawable.more_imageview);
-			}
-			else
-			{
-				row.setTextColor(R.id.appNameTextView, context.getResources().getColor(R.color.app_name_dark));
-				row.setImageViewResource(R.id.appDetailsImageButton, R.drawable.settings_imageview_dark);
-				row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview_dark);
+            } else {
+                row.setTextColor(R.id.appNameTextView, context.getResources().getColor(R.color.app_name_dark));
+                row.setImageViewResource(R.id.appDetailsImageButton, R.drawable.settings_imageview_dark);
+                row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview_dark);
                 row.setImageViewResource(R.id.clearImageButton, R.drawable.clear_imageview_dark);
                 row.setImageViewResource(R.id.moreImageButton, R.drawable.more_imageview_dark);
-			}
+            }
 
             row.setViewVisibility(R.id.clearImageButton, rootClearCache ? View.VISIBLE : View.GONE);
 
-			Intent appDetailsClickIntent=new Intent();
-			Bundle appDetailsClickExtras=new Bundle();
-			//appDetailsClickExtras.putBoolean("appDetails", true);
-			appDetailsClickExtras.putInt("launchType", Constants.LAUNCH_APP_DETAILS);
-			appDetailsClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
-			appDetailsClickIntent.putExtras(appDetailsClickExtras);
-			row.setOnClickFillInIntent(R.id.appDetailsImageButton, appDetailsClickIntent);
+            Intent appDetailsClickIntent = new Intent();
+            Bundle appDetailsClickExtras = new Bundle();
+            //appDetailsClickExtras.putBoolean("appDetails", true);
+            appDetailsClickExtras.putInt("launchType", Constants.LAUNCH_APP_DETAILS);
+            appDetailsClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+            appDetailsClickIntent.putExtras(appDetailsClickExtras);
+            row.setOnClickFillInIntent(R.id.appDetailsImageButton, appDetailsClickIntent);
 
-			Intent uninstallClickIntent=new Intent();
-			Bundle uninstallClickExtras=new Bundle();
-			//appDetailsClickExtras.putBoolean("appDetails", true);
-			uninstallClickExtras.putInt("launchType", Constants.LAUNCH_UNINSTALL);
-			uninstallClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
-			uninstallClickIntent.putExtras(uninstallClickExtras);
-			row.setOnClickFillInIntent(R.id.uninstallImageButton, uninstallClickIntent);
+            Intent uninstallClickIntent = new Intent();
+            Bundle uninstallClickExtras = new Bundle();
+            //appDetailsClickExtras.putBoolean("appDetails", true);
+            uninstallClickExtras.putInt("launchType", Constants.LAUNCH_UNINSTALL);
+            uninstallClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+            uninstallClickIntent.putExtras(uninstallClickExtras);
+            row.setOnClickFillInIntent(R.id.uninstallImageButton, uninstallClickIntent);
 
-            Intent clearClickIntent=new Intent();
-            Bundle clearClickExtras=new Bundle();
+            Intent clearClickIntent = new Intent();
+            Bundle clearClickExtras = new Bundle();
             clearClickExtras.putInt("launchType", Constants.LAUNCH_CLEAR);
             clearClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
             clearClickIntent.putExtras(clearClickExtras);
             row.setOnClickFillInIntent(R.id.clearImageButton, clearClickIntent);
 
-            Intent moreClickIntent=new Intent();
-            Bundle moreClickExtras=new Bundle();
+            Intent moreClickIntent = new Intent();
+            Bundle moreClickExtras = new Bundle();
             moreClickExtras.putInt("launchType", Constants.LAUNCH_MORE);
             moreClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
             moreClickIntent.putExtras(moreClickExtras);
             row.setOnClickFillInIntent(R.id.moreImageButton, moreClickIntent);
 
-			Intent rowClickIntent=new Intent();
-			Bundle rowClickExtras=new Bundle();
-			//rowClickExtras.putBoolean("appDetails", false);
-			rowClickExtras.putInt("launchType", Constants.LAUNCH_APP);
-			rowClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
-			rowClickIntent.putExtras(rowClickExtras);
-			row.setOnClickFillInIntent(R.id.touchArea, rowClickIntent);
+            Intent rowClickIntent = new Intent();
+            Bundle rowClickExtras = new Bundle();
+            //rowClickExtras.putBoolean("appDetails", false);
+            rowClickExtras.putInt("launchType", Constants.LAUNCH_APP);
+            rowClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
+            rowClickIntent.putExtras(rowClickExtras);
+            row.setOnClickFillInIntent(R.id.touchArea, rowClickIntent);
 
-			return(row);
-		}
-		catch (IndexOutOfBoundsException e)
-		{
-			return null;
-		}
+            return (row);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     @Override
     public RemoteViews getLoadingView() {
-        return(null);
+        return (null);
     }
 
     @Override
     public int getViewTypeCount() {
-        return(1);
+        return (1);
     }
 
     @Override
     public long getItemId(int position) {
-        return(position);
+        return (position);
     }
 
     @Override
     public boolean hasStableIds() {
-        return(true);
+        return (true);
     }
 
     @Override
@@ -173,48 +162,42 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
         getApps();
     }
 
-	// Method to get all apps from the app database and add to the dataset
-    public void getApps()
-    {
+    // Method to get all apps from the app database and add to the dataset
+    public void getApps() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-
-        // Get all apps from the app table
-		String[] packages = database.getAllAppsInDatabase(sp.getString("widgetSorting", "added"));
+        // Get all apps from the app table for this widget
+        String[] packages = database.getAllAppsInDatabase(sp.getString("widgetSorting", "added"), appWidgetId);
         pm = context.getPackageManager();
 
-		// Defensive code, was getting some strange behaviour and forcing the lists seems to fix
+        // Defensive code, was getting some strange behaviour and forcing the lists seems to fix
         applicationNames = null;
         packageNames = null;
         applicationIcons = null;
 
-		// Setup the lists holding the data
-		applicationNames = new ArrayList<String>();
-		packageNames = new ArrayList<String>();
-		applicationIcons = new ArrayList<Drawable>();
+        // Setup the lists holding the data
+        applicationNames = new ArrayList<String>();
+        packageNames = new ArrayList<String>();
+        applicationIcons = new ArrayList<Drawable>();
 
-		// Loop though adding details from PackageManager to the lists
-        for(String s : packages)
-        {
+        // Loop though adding details from PackageManager to the lists
+        for (String s : packages) {
             Log.d("DDWidgetViewsFactory", "String is: " + s);
             ApplicationInfo applicationInfo;
 
             try {
                 applicationInfo = pm.getPackageInfo(s, PackageManager.GET_ACTIVITIES).applicationInfo;
                 applicationNames.add(applicationInfo.loadLabel(pm).toString());
-                packageNames.add(applicationInfo.packageName.toString());
+                packageNames.add(applicationInfo.packageName);
                 applicationIcons.add(applicationInfo.loadIcon(pm));
-
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
-	// Method to return a bitmap from drawable
-    public Bitmap convertFromDrawable(Drawable d)
-    {
-        return ((BitmapDrawable)d).getBitmap();
+    // Method to return a bitmap from drawable
+    public Bitmap convertFromDrawable(Drawable d) {
+        return ((BitmapDrawable) d).getBitmap();
     }
 }

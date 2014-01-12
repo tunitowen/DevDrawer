@@ -169,9 +169,7 @@ public class Database {
 
         connectDB();
 
-        Cursor getAllCursor = db.query("devdrawer_app", null, null, null, null, null,
-                (order.equals(Constants.ORDER_ORIGINAL)) ? null : "package ASC",
-                null);
+        Cursor getAllCursor = db.query("devdrawer_app", null, null, null, null, null, (order.equals(Constants.ORDER_ORIGINAL)) ? null : "package ASC", null);
 
         Log.d("DATABASE", "getAllAppsInDatabase: " + Integer.toString(getAllCursor.getCount()));
 
@@ -195,7 +193,40 @@ public class Database {
         }
 
         return packages;
+    }
 
+    ////////////////////////////////////////////////////////////////
+    // Method to get all the packages in the installed apps table for given widgetId
+    ////////////////////////////////////////////////////////////////
+    public String[] getAllAppsInDatabase(String order, int widgetId) {
+        String[] packages;
+
+        connectDB();
+
+        Cursor getAllCursor = db.query("devdrawer_app", null, "widgetid = " + widgetId, null, null, null, (order.equals(Constants.ORDER_ORIGINAL)) ? null : "package ASC", null);
+
+        Log.d("DATABASE", "getAllAppsInDatabase: " + Integer.toString(getAllCursor.getCount()));
+
+        getAllCursor.moveToFirst();
+
+        packages = new String[getAllCursor.getCount()];
+
+        int i = 0;
+
+        while (!getAllCursor.isAfterLast()) {
+            packages[i] = getAllCursor.getString(1);
+            i++;
+            getAllCursor.moveToNext();
+        }
+
+        getAllCursor.close();
+        closeDB();
+
+        if (order.equals(Constants.ORDER_ORIGINAL)) {
+            Collections.reverse(Arrays.asList(packages));
+        }
+
+        return packages;
     }
 
     // ////////////////////////////////////////////////////
