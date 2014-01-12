@@ -1,2 +1,3 @@
 include ':DevDrawer'
 include ':libraries:libsuperuser'
+include ':libraries:viewpagerindicator'

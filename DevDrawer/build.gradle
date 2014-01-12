@@ -24,10 +24,14 @@ android {
 
 dependencies {
 
-	// You must install or update the Support Repository through the SDK manager to use this dependency.
-	// The Support Repository (separate from the corresponding library) can be found in the Extras category.
-	// compile 'com.android.support:appcompat-v7:18.0.0'
+    // You must install or update the Support Repository through the SDK manager to use this dependency.
+    // The Support Repository (separate from the corresponding library) can be found in the Extras category.
+    // compile 'com.android.support:appcompat-v7:18.0.0'
 
     compile project(':libraries:libsuperuser')
+    compile project(':libraries:viewpagerindicator')
+
     compile 'com.google.code.gson:gson:2.2.4'
+
+    compile "com.android.support:support-v4:18.0.+"
 }
