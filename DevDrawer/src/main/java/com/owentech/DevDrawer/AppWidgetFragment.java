@@ -53,30 +53,7 @@ public class AppWidgetFragment extends Fragment {
         mCurrentDatabaseName = new Database(getActivity()).getWidgetNames().get(getAppWidgetId());
 
         editText.setText(mCurrentDatabaseName);
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s != null) {
-                    String name = s.toString().trim();
-                    if (!name.equals(mCurrentDatabaseName)) {
-                        new Database(getActivity()).renameWidget(getAppWidgetId(), name);
-                        mCurrentDatabaseName = name;
-
-                        new DDWidgetProvider().onUpdate(getActivity(), AppWidgetManager.getInstance(getActivity()), new int[]{getAppWidgetId()});
-
-                        ((MainActivity) getActivity()).update();
-                    }
-                }
-            }
-        });
+        editText.addTextChangedListener(new WidgetNameTextWatcher());
 
         return view;
     }
@@ -90,5 +67,30 @@ public class AppWidgetFragment extends Fragment {
 
     public void notifyDataSetChanged() {
         mFilterListAdapter.notifyDataSetChanged();
+    }
+
+    private class WidgetNameTextWatcher implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (s != null) {
+                String name = s.toString().trim();
+                if (!name.equals(mCurrentDatabaseName)) {
+                    new Database(getActivity()).renameWidget(getAppWidgetId(), name);
+                    mCurrentDatabaseName = name;
+
+                    new DDWidgetProvider().onUpdate(getActivity(), AppWidgetManager.getInstance(getActivity()), new int[]{getAppWidgetId()});
+
+                    ((MainActivity) getActivity()).update();
+                }
+            }
+        }
     }
 }

@@ -45,17 +45,18 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class MainActivity extends FragmentActivity implements TextWatcher {
+public class MainActivity extends FragmentActivity implements TextWatcher, View.OnClickListener {
 
     private ViewPager mViewPager;
     private WidgetFragmentViewPagerAdapter mViewPagerAdapter;
 
     private TitlePageIndicator mTitlePageIndicator;
 
-    private AutoCompleteTextView addPackageAutoComplete;
-    private PartialMatchAdapter partialMatchAdapter;
+    private AutoCompleteTextView mAutoCompleteTextView;
+    private PartialMatchAdapter mPartialMatchAdapter;
 
-    private Database database;
+    private Database mDatabase;
+    private int[] mAppWidgetIds;
 
     @Override
     public void onCreate(Bundle state) {
@@ -71,39 +72,37 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
             getActionBar().setDisplayShowCustomEnabled(true);
         }
 
-        database = new Database(this);
-        database.createTables();
+        mDatabase = new Database(this);
+        mDatabase.createTables();
 
-        List<String> appPackages = getExistingPackages(this);
+        mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(this);
 
-        partialMatchAdapter = new PartialMatchAdapter(this, appPackages);
-        addPackageAutoComplete = (AutoCompleteTextView) findViewById(R.id.activity_main_addPackageEditText);
-        addPackageAutoComplete.setAdapter(partialMatchAdapter);
-        addPackageAutoComplete.addTextChangedListener(this);
+        setupViews();
 
-        ImageView addButton = (ImageView) findViewById(R.id.activity_main_addButton);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (addPackageAutoComplete.getText().length() != 0) {
-                    // Check filter doesn't exist
-                    int appWidgetId = getWidgetFragment(mViewPager.getCurrentItem()).getAppWidgetId();
-                    if (!database.doesFilterExist(addPackageAutoComplete.getText().toString(), appWidgetId)) {
-                        // Add the filter to the database
-                        database.addFilterToDatabase(addPackageAutoComplete.getText().toString(), appWidgetId);
-
-                        // Check existing apps and add to installed apps table if they match new filter
-                        new AddAllAppsAsync(MainActivity.this, addPackageAutoComplete.getText().toString(), appWidgetId).execute();
-
-                        addPackageAutoComplete.setText("");
-                        updateFragments();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Filter already exists", Toast.LENGTH_SHORT).show();
+        if (getIntent() != null) {
+            int appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+            if (appWidgetId != -1) {
+                for (int i = 0; i < mAppWidgetIds.length; i++) {
+                    if (appWidgetId == mAppWidgetIds[i]) {
+                        mViewPager.setCurrentItem(i);
                     }
                 }
+
+                mDatabase.addWidgetToDatabase(appWidgetId, "");
             }
-        });
+        }
+    }
+
+    private void setupViews() {
+        List<String> appPackages = getExistingPackages(this);
+
+        mPartialMatchAdapter = new PartialMatchAdapter(this, appPackages);
+        mAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.activity_main_addPackageEditText);
+        mAutoCompleteTextView.setAdapter(mPartialMatchAdapter);
+        mAutoCompleteTextView.addTextChangedListener(this);
+
+        ImageView addButton = (ImageView) findViewById(R.id.activity_main_addButton);
+        addButton.setOnClickListener(this);
 
 
         mViewPagerAdapter = new WidgetFragmentViewPagerAdapter(getSupportFragmentManager());
@@ -117,26 +116,11 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
         mTitlePageIndicator.setViewPager(mViewPager);
         mTitlePageIndicator.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
 
-        int[] appWidgetIds = AppWidgetUtil.findAppWidgetIds(this);
-        mViewPagerAdapter.setWidgetIds(appWidgetIds);
+        mViewPagerAdapter.setWidgetIds(mAppWidgetIds);
         mViewPagerAdapter.notifyDataSetChanged();
 
-        if (getIntent() != null) {
-            int appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
-            if (appWidgetId != -1) {
-                for (int i = 0; i < appWidgetIds.length; i++) {
-                    if (appWidgetId == appWidgetIds[i]) {
-                        mViewPager.setCurrentItem(i);
-                    }
-                }
-
-                database.addWidgetToDatabase(appWidgetId, "");
-            }
-        }
-
-
-        boolean hasWidgets = appWidgetIds.length > 0;
-        addPackageAutoComplete.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+        boolean hasWidgets = mAppWidgetIds.length > 0;
+        mAutoCompleteTextView.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
         addButton.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
         mViewPager.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
         mTitlePageIndicator.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
@@ -169,7 +153,6 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Catch the return from the EditDialog
         if (resultCode == Constants.EDIT_DIALOG_CHANGE) {
             Bundle bundle = data.getExtras();
@@ -195,11 +178,11 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Legacy Shortcut").setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
             menu.add(0, Constants.MENU_SETTINGS, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-            //menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher").setIcon(R.drawable.ic_action_globe).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//            menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher").setIcon(R.drawable.ic_action_globe).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         } else {
             menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Shortcut");
             menu.add(0, Constants.MENU_SETTINGS, 0, "Settings");
-            //menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher");
+//            menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher");
         }
         return true;
     }
@@ -216,7 +199,6 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
                 break;
             }
             case Constants.MENU_LOCALE_SWITCHER: {
-
                 startActivity(new Intent(this, LocaleSwitcher.class));
                 break;
             }
@@ -234,7 +216,6 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
         intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "^DevDrawer");
         intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context, R.drawable.shortcut_icon));
         intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-        String shortcutUri = intent.toUri(MODE_WORLD_WRITEABLE);
         context.sendBroadcast(intent);
     }
 
@@ -258,7 +239,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
-        partialMatchAdapter.getFilter().filter(editable.toString());
+        mPartialMatchAdapter.getFilter().filter(editable.toString());
     }
 
     private AppWidgetFragment getWidgetFragment(int position) {
@@ -297,6 +278,28 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
 
     public void update() {
         mViewPagerAdapter.updateNames();
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.activity_main_addButton) {
+            if (mAutoCompleteTextView.getText().length() != 0) {
+                // Check filter doesn't exist
+                int appWidgetId = getWidgetFragment(mViewPager.getCurrentItem()).getAppWidgetId();
+                if (!mDatabase.doesFilterExist(mAutoCompleteTextView.getText().toString(), appWidgetId)) {
+                    // Add the filter to the mDatabase
+                    mDatabase.addFilterToDatabase(mAutoCompleteTextView.getText().toString(), appWidgetId);
+
+                    // Check existing apps and add to installed apps table if they match new filter
+                    new AddAllAppsAsync(MainActivity.this, mAutoCompleteTextView.getText().toString(), appWidgetId).execute();
+
+                    mAutoCompleteTextView.setText("");
+                    updateFragments();
+                } else {
+                    Toast.makeText(MainActivity.this, "Filter already exists", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
     private class WidgetFragmentViewPagerAdapter extends FragmentStatePagerAdapter {

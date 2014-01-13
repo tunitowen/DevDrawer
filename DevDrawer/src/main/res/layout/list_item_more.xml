@@ -56,7 +56,7 @@
         android:textColor="@color/app_name_light"
         android:fontFamily="sans-serif-light"
         android:ellipsize="end"
-        android:maxLines="1" />
+         />
 
     <ImageView
         android:layout_width="48dp"

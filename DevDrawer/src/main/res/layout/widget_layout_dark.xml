@@ -30,6 +30,7 @@
         android:background="#FF8800" />
 
     <ListView
+        android:layout_marginTop="2dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/orangeImage"
