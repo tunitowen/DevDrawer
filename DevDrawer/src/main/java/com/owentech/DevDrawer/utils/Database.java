@@ -3,7 +3,9 @@ package com.owentech.DevDrawer.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +32,14 @@ public class Database {
 
     public Database(Context ctx) {
         this.ctx = ctx;
+
+        int[] appWidgetIds = AppWidgetUtil.findAppWidgetIds(ctx);
+        if(appWidgetIds.length > 0 && !PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("HASMULTIPLEWIDGETS", false)){
+            Toast.makeText(ctx, "Please remove and re-add your widgets", Toast.LENGTH_LONG).show();
+            dropTables();
+            PreferenceManager.getDefaultSharedPreferences(ctx).edit().putBoolean("HASMULTIPLEWIDGETS", true).commit();
+        }
+        createTables();
     }
 
     ///////////////////////////////////
@@ -68,6 +78,17 @@ public class Database {
 
         String CREATE_TABLE_WIDGETS = "CREATE TABLE IF NOT EXISTS devdrawer_widgets (id INTEGER PRIMARY KEY, name TEXT);";
         db.execSQL(CREATE_TABLE_WIDGETS);
+
+        closeDB();
+    }
+
+    public void dropTables(){
+        connectDB();
+
+        db.execSQL("DROP TABLE devdrawer_filter");
+        db.execSQL("DROP TABLE devdrawer_app");
+        db.execSQL("DROP TABLE devdrawer_locales");
+        db.execSQL("DROP TABLE devdrawer_widgets");
 
         closeDB();
     }
