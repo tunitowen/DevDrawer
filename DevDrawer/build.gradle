@@ -31,6 +31,9 @@ dependencies {
     compile project(':libraries:libsuperuser')
     compile project(':libraries:viewpagerindicator')
 
+    compile('de.keyboardsurfer.android.widget:crouton:1.8.1') {
+        exclude group: 'com.google.android', module: 'support-v4'
+    }
     compile 'com.google.code.gson:gson:2.2.4'
 
     compile "com.android.support:support-v4:18.0.+"

@@ -44,6 +44,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 
 public class MainActivity extends FragmentActivity implements TextWatcher, View.OnClickListener {
 
@@ -89,6 +92,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
                 }
 
                 mDatabase.addWidgetToDatabase(appWidgetId, "");
+                Crouton.makeText(this, "Press back to save the widget, not home", Style.ALERT).show();
             }
         }
     }
@@ -129,6 +133,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
 
     @Override
     public void onBackPressed() {
+
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -149,6 +154,11 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
         super.onBackPressed();
     }
 
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
