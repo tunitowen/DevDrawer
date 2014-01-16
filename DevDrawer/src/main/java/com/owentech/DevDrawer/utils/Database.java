@@ -3,9 +3,16 @@ package com.owentech.DevDrawer.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,71 +26,138 @@ public class Database {
     SQLiteDatabase db;
     Context ctx;
 
-	public static int NOT_FOUND = 1000000;
+    public static int NOT_FOUND = 1000000;
 
     private static final String TAG = "DevDrawer-Database";
 
-    public Database(Context ctx)
-    {
+    public Database(Context ctx) {
         this.ctx = ctx;
+
+        int[] appWidgetIds = AppWidgetUtil.findAppWidgetIds(ctx);
+        if(appWidgetIds.length > 0 && !PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("HASMULTIPLEWIDGETS", false)){
+            Toast.makeText(ctx, "Please remove and re-add your widgets", Toast.LENGTH_LONG).show();
+            dropTables();
+            PreferenceManager.getDefaultSharedPreferences(ctx).edit().putBoolean("HASMULTIPLEWIDGETS", true).commit();
+        }
+        createTables();
     }
 
     ///////////////////////////////////
-	// Method to connect to database
+    // Method to connect to database
     ///////////////////////////////////
-    public void connectDB()
-    {
-        db = ctx.openOrCreateDatabase("DevDrawer.db",
-                SQLiteDatabase.CREATE_IF_NECESSARY, null);
+    @SuppressWarnings("Deprecation")
+    public void connectDB() {
+        db = ctx.openOrCreateDatabase("DevDrawer.db", 0, null);
     }
 
     ////////////////////////////////////////
-	// Method to close database connection
+    // Method to close database connection
     ////////////////////////////////////////
-    public void closeDB()
-    {
+    public void closeDB() {
         db.close();
     }
 
     /////////////////////////////////////////
-	// Method to create tables in database
+    // Method to create tables in database
     /////////////////////////////////////////
-    public void createTables()
-    {
+    public void createTables() {
         connectDB();
 
         // create tables
         String CREATE_TABLE_FILTER = "CREATE TABLE IF NOT EXISTS devdrawer_filter ("
-                + "id INTEGER PRIMARY KEY, package TEXT);";
+                + "id INTEGER PRIMARY KEY, package TEXT, widgetid INTEGER);";
         db.execSQL(CREATE_TABLE_FILTER);
 
         String CREATE_TABLE_APPS = "CREATE TABLE IF NOT EXISTS devdrawer_app ("
-                + "id INTEGER PRIMARY KEY, package TEXT, filterid INTEGER);";
+                + "id INTEGER PRIMARY KEY, package TEXT, filterid INTEGER, widgetid INTEGER);";
         db.execSQL(CREATE_TABLE_APPS);
 
-		String CREATE_TABLE_LOCALES = "CREATE TABLE IF NOT EXISTS devdrawer_locales ("
-				+ "name TEXT);";
-		db.execSQL(CREATE_TABLE_LOCALES);
+        String CREATE_TABLE_LOCALES = "CREATE TABLE IF NOT EXISTS devdrawer_locales ("
+                + "name TEXT);";
+        db.execSQL(CREATE_TABLE_LOCALES);
+
+        String CREATE_TABLE_WIDGETS = "CREATE TABLE IF NOT EXISTS devdrawer_widgets (id INTEGER PRIMARY KEY, name TEXT);";
+        db.execSQL(CREATE_TABLE_WIDGETS);
+
+        closeDB();
+    }
+
+    public void dropTables(){
+        connectDB();
+
+        db.execSQL("DROP TABLE devdrawer_filter");
+        db.execSQL("DROP TABLE devdrawer_app");
+        db.execSQL("DROP TABLE devdrawer_locales");
+        db.execSQL("DROP TABLE devdrawer_widgets");
+
+        closeDB();
+    }
+
+    public void addWidgetToDatabase(int widgetId, String name) {
+        connectDB();
+
+        String insertQuery = "INSERT INTO 'devdrawer_widgets' (id, name) VALUES (" + widgetId + ", '" + name + "')";
+        db.execSQL(insertQuery);
+
+        closeDB();
+    }
+
+    public void renameWidget(int widgetId, String name) {
+        connectDB();
+        db.execSQL("UPDATE devdrawer_widgets SET name='" + name + "' WHERE id ='" + widgetId + "'");
+        closeDB();
+    }
+
+    public void removeWidgetFromDatabase(int widgetId) {
+        connectDB();
+
+        String query = "DELETE FROM 'devdrawer_widgets' WHERE id = " + widgetId;
+        db.execSQL(query);
+
+        query = "DELETE FROM 'devdrawer_filter' WHERE widgetId = " + widgetId;
+        db.execSQL(query);
+
+        query = "DELETE FROM 'devdrawer_app' WHERE widgetId = " + widgetId;
+        db.execSQL(query);
+
+        closeDB();
+    }
+
+    public Map<Integer, String> getWidgetNames() {
+        Map<Integer, String> result = new HashMap<Integer, String>();
+
+        connectDB();
+
+        Cursor getAllCursor = db.query("devdrawer_widgets", null, null, null, null, null, null, null);
+
+
+        getAllCursor.moveToFirst();
+
+        while (!getAllCursor.isAfterLast()) {
+
+            result.put(getAllCursor.getInt(0), getAllCursor.getString(1));
+            getAllCursor.moveToNext();
+        }
+
+        getAllCursor.close();
+        closeDB();
 
         closeDB();
 
+        return result;
     }
 
     // ////////////////////////////////////////////////
     // Method to add an entry into the filter table
     // ///////////////////////////////////////////////
-    public void addFilterToDatabase(String p)
-    {
+    public void addFilterToDatabase(String p, int widgetId) {
         // connect
         connectDB();
 
         // add accident entry
-        String packageInsertQuery = "INSERT INTO 'devdrawer_filter' "
-                + "(package)" + "VALUES" + "('" + p + "');";
+        String packageInsertQuery = "INSERT INTO 'devdrawer_filter' (package, widgetid)" + "VALUES" + "('" + p + "', " + widgetId + ");";
 
         db.execSQL(packageInsertQuery);
-
-
 
         // close
         closeDB();
@@ -92,14 +166,13 @@ public class Database {
     // ///////////////////////////////////////////////
     // Method to add package to installed apps table
     // ///////////////////////////////////////////////
-    public void addAppToDatabase(String p, String filterId)
-    {
+    public void addAppToDatabase(String p, String filterId, int widgetId) {
         // connect
         connectDB();
 
         // add accident entry
         String packageInsertQuery = "INSERT INTO 'devdrawer_app' "
-                + "(package, filterid)" + "VALUES" + "('" + p + "', " + filterId + ");";
+                + "(package, filterid, widgetid)" + "VALUES" + "('" + p + "', " + filterId + ", " + String.valueOf(widgetId) + ");";
 
         db.execSQL(packageInsertQuery);
 
@@ -110,8 +183,7 @@ public class Database {
     // ////////////////////////////////////////////////////
     // Method to remove an entry from the filters tables
     // ////////////////////////////////////////////////////
-    public void removeFilterFromDatabase(String i)
-    {
+    public void removeFilterFromDatabase(String i) {
         // connect
         connectDB();
 
@@ -124,42 +196,65 @@ public class Database {
         closeDB();
     }
 
-	// ////////////////////////////////////////////////////
-	// Method to remove an entry from the filters tables
-	// ////////////////////////////////////////////////////
-	public void removeAppFromDatabase(String i)
-	{
-		// connect
-		connectDB();
+    // ////////////////////////////////////////////////////
+    // Method to remove an entry from the filters tables
+    // ////////////////////////////////////////////////////
+    public void removeAppFromDatabase(String filterId) {
+        // connect
+        connectDB();
 
-		// add accident entry
-		String packageDeleteQuery = "DELETE FROM 'devdrawer_app' WHERE filterid = '" + i + "'";
+        // add accident entry
+        String packageDeleteQuery = "DELETE FROM 'devdrawer_app' WHERE filterid = '" + filterId + "'";
 
-		db.execSQL(packageDeleteQuery);
+        db.execSQL(packageDeleteQuery);
 
-		// close
-		closeDB();
-	}
+        // close
+        closeDB();
+    }
 
     //////////////////////////////////////////////////////
     // Method to get all the entries in the filter table
     //////////////////////////////////////////////////////
-    public List<PackageCollection> getAllFiltersInDatabase()
-    {
+    public List<PackageCollection> getAllFiltersInDatabase() {
 
         connectDB();
 
         Cursor getAllCursor = db.query("devdrawer_filter", null, null, null, null, null, null, null);
 
-		List<PackageCollection> packageCollections = new ArrayList<PackageCollection>();
+        List<PackageCollection> packageCollections = new ArrayList<PackageCollection>();
 
         getAllCursor.moveToFirst();
 
-        while(!getAllCursor.isAfterLast())
-        {
+        while (!getAllCursor.isAfterLast()) {
 
-			packageCollections.add(new PackageCollection(getAllCursor.getString(0), getAllCursor.getString(1)));
-			getAllCursor.moveToNext();
+            packageCollections.add(new PackageCollection(getAllCursor.getString(0), getAllCursor.getString(1)));
+            getAllCursor.moveToNext();
+        }
+
+        getAllCursor.close();
+        closeDB();
+
+        return packageCollections;
+
+    }
+
+    //////////////////////////////////////////////////////
+    // Method to get all the entries in the filter table for given widgetId
+    //////////////////////////////////////////////////////
+    public List<PackageCollection> getAllFiltersInDatabase(int widgetId) {
+
+        connectDB();
+
+        Cursor getAllCursor = db.query("devdrawer_filter", null, "widgetid = " + widgetId, null, null, null, null, null);
+
+        List<PackageCollection> packageCollections = new ArrayList<PackageCollection>();
+
+        getAllCursor.moveToFirst();
+
+        while (!getAllCursor.isAfterLast()) {
+
+            packageCollections.add(new PackageCollection(getAllCursor.getString(0), getAllCursor.getString(1)));
+            getAllCursor.moveToNext();
         }
 
         getAllCursor.close();
@@ -172,26 +267,22 @@ public class Database {
     ////////////////////////////////////////////////////////////////
     // Method to get all the packages in the installed apps table
     ////////////////////////////////////////////////////////////////
-    public String[] getAllAppsInDatabase(String order)
-    {
+    public String[] getAllAppsInDatabase(String order) {
         String[] packages;
 
         connectDB();
 
-        Cursor getAllCursor = db.query("devdrawer_app", null, null, null, null, null,
-										(order.equals(Constants.ORDER_ORIGINAL)) ? null : "package ASC",
-										null);
+        Cursor getAllCursor = db.query("devdrawer_app", null, null, null, null, null, (order.equals(Constants.ORDER_ORIGINAL)) ? null : "package ASC", null);
 
-        Log.d("DATABASE", "getAllAppsInDatabase: " + Integer.toString(getAllCursor.getCount()) );
+        Log.d("DATABASE", "getAllAppsInDatabase: " + Integer.toString(getAllCursor.getCount()));
 
         getAllCursor.moveToFirst();
 
         packages = new String[getAllCursor.getCount()];
 
-        int i=0;
+        int i = 0;
 
-        while(!getAllCursor.isAfterLast())
-        {
+        while (!getAllCursor.isAfterLast()) {
             packages[i] = getAllCursor.getString(1);
             i++;
             getAllCursor.moveToNext();
@@ -200,20 +291,51 @@ public class Database {
         getAllCursor.close();
         closeDB();
 
-		if (order.equals(Constants.ORDER_ORIGINAL))
-		{
-			Collections.reverse(Arrays.asList(packages));
-		}
+        if (order.equals(Constants.ORDER_ORIGINAL)) {
+            Collections.reverse(Arrays.asList(packages));
+        }
 
         return packages;
+    }
 
+    ////////////////////////////////////////////////////////////////
+    // Method to get all the packages in the installed apps table for given widgetId
+    ////////////////////////////////////////////////////////////////
+    public String[] getAllAppsInDatabase(String order, int widgetId) {
+        String[] packages;
+
+        connectDB();
+
+        Cursor getAllCursor = db.query("devdrawer_app", null, "widgetid = " + widgetId, null, null, null, (order.equals(Constants.ORDER_ORIGINAL)) ? null : "package ASC", null);
+
+        Log.d("DATABASE", "getAllAppsInDatabase: " + Integer.toString(getAllCursor.getCount()));
+
+        getAllCursor.moveToFirst();
+
+        packages = new String[getAllCursor.getCount()];
+
+        int i = 0;
+
+        while (!getAllCursor.isAfterLast()) {
+            packages[i] = getAllCursor.getString(1);
+            i++;
+            getAllCursor.moveToNext();
+        }
+
+        getAllCursor.close();
+        closeDB();
+
+        if (order.equals(Constants.ORDER_ORIGINAL)) {
+            Collections.reverse(Arrays.asList(packages));
+        }
+
+        return packages;
     }
 
     // ////////////////////////////////////////////////////
     // Method to get a count of rows in the filter table
     // ////////////////////////////////////////////////////
-    public int getFiltersCount()
-    {
+    public int getFiltersCount() {
         // connect
         connectDB();
 
@@ -231,89 +353,80 @@ public class Database {
 
     }
 
-	///////////////////////////////////////////////////////////////
-	// Method to determine whether the new filter already exists
-	///////////////////////////////////////////////////////////////
-	public boolean doesFilterExist(String s)
-	{
-		// connect
-		connectDB();
+    ///////////////////////////////////////////////////////////////
+    // Method to determine whether the new filter already exists
+    ///////////////////////////////////////////////////////////////
+    public boolean doesFilterExist(String s, int appWidgetId) {
+        // connect
+        connectDB();
 
-		Cursor countCursor = db.rawQuery("SELECT count(*) FROM devdrawer_filter WHERE package = '" + s + "'", null);
+        Cursor countCursor = db.rawQuery("SELECT count(*) FROM devdrawer_filter WHERE package = '" + s + "' AND widgetid = " + appWidgetId, null);
 
-		// get number of rows
-		countCursor.moveToFirst();
-		int count = countCursor.getInt(0);
-		countCursor.close();
+        // get number of rows
+        countCursor.moveToFirst();
+        int count = countCursor.getInt(0);
+        countCursor.close();
 
-		// close
-		closeDB();
+        // close
+        closeDB();
 
-		if (count == 0)
-			return false;
-		else
-			return true;
-	}
+        if (count == 0)
+            return false;
+        else
+            return true;
+    }
 
-	// ////////////////////////////////////////////////////////////
-	// Method to get a count of rows in the installed apps tables
-	// ////////////////////////////////////////////////////////////
-	public int getAppsCount()
-	{
-		// connect
-		connectDB();
+    // ////////////////////////////////////////////////////////////
+    // Method to get a count of rows in the installed apps tables
+    // ////////////////////////////////////////////////////////////
+    public int getAppsCount() {
+        // connect
+        connectDB();
 
-		Cursor countCursor = db.rawQuery("SELECT count(*) FROM devdrawer_app", null);
+        Cursor countCursor = db.rawQuery("SELECT count(*) FROM devdrawer_app", null);
 
-		// get number of rows
-		countCursor.moveToFirst();
-		int count = countCursor.getInt(0);
-		countCursor.close();
+        // get number of rows
+        countCursor.moveToFirst();
+        int count = countCursor.getInt(0);
+        countCursor.close();
 
-		// close
-		closeDB();
+        // close
+        closeDB();
 
-		return count;
+        return count;
 
-	}
+    }
 
-	/////////////////////////////////////////////////////////////////////////////////////////
-	// Method to check whether the app being install exists in the installed package table
-	/////////////////////////////////////////////////////////////////////////////////////////
-	public boolean doesAppExistInDb(String s)
-	{
-		connectDB();
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Method to check whether the app being install exists in the installed package table
+    /////////////////////////////////////////////////////////////////////////////////////////
+    public boolean doesAppExistInDb(String s) {
+        connectDB();
 
-		Cursor cursor = db.query("devdrawer_app", null, "package = '" + s + "'", null, null, null, null, null);
-		int count = cursor.getCount();
-		cursor.close();
-		closeDB();
+        Cursor cursor = db.query("devdrawer_app", null, "package = '" + s + "'", null, null, null, null, null);
+        int count = cursor.getCount();
+        cursor.close();
+        closeDB();
 
-		if (cursor.getCount() == 0)
-			return false;
-		else
-			return true;
+        return count != 0;
+    }
 
-	}
-
-	////////////////////////////////////////////////////////////////
-	// Method to delete a package from the installed package table
-	////////////////////////////////////////////////////////////////
-	public void deleteAppFromDb(String s)
-	{
-		connectDB();
-		db.execSQL("DELETE FROM devdrawer_app WHERE package ='" + s + "'");
-		closeDB();
-	}
+    ////////////////////////////////////////////////////////////////
+    // Method to delete a package from the installed package table
+    ////////////////////////////////////////////////////////////////
+    public void deleteAppFromDb(String packageName) {
+        connectDB();
+        db.execSQL("DELETE FROM devdrawer_app WHERE package ='" + packageName + "'");
+        closeDB();
+    }
 
     /////////////////////////////////////////////////////////////////////
     // Method to parse each row and return if the new package matches
     /////////////////////////////////////////////////////////////////////
-	// TODO: Make this work for exact package name
-    public int parseAndMatch(String p)
-    {
+    // TODO: Make this work for exact package name
+    public int parseAndMatch(String p) {
 
-		int match = NOT_FOUND;
+        int match = NOT_FOUND;
 
         connectDB();
 
@@ -321,25 +434,20 @@ public class Database {
 
         getAllCursor.moveToFirst();
 
-        while (!getAllCursor.isAfterLast())
-        {
+        while (!getAllCursor.isAfterLast()) {
 
             String packageFilter = getAllCursor.getString(1).toLowerCase();
 
-            if (packageFilter.contains("*"))
-            {
+            if (packageFilter.contains("*")) {
                 if (p.toLowerCase().startsWith(packageFilter.toLowerCase().substring(0, packageFilter.indexOf("*"))))
+                    match = Integer.valueOf(getAllCursor.getString(0));
+            } else {
+                if (p.toLowerCase().equals(packageFilter.toLowerCase()))
                     match = Integer.valueOf(getAllCursor.getString(0));
 
             }
-            else
-            {
-                if (p.toLowerCase().equals(packageFilter.toLowerCase()))
-					match = Integer.valueOf(getAllCursor.getString(0));
 
-            }
-
-			getAllCursor.moveToNext();
+            getAllCursor.moveToNext();
 
         }
 
@@ -350,57 +458,89 @@ public class Database {
 
     }
 
-	///////////////////////////////////
-	// Method to amend a filter entry
-	///////////////////////////////////
-	public void amendFilterEntryTo(String id, String newString)
-	{
-		connectDB();
-		db.execSQL("UPDATE devdrawer_filter SET package='" + newString + "' WHERE id ='" + id + "'");
-		closeDB();
-	}
+    /////////////////////////////////////////////////////////////////////
+    // Method to parse each row and return if the new package matches
+    /////////////////////////////////////////////////////////////////////
+    // TODO: Make this work for exact package name
+    public int parseAndMatch(String p, int widgetId) {
 
-	///////////////////////////////
-	// Method to add all locales
-	///////////////////////////////
-	public void addLocale(String localeDescriptor)
-	{
-		connectDB();
+        int match = NOT_FOUND;
 
-		db.execSQL("INSERT INTO devdrawer_locales (name) VALUES ('" + localeDescriptor + "');");
+        connectDB();
 
-		closeDB();
-	}
+        Cursor getAllCursor = db.query("devdrawer_filter", null, "widgetid = " + widgetId, null, null, null, null, null);
 
-	public List<String> getLocales()
-	{
-		connectDB();
+        getAllCursor.moveToFirst();
 
-		List<String> list = new ArrayList<String>();
+        while (!getAllCursor.isAfterLast()) {
 
-		Cursor getAllCursor = db.query("devdrawer_locales", null, null, null, null, null, "name ASC", null);
+            String packageFilter = getAllCursor.getString(1).toLowerCase();
 
-		if (getAllCursor.getCount() != 0)
-		{
-			getAllCursor.moveToFirst();
+            if (packageFilter.contains("*")) {
+                if (p.toLowerCase().startsWith(packageFilter.toLowerCase().substring(0, packageFilter.indexOf("*"))))
+                    match = Integer.valueOf(getAllCursor.getString(0));
+            } else {
+                if (p.toLowerCase().equals(packageFilter.toLowerCase()))
+                    match = Integer.valueOf(getAllCursor.getString(0));
 
-			while(!getAllCursor.isAfterLast())
-			{
-				list.add(getAllCursor.getString(0));
-				getAllCursor.moveToNext();
-			}
-		}
+            }
 
-		return list;
-	}
+            getAllCursor.moveToNext();
 
-	public void deleteLocale(String localeDescriptor)
-	{
-		connectDB();
+        }
 
-		db.execSQL("DELETE FROM devdrawer_locales WHERE name = '" + localeDescriptor + "';");
+        getAllCursor.close();
+        closeDB();
 
-		closeDB();
-	}
+        return match;
+
+    }
+
+    ///////////////////////////////////
+    // Method to amend a filter entry
+    ///////////////////////////////////
+    public void amendFilterEntryTo(String id, String newString) {
+        connectDB();
+        db.execSQL("UPDATE devdrawer_filter SET package='" + newString + "' WHERE id ='" + id + "'");
+        closeDB();
+    }
+
+    ///////////////////////////////
+    // Method to add all locales
+    ///////////////////////////////
+    public void addLocale(String localeDescriptor) {
+        connectDB();
+
+        db.execSQL("INSERT INTO devdrawer_locales (name) VALUES ('" + localeDescriptor + "');");
+
+        closeDB();
+    }
+
+    public List<String> getLocales() {
+        connectDB();
+
+        List<String> list = new ArrayList<String>();
+
+        Cursor getAllCursor = db.query("devdrawer_locales", null, null, null, null, null, "name ASC", null);
+
+        if (getAllCursor.getCount() != 0) {
+            getAllCursor.moveToFirst();
+
+            while (!getAllCursor.isAfterLast()) {
+                list.add(getAllCursor.getString(0));
+                getAllCursor.moveToNext();
+            }
+        }
+
+        return list;
+    }
+
+    public void deleteLocale(String localeDescriptor) {
+        connectDB();
+
+        db.execSQL("DELETE FROM devdrawer_locales WHERE name = '" + localeDescriptor + "';");
+
+        closeDB();
+    }
 
 }

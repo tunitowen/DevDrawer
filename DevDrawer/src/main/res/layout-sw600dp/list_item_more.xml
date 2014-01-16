@@ -27,7 +27,7 @@
             android:layout_alignParentTop="true"
             android:textAppearance="@android:style/TextAppearance.Holo.Small" android:textSize="10dp"
             android:layout_marginLeft="5dp" android:paddingTop="5dp" android:textColor="#f80"
-            android:fontFamily="sans-serif-light" android:ellipsize="end" android:maxLines="1"/>
+            android:fontFamily="sans-serif-light" android:ellipsize="end"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

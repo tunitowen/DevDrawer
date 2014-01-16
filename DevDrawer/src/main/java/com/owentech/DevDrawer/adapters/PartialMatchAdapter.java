@@ -1,10 +1,14 @@
 package com.owentech.DevDrawer.adapters;
 
-import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.TextView;
+
 import com.owentech.DevDrawer.R;
 
 import java.util.ArrayList;
@@ -17,115 +21,95 @@ import java.util.List;
  * Time: 08:15
  * To change this template use File | Settings | File Templates.
  */
-public class PartialMatchAdapter extends BaseAdapter implements Filterable
-{
+public class PartialMatchAdapter extends BaseAdapter implements Filterable {
 
-	Activity activity;
-	List<String> items;
-	List<String> filteredItems;
-	Filter filter;
+    Context mContext;
+    List<String> items;
+    List<String> filteredItems;
+    Filter filter;
 
-	public PartialMatchAdapter(Activity activity, List<String> items)
-	{
-		this.activity = activity;
-		this.items = items;
-	}
+    public PartialMatchAdapter(Context context, List<String> items) {
+        this.mContext = context;
+        this.items = items;
+    }
 
-	@Override
-	public int getCount()
-	{
-		return filteredItems.size();
-	}
+    @Override
+    public int getCount() {
+        return filteredItems.size();
+    }
 
-	@Override
-	public Object getItem(int position)
-	{
-		return filteredItems.get(position);
-	}
+    @Override
+    public Object getItem(int position) {
+        return filteredItems.get(position);
+    }
 
-	@Override
-	public long getItemId(int i)
-	{
-		return i;
-	}
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
 
-	class ViewHolder
-	{
-		TextView textView;
-	}
+    class ViewHolder {
+        TextView textView;
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup viewGroup)
-	{
+    @Override
+    public View getView(int position, View convertView, ViewGroup viewGroup) {
 
-		// Setup the list item text, onclicks etc
-		try
-		{
-			ViewHolder holder;
-			LayoutInflater inflater = activity.getLayoutInflater();
+        // Setup the list item text, onclicks etc
+        try {
+            ViewHolder holder;
+            LayoutInflater inflater = LayoutInflater.from(mContext);
 
-			if(convertView == null)
-			{
-				convertView = inflater.inflate(R.layout.dropdown_list_item, null);
-				holder = new ViewHolder();
+            if (convertView == null) {
+                convertView = inflater.inflate(R.layout.dropdown_list_item, null);
+                holder = new ViewHolder();
 
-				holder.textView = (TextView) convertView.findViewById(android.R.id.text1);
-				convertView.setTag(holder);
+                holder.textView = (TextView) convertView.findViewById(android.R.id.text1);
+                convertView.setTag(holder);
 
-			}
-			else
-			{
-				holder = (ViewHolder) convertView.getTag();
-			}
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
 
-			holder.textView.setText(filteredItems.get(position));
-		}
-		catch(Exception e)
-		{
-			return null;
-		}
+            holder.textView.setText(filteredItems.get(position));
+        } catch (Exception e) {
+            return null;
+        }
 
-		return convertView;
-	}
+        return convertView;
+    }
 
-	@Override
-	public Filter getFilter()
-	{
-		if (filter == null)
-		{
+    @Override
+    public Filter getFilter() {
+        if (filter == null) {
 
-			filter = new Filter()
-			{
-				@Override
-				protected FilterResults performFiltering(CharSequence charSequence)
-				{
+            filter = new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence charSequence) {
 
-					filteredItems = new ArrayList<String>();
-					if(charSequence != null){
-						for (String item : items)
-						{
-							if (item.toLowerCase().contains(charSequence.toString().toLowerCase()))
-							{
-								filteredItems.add(item);
-							}
-						}
-					}
+                    filteredItems = new ArrayList<String>();
+                    if (charSequence != null) {
+                        for (String item : items) {
+                            if (item.toLowerCase().contains(charSequence.toString().toLowerCase())) {
+                                filteredItems.add(item);
+                            }
+                        }
+                    }
 
-					FilterResults filterResults = new FilterResults();
-					filterResults.count = filteredItems.size();
-					filterResults.values = filteredItems;
-					return filterResults;
-				}
+                    FilterResults filterResults = new FilterResults();
+                    filterResults.count = filteredItems.size();
+                    filterResults.values = filteredItems;
+                    return filterResults;
+                }
 
-				@Override
-				protected void publishResults(CharSequence charSequence, FilterResults filterResults)
-				{
-					notifyDataSetChanged();
-				}
-			};
+                @Override
+                protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                    notifyDataSetChanged();
+                }
+            };
 
-		}
+        }
 
-		return filter;
-	}
+        return filter;
+    }
 }

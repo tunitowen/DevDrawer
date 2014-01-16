@@ -2,14 +2,14 @@ package com.owentech.DevDrawer.receivers;
 
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
-import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
-import com.owentech.DevDrawer.utils.Database;
+
 import com.owentech.DevDrawer.R;
+import com.owentech.DevDrawer.utils.AppWidgetUtil;
+import com.owentech.DevDrawer.utils.Database;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,34 +26,28 @@ public class AppInstalledReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-
-		// New app has been installed, check and add to the database / widget
+        // New app has been installed, check and add to the database / widget
         String newPackage = intent.getData().getSchemeSpecificPart();
 
         database = new Database(context);
         database.createTables();
 
-        if(database.getFiltersCount() != 0)
-        {
-			int match = database.parseAndMatch(newPackage);
-            if(match != Database.NOT_FOUND)
-            {
-                Log.d(TAG, "Matches Filter");
-                database.addAppToDatabase(intent.getData().getSchemeSpecificPart(), Integer.toString(match));
+        if (database.getFiltersCount() != 0) {
+            int[] appWidgetIds = AppWidgetUtil.findAppWidgetIds(context);
+            for (int appWidgetId : appWidgetIds) {
+                int match = database.parseAndMatch(newPackage, appWidgetId);
+                if (match != Database.NOT_FOUND) {
+                    Log.d(TAG, "Matches Filter");
+                    database.addAppToDatabase(intent.getData().getSchemeSpecificPart(), Integer.toString(match), appWidgetId);
 
-				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-				{
-					AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-					int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
-					appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
-				}
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+                    }
+                } else {
+                    Log.d(TAG, "Doesn't Match Filter");
+                }
             }
-            else
-            {
-                Log.d(TAG, "Doesn't Match Filter");
-            }
-
         }
-
     }
 }
