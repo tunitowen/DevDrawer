@@ -85,10 +85,10 @@ public class Database {
     public void dropTables(){
         connectDB();
 
-        db.execSQL("DROP TABLE devdrawer_filter");
-        db.execSQL("DROP TABLE devdrawer_app");
-        db.execSQL("DROP TABLE devdrawer_locales");
-        db.execSQL("DROP TABLE devdrawer_widgets");
+        db.execSQL("DROP TABLE IF EXISTS devdrawer_filter");
+        db.execSQL("DROP TABLE IF EXISTS devdrawer_app");
+        db.execSQL("DROP TABLE IF EXISTS devdrawer_locales");
+        db.execSQL("DROP TABLE IF EXISTS devdrawer_widgets");
 
         closeDB();
     }
