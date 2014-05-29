@@ -118,7 +118,13 @@ public class PrefActivity extends PreferenceActivity
                 return true;
             }
         });
-	}
+     
+    	// disable root views if no root access   
+        if(!rootPref.isChecked()) {
+        	toggleRootViews(false);
+        }
+        
+    }
 
     @Override
     public void onBackPressed() {
