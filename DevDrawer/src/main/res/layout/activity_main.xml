@@ -7,21 +7,26 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
-
-    <com.viewpagerindicator.TitlePageIndicator
-        android:id="@+id/activity_main_titlepageindicator"
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/background_repeat_dark"
-        android:fontFamily="sans-serif-light"
-        app:footerColor="#FF8800" />
+        android:layout_height="48dip"
+        android:layout_alignParentTop="true"/>
+
+    <!--<com.viewpagerindicator.TitlePageIndicator-->
+        <!--android:id="@+id/activity_main_titlepageindicator"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:background="@drawable/background_repeat_dark"-->
+        <!--android:fontFamily="sans-serif-light"-->
+        <!--app:footerColor="#FF8800" />-->
 
     <LinearLayout
         android:id="@+id/activity_main_packagefiltercontainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/activity_main_titlepageindicator">
+        android:layout_below="@id/tabs">
 
         <TextView
             android:id="@+id/activity_main_filterTitle"

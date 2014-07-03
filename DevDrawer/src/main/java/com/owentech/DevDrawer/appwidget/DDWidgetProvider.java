@@ -54,7 +54,7 @@ public class DDWidgetProvider extends AppWidgetProvider {
 
         String name = new Database(context).getWidgetNames().get(appWidgetId);
 
-        if (name == null || name.trim().isEmpty()) {
+        if (name == null || name.trim().isEmpty() || name.equalsIgnoreCase("unnamed")) {
             widget.setViewVisibility(R.id.widget_layout_titletv, View.GONE);
             widget.setViewVisibility(R.id.widget_layout_titledivider, View.GONE);
         } else {

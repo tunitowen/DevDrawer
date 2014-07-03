@@ -135,7 +135,12 @@ public class Database {
 
         while (!getAllCursor.isAfterLast()) {
 
-            result.put(getAllCursor.getInt(0), getAllCursor.getString(1));
+            String name = getAllCursor.getString(1);
+            if (name == null || name.length() == 0){
+                name = "Unnamed";
+            }
+
+            result.put(getAllCursor.getInt(0), name);
             getAllCursor.moveToNext();
         }
 

@@ -5,17 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Typeface;
-import android.os.AsyncTask;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.owentech.DevDrawer.AppWidgetFragment;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
@@ -53,7 +54,8 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
     private ViewPager mViewPager;
     private WidgetFragmentViewPagerAdapter mViewPagerAdapter;
 
-    private TitlePageIndicator mTitlePageIndicator;
+//    private TitlePageIndicator mTitlePageIndicator;
+    private PagerSlidingTabStrip tabs;
 
     private AutoCompleteTextView mAutoCompleteTextView;
     private PartialMatchAdapter mPartialMatchAdapter;
@@ -113,12 +115,11 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
         mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
         mViewPager.setAdapter(mViewPagerAdapter);
 
+        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs.setViewPager(mViewPager);
+
         mViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.viewpager_pagemargin_width));
         mViewPager.setPageMarginDrawable(android.R.drawable.divider_horizontal_bright);
-
-        mTitlePageIndicator = (TitlePageIndicator) findViewById(R.id.activity_main_titlepageindicator);
-        mTitlePageIndicator.setViewPager(mViewPager);
-        mTitlePageIndicator.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
 
         mViewPagerAdapter.setWidgetIds(mAppWidgetIds);
         mViewPagerAdapter.notifyDataSetChanged();
@@ -127,7 +128,8 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
         mAutoCompleteTextView.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
         addButton.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
         mViewPager.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-        mTitlePageIndicator.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+        tabs.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+        tabs.setIndicatorColor(Color.parseColor("#FF8800"));
         findViewById(R.id.activity_main_filterTitle).setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
     }
 
@@ -312,7 +314,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
         }
     }
 
-    private class WidgetFragmentViewPagerAdapter extends FragmentStatePagerAdapter {
+    private class WidgetFragmentViewPagerAdapter extends FragmentPagerAdapter {
 
         @Override
         public CharSequence getPageTitle(int position) {
@@ -338,26 +340,45 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
         }
 
         public void updateNames() {
+            Log.d("MainActivity", "updateNames");
             mNames = new String[mWidgetIds.length];
 
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    Map<Integer, String> widgetNames = new Database(MainActivity.this).getWidgetNames();
-                    for (int i = 0; i < mWidgetIds.length; i++) {
-                        mNames[i] = widgetNames.get(mWidgetIds[i]);
-                        if (mNames[i] == null || mNames[i].trim().isEmpty()) {
-                            mNames[i] = "No Name";
-                        }
-                    }
-                    return null;
+            Map<Integer, String> widgetNames = new Database(MainActivity.this).getWidgetNames();
+            for (int i = 0; i < mWidgetIds.length; i++) {
+                mNames[i] = widgetNames.get(mWidgetIds[i]);
+                if (mNames[i] == null){
+                    Log.d("mNamesNull", "Empty");
+                    mNames[i] = "Unnamed";
                 }
+                else {
+                    Log.d("mNames", mNames[i]);
+                }
+                if (mNames[i] == null || mNames[i].trim().isEmpty()) {
+                    mNames[i] = "No Name";
+                }
+            }
+            tabs.notifyDataSetChanged();
 
-                @Override
-                protected void onPostExecute(Void aVoid) {
-                    mTitlePageIndicator.notifyDataSetChanged();
-                }
-            }.execute();
+//            new AsyncTask<Void, Void, Void>() {
+//                @Override
+//                protected Void doInBackground(Void... params) {
+//                    Map<Integer, String> widgetNames = new Database(MainActivity.this).getWidgetNames();
+//                    for (int i = 0; i < mWidgetIds.length; i++) {
+//                        mNames[i] = widgetNames.get(mWidgetIds[i]);
+//                        Log.d("mNames", mNames[i]);
+//                        if (mNames[i] == null || mNames[i].trim().isEmpty()) {
+//                            mNames[i] = "No Name";
+//                        }
+//                    }
+//                    return null;
+//                }
+//
+//                @Override
+//                protected void onPostExecute(Void aVoid) {
+//                    tabs.notifyDataSetChanged();
+////                    mTitlePageIndicator.notifyDataSetChanged();
+//                }
+//            }.execute();
         }
 
         public void setWidgetIds(int[] widgetIds) {
