@@ -40,8 +40,8 @@
         <CheckBoxPreference android:key="rootQuickUninstall"
                             android:title="Quick uninstall"
                             android:defaultValue="false" />
-        <CheckBoxPreference android:key="rootClearCache"
-                            android:title="Clear cache"
+        <CheckBoxPreference android:key="rootClearData"
+                            android:title="Clear data"
                             android:defaultValue="false" />
     </PreferenceCategory>
 
