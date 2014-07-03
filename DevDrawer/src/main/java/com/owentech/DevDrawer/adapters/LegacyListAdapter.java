@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.activities.ClickHandlingActivity;
 import com.owentech.DevDrawer.utils.Database;
@@ -22,200 +23,177 @@ import com.owentech.DevDrawer.utils.Database;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LegacyListAdapter extends BaseAdapter
-{
-	PackageManager pm;
+public class LegacyListAdapter extends BaseAdapter {
+    PackageManager pm;
 
-	public List<String> applicationNames;
-	public List<String> packageNames;
-	public List<Drawable> applicationIcons;
+    public List<String> applicationNames;
+    public List<String> packageNames;
+    public List<Drawable> applicationIcons;
 
-	Activity activity;
-	Database database;
-	SharedPreferences sp;
+    Activity activity;
+    Database database;
+    SharedPreferences sp;
     boolean rootClearData;
 
-	public LegacyListAdapter (Activity activity)
-	{
-		super();
-		this.activity = activity;
-		database = new Database(activity);
-		getApps();
-		notifyDataSetChanged();
-		sp = PreferenceManager.getDefaultSharedPreferences(activity);
+    public LegacyListAdapter(Activity activity) {
+        super();
+        this.activity = activity;
+        database = new Database(activity);
+        getApps();
+        notifyDataSetChanged();
+        sp = PreferenceManager.getDefaultSharedPreferences(activity);
         rootClearData = sp.getBoolean("rootClearData", false);
-	}
+    }
 
-	public int getCount()
-	{
-		return applicationNames.size();
-	}
+    public int getCount() {
+        return applicationNames.size();
+    }
 
-	public Object getItem(int position)
-	{
-		return null;
-	}
+    public Object getItem(int position) {
+        return null;
+    }
 
-	public long getItemId(int position)
-	{
-		return 0;
-	}
+    public long getItemId(int position) {
+        return 0;
+    }
 
-	private class ViewHolder
-	{
-		ImageView icon;
-		TextView packageName;
-		TextView appName;
-		ImageView delete;
-		ImageView settings;
+    private class ViewHolder {
+        ImageView icon;
+        TextView packageName;
+        TextView appName;
+        ImageView delete;
+        ImageView settings;
         ImageView clear;
         ImageView more;
-		Button touchArea;
-	}
+        Button touchArea;
+    }
 
-	public View getView(final int position, View convertView, ViewGroup parent)
-	{
-		ViewHolder holder;
-		final LayoutInflater inflater = activity.getLayoutInflater();
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+        final LayoutInflater inflater = activity.getLayoutInflater();
 
-		if(convertView == null)
-		{
-			convertView = inflater.inflate(rootClearData ? R.layout.list_item_more_legacy : R.layout.list_item, null);
-			holder = new ViewHolder();
+        if (convertView == null) {
+            convertView = inflater.inflate(rootClearData ? R.layout.list_item_more_legacy : R.layout.list_item, null);
+            holder = new ViewHolder();
 
-			holder.icon = (ImageView) convertView.findViewById(R.id.imageView);
-			holder.packageName = (TextView) convertView.findViewById(R.id.packageNameTextView);
-			holder.appName = (TextView) convertView.findViewById(R.id.appNameTextView);
-			holder.delete = (ImageView) convertView.findViewById(R.id.uninstallImageButton);
-			holder.settings = (ImageView) convertView.findViewById(R.id.appDetailsImageButton);
+            holder.icon = (ImageView) convertView.findViewById(R.id.imageView);
+            holder.packageName = (TextView) convertView.findViewById(R.id.packageNameTextView);
+            holder.appName = (TextView) convertView.findViewById(R.id.appNameTextView);
+            holder.delete = (ImageView) convertView.findViewById(R.id.uninstallImageButton);
+            holder.settings = (ImageView) convertView.findViewById(R.id.appDetailsImageButton);
             holder.clear = (ImageView) convertView.findViewById(R.id.clearImageButton);
             holder.more = (ImageView) convertView.findViewById(R.id.moreImageButton);
-			holder.touchArea = (Button) convertView.findViewById(R.id.touchArea);
+            holder.touchArea = (Button) convertView.findViewById(R.id.touchArea);
 
-			convertView.setTag(holder);
+            convertView.setTag(holder);
 
-		}
-		else
-		{
-			holder = (ViewHolder) convertView.getTag();
-		}
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
-		holder.icon.setImageBitmap(convertFromDrawable(applicationIcons.get(position)));
-		holder.packageName.setText(packageNames.get(position));
-		holder.appName.setText(applicationNames.get(position));
+        holder.icon.setImageBitmap(convertFromDrawable(applicationIcons.get(position)));
+        holder.packageName.setText(packageNames.get(position));
+        holder.appName.setText(applicationNames.get(position));
 
-		if(sp.getString("theme", "Light").equals("Light"))
-		{
-			holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_light));
-			if (holder.delete != null) holder.delete.setImageResource(R.drawable.delete_imageview);
-            if (holder.settings != null) holder.settings.setImageResource(R.drawable.settings_imageview);
+        if (sp.getString("theme", "Light").equals("Light")) {
+            holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_light));
+            if (holder.delete != null) holder.delete.setImageResource(R.drawable.delete_imageview);
+            if (holder.settings != null)
+                holder.settings.setImageResource(R.drawable.settings_imageview);
             if (holder.clear != null) holder.clear.setImageResource(R.drawable.clear_imageview);
             if (holder.more != null) holder.more.setImageResource(R.drawable.more_imageview);
-		}
-		else
-		{
-			holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_dark));
-            if (holder.delete != null) holder.delete.setImageResource(R.drawable.delete_imageview_dark);
-            if (holder.settings != null) holder.settings.setImageResource(R.drawable.settings_imageview_dark);
-            if (holder.clear != null) holder.clear.setImageResource(R.drawable.clear_imageview_dark);
+        } else {
+            holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_dark));
+            if (holder.delete != null)
+                holder.delete.setImageResource(R.drawable.delete_imageview_dark);
+            if (holder.settings != null)
+                holder.settings.setImageResource(R.drawable.settings_imageview_dark);
+            if (holder.clear != null)
+                holder.clear.setImageResource(R.drawable.clear_imageview_dark);
             if (holder.more != null) holder.more.setImageResource(R.drawable.more_imageview_dark);
-		}
+        }
 
-        if (holder.delete != null) holder.delete.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				ClickHandlingActivity.startUninstall(activity, packageNames.get(position));
-			}
-		});
-
-        if (holder.settings != null) holder.settings.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				ClickHandlingActivity.startAppDetails(activity, packageNames.get(position));
-			}
-		});
-
-        if (holder.clear != null) holder.clear.setOnClickListener(new View.OnClickListener()
-        {
+        if (holder.delete != null) holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
+                ClickHandlingActivity.startUninstall(activity, packageNames.get(position));
+            }
+        });
+
+        if (holder.settings != null) holder.settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClickHandlingActivity.startAppDetails(activity, packageNames.get(position));
+            }
+        });
+
+        if (holder.clear != null) holder.clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 ClickHandlingActivity.startClearData(activity, packageNames.get(position));
             }
         });
 
-        if (holder.more != null) holder.more.setOnClickListener(new View.OnClickListener()
-        {
+        if (holder.more != null) holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 ClickHandlingActivity.startMoreOverflowMenu(activity, packageNames.get(position));
             }
         });
 
-		holder.touchArea.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				ClickHandlingActivity.startApp(activity, packageNames.get(position));
-			}
-		});
+        holder.touchArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClickHandlingActivity.startApp(activity, packageNames.get(position));
+            }
+        });
 
-		return convertView;
-	}
+        return convertView;
+    }
 
-	@Override
-	public void notifyDataSetChanged()
-	{
-		super.notifyDataSetChanged();
-	}
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
 
-	// Method to get all apps from the app database and add to the dataset
-	public void getApps()
-	{
+    // Method to get all apps from the app database and add to the dataset
+    public void getApps() {
 
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
 
-		// Get all apps from the app table
-		String[] packages = database.getAllAppsInDatabase(sp.getString("widgetSorting", "added"));
-		pm = activity.getPackageManager();
+        // Get all apps from the app table
+        String[] packages = database.getAllAppsInDatabase(sp.getString("widgetSorting", "added"));
+        pm = activity.getPackageManager();
 
-		// Defensive code, was getting some strange behaviour and forcing the lists seems to fix
-		applicationNames = null;
-		packageNames = null;
-		applicationIcons = null;
+        // Defensive code, was getting some strange behaviour and forcing the lists seems to fix
+        applicationNames = null;
+        packageNames = null;
+        applicationIcons = null;
 
-		// Setup the lists holding the data
-		applicationNames = new ArrayList<String>();
-		packageNames = new ArrayList<String>();
-		applicationIcons = new ArrayList<Drawable>();
+        // Setup the lists holding the data
+        applicationNames = new ArrayList<String>();
+        packageNames = new ArrayList<String>();
+        applicationIcons = new ArrayList<Drawable>();
 
-		// Loop though adding details from PackageManager to the lists
-		for(String s : packages)
-		{
-			ApplicationInfo applicationInfo;
+        // Loop though adding details from PackageManager to the lists
+        for (String s : packages) {
+            ApplicationInfo applicationInfo;
 
-			try {
-				applicationInfo = pm.getPackageInfo(s, PackageManager.GET_ACTIVITIES).applicationInfo;
-				applicationNames.add(applicationInfo.loadLabel(pm).toString());
-				packageNames.add(applicationInfo.packageName.toString());
-				applicationIcons.add(applicationInfo.loadIcon(pm));
+            try {
+                applicationInfo = pm.getPackageInfo(s, PackageManager.GET_ACTIVITIES).applicationInfo;
+                applicationNames.add(applicationInfo.loadLabel(pm).toString());
+                packageNames.add(applicationInfo.packageName.toString());
+                applicationIcons.add(applicationInfo.loadIcon(pm));
 
-			} catch (PackageManager.NameNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
 
-	}
+    }
 
-	// Method to return a bitmap from drawable
-	public Bitmap convertFromDrawable(Drawable d)
-	{
-		return ((BitmapDrawable)d).getBitmap();
-	}
+    // Method to return a bitmap from drawable
+    public Bitmap convertFromDrawable(Drawable d) {
+        return ((BitmapDrawable) d).getBitmap();
+    }
 }

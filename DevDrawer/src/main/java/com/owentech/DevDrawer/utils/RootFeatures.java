@@ -1,6 +1,7 @@
 package com.owentech.DevDrawer.utils;
 
 import android.os.AsyncTask;
+
 import eu.chainfire.libsuperuser.Shell;
 
 import java.util.ArrayList;
@@ -39,10 +40,10 @@ public class RootFeatures {
         void onFinished(boolean result);
     }
 
-    private static final int CHECK_ACCESS   = 42;
-    private static final int UNINSTALL      = 43;
-    private static final int CLEAR_DATA     = 44;
-    private static final int SYSTEM_LOCALE  = 45;
+    private static final int CHECK_ACCESS = 42;
+    private static final int UNINSTALL = 43;
+    private static final int CLEAR_DATA = 44;
+    private static final int SYSTEM_LOCALE = 45;
 
     private static class Command {
         int id;
@@ -76,16 +77,13 @@ public class RootFeatures {
             boolean result = false;
             if (cmds[0].id == CHECK_ACCESS) {
                 result = Shell.SU.available();
-            }
-            else if (cmds[0].id == UNINSTALL) {
-                List<String> res = Shell.SU.run(new String[] { "pm uninstall " + cmds[0].params.get(0), "echo \"OK\"" });
+            } else if (cmds[0].id == UNINSTALL) {
+                List<String> res = Shell.SU.run(new String[]{"pm uninstall " + cmds[0].params.get(0), "echo \"OK\""});
                 result = (res != null && res.size() > 0);
-            }
-            else if (cmds[0].id == CLEAR_DATA) {
-                List<String> res = Shell.SU.run(new String[] { "pm clear " + cmds[0].params.get(0), "echo \"OK\"" });
+            } else if (cmds[0].id == CLEAR_DATA) {
+                List<String> res = Shell.SU.run(new String[]{"pm clear " + cmds[0].params.get(0), "echo \"OK\""});
                 result = (res != null && res.size() > 0);
-            }
-            else if (cmds[0].id == SYSTEM_LOCALE) {
+            } else if (cmds[0].id == SYSTEM_LOCALE) {
                 String path = cmds[0].params.get(0);
                 String language = cmds[0].params.get(1);
                 String country = cmds[0].params.get(2);

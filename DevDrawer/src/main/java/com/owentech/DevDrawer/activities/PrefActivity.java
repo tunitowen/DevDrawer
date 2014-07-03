@@ -25,92 +25,84 @@ import java.lang.ref.WeakReference;
  * Time: 16:33
  * To change this template use File | Settings | File Templates.
  */
-public class PrefActivity extends PreferenceActivity
-{
-	SharedPreferences sp;
+public class PrefActivity extends PreferenceActivity {
+    SharedPreferences sp;
     SwitchPreference rootPref;
     CheckBoxPreference rootQuickUninstall;
     CheckBoxPreference rootClearData;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.preferences);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.preferences);
 
-		sp = getPreferenceManager().getSharedPreferences();
+        sp = getPreferenceManager().getSharedPreferences();
 
-		ListPreference activityChoicePref = (ListPreference)findPreference("widgetSorting");
-		ListPreference themePref = (ListPreference)findPreference("theme");
-		ListPreference intentsPref = (ListPreference)findPreference("launchingIntents");
+        ListPreference activityChoicePref = (ListPreference) findPreference("widgetSorting");
+        ListPreference themePref = (ListPreference) findPreference("theme");
+        ListPreference intentsPref = (ListPreference) findPreference("launchingIntents");
 
-		activityChoicePref.setSummary(nameFromValue(sp.getString("widgetSorting", "order"), activityChoicePref));
-		themePref.setSummary(sp.getString("theme", "Light"));
-		intentsPref.setSummary(intentNameFromValue(sp.getString("launchingIntents", "aosp"), intentsPref));
+        activityChoicePref.setSummary(nameFromValue(sp.getString("widgetSorting", "order"), activityChoicePref));
+        themePref.setSummary(sp.getString("theme", "Light"));
+        intentsPref.setSummary(intentNameFromValue(sp.getString("launchingIntents", "aosp"), intentsPref));
 
-		activityChoicePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-		{
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue)
-			{
-				SharedPreferences.Editor editor = sp.edit();
-				editor.putString(preference.getKey(), newValue.toString());
-				editor.commit();
+        activityChoicePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString(preference.getKey(), newValue.toString());
+                editor.commit();
 
-				preference.setSummary(nameFromValue(newValue.toString(), preference));
+                preference.setSummary(nameFromValue(newValue.toString(), preference));
 
-				AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
-				int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getApplicationContext(), DDWidgetProvider.class));
-				appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getApplicationContext(), DDWidgetProvider.class));
+                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
 
-				return false;
-			}
-		});
+                return false;
+            }
+        });
 
-		themePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-		{
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue)
-			{
-				SharedPreferences.Editor editor = sp.edit();
-				editor.putString(preference.getKey(), newValue.toString());
-				editor.commit();
+        themePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString(preference.getKey(), newValue.toString());
+                editor.commit();
 
-				preference.setSummary(newValue.toString());
+                preference.setSummary(newValue.toString());
 
-				Toast.makeText(PrefActivity.this, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PrefActivity.this, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
 
-				return false;
-			}
-		});
+                return false;
+            }
+        });
 
-		intentsPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
-		{
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue)
-			{
-				SharedPreferences.Editor editor = sp.edit();
-				editor.putString(preference.getKey(), newValue.toString());
-				editor.commit();
+        intentsPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString(preference.getKey(), newValue.toString());
+                editor.commit();
 
-				preference.setSummary(intentNameFromValue(newValue.toString(), preference));
+                preference.setSummary(intentNameFromValue(newValue.toString(), preference));
 
-				return false;
-			}
-		});
+                return false;
+            }
+        });
 
-        rootPref = (SwitchPreference)findPreference("rootEnabled");
+        rootPref = (SwitchPreference) findPreference("rootEnabled");
         rootPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                toggleRootAccess((Boolean)newValue);
+                toggleRootAccess((Boolean) newValue);
                 return true;
             }
         });
 
-        rootQuickUninstall = (CheckBoxPreference)findPreference("rootQuickUninstall");
+        rootQuickUninstall = (CheckBoxPreference) findPreference("rootQuickUninstall");
 
-        rootClearData = (CheckBoxPreference)findPreference("rootClearData");
+        rootClearData = (CheckBoxPreference) findPreference("rootClearData");
         rootClearData.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -118,12 +110,12 @@ public class PrefActivity extends PreferenceActivity
                 return true;
             }
         });
-	}
+    }
 
     @Override
     public void onBackPressed() {
         //TODO check the todo on MainActivity. This is a workaround to it
-        startActivity(new Intent(PrefActivity.this,MainActivity.class));
+        startActivity(new Intent(PrefActivity.this, MainActivity.class));
         finish();
     }
 
@@ -151,8 +143,7 @@ public class PrefActivity extends PreferenceActivity
                 if (msg.arg1 == 1) {
                     activity.toggleRootViews(true);
                     Toast.makeText(activity, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     // no root access: reset UI
                     activity.rootPref.setChecked(false);
                     noRootAccessError(activity);
@@ -173,8 +164,7 @@ public class PrefActivity extends PreferenceActivity
                     handler.sendMessage(msg);
                 }
             });
-        }
-        else {
+        } else {
             toggleRootViews(false);
             Toast.makeText(PrefActivity.this, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
         }
@@ -192,8 +182,8 @@ public class PrefActivity extends PreferenceActivity
     }
 
     private void toggleRootViews(boolean enabled) {
-        CheckBoxPreference rootQuickUninstall = (CheckBoxPreference)findPreference("rootQuickUninstall");
-        CheckBoxPreference rootClearData = (CheckBoxPreference)findPreference("rootClearData");
+        CheckBoxPreference rootQuickUninstall = (CheckBoxPreference) findPreference("rootQuickUninstall");
+        CheckBoxPreference rootClearData = (CheckBoxPreference) findPreference("rootClearData");
 
         rootQuickUninstall.setEnabled(enabled);
         rootClearData.setEnabled(enabled);
@@ -202,39 +192,33 @@ public class PrefActivity extends PreferenceActivity
         rootClearData.setChecked(enabled);
     }
 
-	private String nameFromValue(String value, Preference preference)
-	{
-		String ofTheSpaceCowboy = "";
+    private String nameFromValue(String value, Preference preference) {
+        String ofTheSpaceCowboy = "";
 
-		String[] values = getResources().getStringArray(R.array.sorting_options_values);
-		String[] names = getResources().getStringArray(R.array.sorting_options);
+        String[] values = getResources().getStringArray(R.array.sorting_options_values);
+        String[] names = getResources().getStringArray(R.array.sorting_options);
 
-		for (int i=0; i < names.length; i++)
-		{
-			if(value.equals(values[i]))
-			{
-				ofTheSpaceCowboy = names[i];
-			}
-		}
+        for (int i = 0; i < names.length; i++) {
+            if (value.equals(values[i])) {
+                ofTheSpaceCowboy = names[i];
+            }
+        }
 
-		return ofTheSpaceCowboy;
-	}
+        return ofTheSpaceCowboy;
+    }
 
-	private String intentNameFromValue(String value, Preference preference)
-	{
-		String ofTheSpaceCowboy = "";
+    private String intentNameFromValue(String value, Preference preference) {
+        String ofTheSpaceCowboy = "";
 
-		String[] values = getResources().getStringArray(R.array.launching_intents_values);
-		String[] names = getResources().getStringArray(R.array.launching_intents);
+        String[] values = getResources().getStringArray(R.array.launching_intents_values);
+        String[] names = getResources().getStringArray(R.array.launching_intents);
 
-		for (int i=0; i < names.length; i++)
-		{
-			if(value.equals(values[i]))
-			{
-				ofTheSpaceCowboy = names[i];
-			}
-		}
+        for (int i = 0; i < names.length; i++) {
+            if (value.equals(values[i])) {
+                ofTheSpaceCowboy = names[i];
+            }
+        }
 
-		return ofTheSpaceCowboy;
-	}
+        return ofTheSpaceCowboy;
+    }
 }

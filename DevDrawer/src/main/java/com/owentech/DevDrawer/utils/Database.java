@@ -34,7 +34,7 @@ public class Database {
         this.ctx = ctx;
 
         int[] appWidgetIds = AppWidgetUtil.findAppWidgetIds(ctx);
-        if(appWidgetIds.length > 0 && !PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("HASMULTIPLEWIDGETS", false)){
+        if (appWidgetIds.length > 0 && !PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("HASMULTIPLEWIDGETS", false)) {
             Toast.makeText(ctx, "Please remove and re-add your widgets", Toast.LENGTH_LONG).show();
             dropTables();
             PreferenceManager.getDefaultSharedPreferences(ctx).edit().putBoolean("HASMULTIPLEWIDGETS", true).commit();
@@ -82,7 +82,7 @@ public class Database {
         closeDB();
     }
 
-    public void dropTables(){
+    public void dropTables() {
         connectDB();
 
         db.execSQL("DROP TABLE IF EXISTS devdrawer_filter");

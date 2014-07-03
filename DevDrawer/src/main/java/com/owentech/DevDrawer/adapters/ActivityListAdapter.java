@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
 import com.owentech.DevDrawer.R;
 
 import java.util.List;
@@ -17,76 +18,65 @@ import java.util.List;
  * Time: 16:31
  * To change this template use File | Settings | File Templates.
  */
-public class ActivityListAdapter extends BaseAdapter
-{
-	Activity activity;
-	List<String> activityList;
+public class ActivityListAdapter extends BaseAdapter {
+    Activity activity;
+    List<String> activityList;
 
-	public ActivityListAdapter (Activity activity, List<String> activityList)
-	{
-		super();
-		this.activity = activity;
-		this.activityList = activityList;
-	}
+    public ActivityListAdapter(Activity activity, List<String> activityList) {
+        super();
+        this.activity = activity;
+        this.activityList = activityList;
+    }
 
-	public int getCount()
-	{
-		return activityList.size();
-	}
+    public int getCount() {
+        return activityList.size();
+    }
 
-	public Object getItem(int position)
-	{
-		return null;
-	}
+    public Object getItem(int position) {
+        return null;
+    }
 
-	public long getItemId(int position)
-	{
-		return 0;
-	}
+    public long getItemId(int position) {
+        return 0;
+    }
 
-	private class ViewHolder
-	{
-		TextView txtActivityPath;
-		TextView txtActivityName;
-	}
+    private class ViewHolder {
+        TextView txtActivityPath;
+        TextView txtActivityName;
+    }
 
-	public View getView(final int position, View convertView, ViewGroup parent)
-	{
-		// Setup the list item text, onclicks etc
-		ViewHolder holder;
-		LayoutInflater inflater = activity.getLayoutInflater();
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        // Setup the list item text, onclicks etc
+        ViewHolder holder;
+        LayoutInflater inflater = activity.getLayoutInflater();
 
-		if(convertView == null)
-		{
-			convertView = inflater.inflate(R.layout.activity_choice_list_item, null);
-			holder = new ViewHolder();
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.activity_choice_list_item, null);
+            holder = new ViewHolder();
 
-			holder.txtActivityPath = (TextView) convertView.findViewById(R.id.activityPathTextView);
-			holder.txtActivityName = (TextView) convertView.findViewById(R.id.activityNameTextView);
+            holder.txtActivityPath = (TextView) convertView.findViewById(R.id.activityPathTextView);
+            holder.txtActivityName = (TextView) convertView.findViewById(R.id.activityNameTextView);
 
-			convertView.setTag(holder);
+            convertView.setTag(holder);
 
-		}
-		else
-		{
-			holder = (ViewHolder) convertView.getTag();
-		}
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
-		holder.txtActivityPath.setText(activityList.get(position).substring(0, activityList.get(position).lastIndexOf('.')));
-		holder.txtActivityName.setText(activityList.get(position)
-				.substring(activityList.get(position).lastIndexOf('.'), activityList.get(position).length()));
+        holder.txtActivityPath.setText(activityList.get(position).substring(0, activityList.get(position).lastIndexOf('.')));
+        holder.txtActivityName.setText(activityList.get(position)
+                .substring(activityList.get(position).lastIndexOf('.'), activityList.get(position).length()));
 
-		// OnClick action for Delete Button
+        // OnClick action for Delete Button
 
-		return convertView;
-	}
+        return convertView;
+    }
 
-	@Override
-	public void notifyDataSetChanged()
-	{
+    @Override
+    public void notifyDataSetChanged() {
 //		Database database = new Database(mContext);
 //		packageCollections = database.getAllFiltersInDatabase();
 
-		super.notifyDataSetChanged();
-	}
+        super.notifyDataSetChanged();
+    }
 }

@@ -19,8 +19,7 @@ public final class RootLocaleSwitcher {
     public static void main(String[] args) {
         if (args.length == 2) {
             switchLocales(args[0], args[1]);
-        }
-        else {
+        } else {
             System.err.println("invalid parameters");
         }
     }
@@ -28,12 +27,9 @@ public final class RootLocaleSwitcher {
     private static void switchLocales(String language, String country) {
         Locale locale;
 
-        if (country != null)
-        {
+        if (country != null) {
             locale = new Locale(language, country);
-        }
-        else
-        {
+        } else {
             locale = new Locale(language);
         }
 
