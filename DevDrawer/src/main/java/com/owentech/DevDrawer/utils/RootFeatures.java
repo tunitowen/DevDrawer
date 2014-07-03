@@ -23,8 +23,8 @@ public class RootFeatures {
         new Worker(listener).execute(new Command(UNINSTALL, packageName));
     }
 
-    public static void clearCache(String packageName, Listener listener) {
-        new Worker(listener).execute(new Command(CLEAR_CACHE, packageName));
+    public static void clearData(String packageName, Listener listener) {
+        new Worker(listener).execute(new Command(CLEAR_DATA, packageName));
     }
 
     public static void changeSystemLocale(String path, String language, String country, Listener listener) {
@@ -41,7 +41,7 @@ public class RootFeatures {
 
     private static final int CHECK_ACCESS   = 42;
     private static final int UNINSTALL      = 43;
-    private static final int CLEAR_CACHE    = 44;
+    private static final int CLEAR_DATA     = 44;
     private static final int SYSTEM_LOCALE  = 45;
 
     private static class Command {
@@ -81,7 +81,7 @@ public class RootFeatures {
                 List<String> res = Shell.SU.run(new String[] { "pm uninstall " + cmds[0].params.get(0), "echo \"OK\"" });
                 result = (res != null && res.size() > 0);
             }
-            else if (cmds[0].id == CLEAR_CACHE) {
+            else if (cmds[0].id == CLEAR_DATA) {
                 List<String> res = Shell.SU.run(new String[] { "pm clear " + cmds[0].params.get(0), "echo \"OK\"" });
                 result = (res != null && res.size() > 0);
             }

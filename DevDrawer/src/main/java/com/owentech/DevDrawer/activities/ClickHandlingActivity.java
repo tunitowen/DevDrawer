@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
@@ -61,7 +60,7 @@ public class ClickHandlingActivity extends Activity
 				}
                 case Constants.LAUNCH_CLEAR:
                 {
-                    startClearCache(this, packageName);
+                    startClearData(this, packageName);
                     break;
                 }
                 case Constants.LAUNCH_MORE:
@@ -203,11 +202,11 @@ public class ClickHandlingActivity extends Activity
             activity.finish();
         }
 	}
-    public static void startClearCache(Activity activity, String packageName)
+    public static void startClearData(Activity activity, String packageName)
     {
         final Context context = activity.getApplicationContext();
         activity.finish();
-        RootFeatures.clearCache(packageName, new RootFeatures.Listener() {
+        RootFeatures.clearData(packageName, new RootFeatures.Listener() {
 
             @Override
             public void onFinished(boolean result) {
@@ -224,14 +223,14 @@ public class ClickHandlingActivity extends Activity
             PackageManager pm = activity.getPackageManager();
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
             Dialog dlg = builder.setTitle(pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0)))
-                   .setItems(new CharSequence[] { "View details", "Clear cache"}, new DialogInterface.OnClickListener() {
+                   .setItems(new CharSequence[] { "View details", "Clear data"}, new DialogInterface.OnClickListener() {
                        @Override
                        public void onClick(DialogInterface dialog, int which) {
                            if (which == 0) {
                                startAppDetails(activity, packageName);
                            }
                            else if (which == 1) {
-                               startClearCache(activity, packageName);
+                               startClearData(activity, packageName);
                            }
                        }
                    })

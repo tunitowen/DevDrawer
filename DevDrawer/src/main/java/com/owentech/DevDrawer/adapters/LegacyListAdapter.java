@@ -33,7 +33,7 @@ public class LegacyListAdapter extends BaseAdapter
 	Activity activity;
 	Database database;
 	SharedPreferences sp;
-    boolean rootClearCache;
+    boolean rootClearData;
 
 	public LegacyListAdapter (Activity activity)
 	{
@@ -43,7 +43,7 @@ public class LegacyListAdapter extends BaseAdapter
 		getApps();
 		notifyDataSetChanged();
 		sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        rootClearCache = sp.getBoolean("rootClearCache", false);
+        rootClearData = sp.getBoolean("rootClearData", false);
 	}
 
 	public int getCount()
@@ -80,7 +80,7 @@ public class LegacyListAdapter extends BaseAdapter
 
 		if(convertView == null)
 		{
-			convertView = inflater.inflate(rootClearCache ? R.layout.list_item_more_legacy : R.layout.list_item, null);
+			convertView = inflater.inflate(rootClearData ? R.layout.list_item_more_legacy : R.layout.list_item, null);
 			holder = new ViewHolder();
 
 			holder.icon = (ImageView) convertView.findViewById(R.id.imageView);
@@ -144,7 +144,7 @@ public class LegacyListAdapter extends BaseAdapter
             @Override
             public void onClick(View view)
             {
-                ClickHandlingActivity.startClearCache(activity, packageNames.get(position));
+                ClickHandlingActivity.startClearData(activity, packageNames.get(position));
             }
         });
 

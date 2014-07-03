@@ -30,7 +30,7 @@ public class PrefActivity extends PreferenceActivity
 	SharedPreferences sp;
     SwitchPreference rootPref;
     CheckBoxPreference rootQuickUninstall;
-    CheckBoxPreference rootClearCache;
+    CheckBoxPreference rootClearData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -110,8 +110,8 @@ public class PrefActivity extends PreferenceActivity
 
         rootQuickUninstall = (CheckBoxPreference)findPreference("rootQuickUninstall");
 
-        rootClearCache = (CheckBoxPreference)findPreference("rootClearCache");
-        rootClearCache.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        rootClearData = (CheckBoxPreference)findPreference("rootClearData");
+        rootClearData.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 Toast.makeText(PrefActivity.this, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
@@ -193,13 +193,13 @@ public class PrefActivity extends PreferenceActivity
 
     private void toggleRootViews(boolean enabled) {
         CheckBoxPreference rootQuickUninstall = (CheckBoxPreference)findPreference("rootQuickUninstall");
-        CheckBoxPreference rootClearCache = (CheckBoxPreference)findPreference("rootClearCache");
+        CheckBoxPreference rootClearData = (CheckBoxPreference)findPreference("rootClearData");
 
         rootQuickUninstall.setEnabled(enabled);
-        rootClearCache.setEnabled(enabled);
+        rootClearData.setEnabled(enabled);
 
         rootQuickUninstall.setChecked(enabled);
-        rootClearCache.setChecked(enabled);
+        rootClearData.setChecked(enabled);
     }
 
 	private String nameFromValue(String value, Preference preference)

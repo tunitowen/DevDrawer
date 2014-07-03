@@ -66,10 +66,10 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
     @Override
     public RemoteViews getViewAt(int position) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean rootClearCache = sp.getBoolean("rootClearCache", false);
+        boolean rootClearData = sp.getBoolean("rootClearData", false);
 
         // Setup the list item and intents for on click
-        RemoteViews row = new RemoteViews(context.getPackageName(), rootClearCache ? R.layout.list_item_more : R.layout.list_item);
+        RemoteViews row = new RemoteViews(context.getPackageName(), rootClearData ? R.layout.list_item_more : R.layout.list_item);
 
         try {
             row.setTextViewText(R.id.packageNameTextView, packageNames.get(position));
@@ -90,7 +90,7 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
                 row.setImageViewResource(R.id.moreImageButton, R.drawable.more_imageview_dark);
             }
 
-            row.setViewVisibility(R.id.clearImageButton, rootClearCache ? View.VISIBLE : View.GONE);
+            row.setViewVisibility(R.id.clearImageButton, rootClearData ? View.VISIBLE : View.GONE);
 
             Intent appDetailsClickIntent = new Intent();
             Bundle appDetailsClickExtras = new Bundle();
