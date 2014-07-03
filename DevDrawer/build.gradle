@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
 apply plugin: 'android'
@@ -14,7 +14,7 @@ repositories {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "20"
 
     defaultConfig {
         minSdkVersion 7
@@ -35,6 +35,5 @@ dependencies {
         exclude group: 'com.google.android', module: 'support-v4'
     }
     compile 'com.google.code.gson:gson:2.2.4'
-
-    compile "com.android.support:support-v4:18.0.+"
+    compile 'com.android.support:support-v4:19.1.0'
 }
