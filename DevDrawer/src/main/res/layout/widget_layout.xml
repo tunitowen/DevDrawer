@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_repeat">
+    android:background="@android:color/transparent">
 
-    <ImageView
-        android:id="@+id/orangeImage"
-        android:layout_width="5dp"
-        android:layout_height="match_parent"
-        android:background="#FF8800" />
+    <!--<ImageView-->
+        <!--android:id="@+id/orangeImage"-->
+        <!--android:layout_width="5dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="#FF8800" />-->
 
     <TextView
         android:id="@+id/widget_layout_titletv"
@@ -39,7 +39,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/widget_layout_titletv"
-        android:layout_toRightOf="@+id/orangeImage"
         android:divider="@null"
         android:dividerHeight="0dp" />
 

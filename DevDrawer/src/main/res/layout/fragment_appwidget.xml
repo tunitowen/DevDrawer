@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/background_repeat_gray">
+    android:background="#FAFAFA">
 
 
     <TextView
@@ -42,7 +42,6 @@
         android:layout_height="match_parent"
         android:layout_above="@id/fragment_appwidget_nameet"
         android:layout_marginBottom="1dp"
-        android:background="@drawable/background_repeat"
         android:fontFamily="sans-serif-light" />
 
 </RelativeLayout>

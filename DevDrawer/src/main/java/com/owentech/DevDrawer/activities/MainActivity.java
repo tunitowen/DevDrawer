@@ -188,6 +188,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            menu.add(0, Constants.MENU_ACTIVE_DEV, 0, "Active Dev").setIcon(R.drawable.ic_action_pin).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Legacy Shortcut").setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
             menu.add(0, Constants.MENU_SETTINGS, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 //            menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher").setIcon(R.drawable.ic_action_globe).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -358,27 +359,6 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
                 }
             }
             tabs.notifyDataSetChanged();
-
-//            new AsyncTask<Void, Void, Void>() {
-//                @Override
-//                protected Void doInBackground(Void... params) {
-//                    Map<Integer, String> widgetNames = new Database(MainActivity.this).getWidgetNames();
-//                    for (int i = 0; i < mWidgetIds.length; i++) {
-//                        mNames[i] = widgetNames.get(mWidgetIds[i]);
-//                        Log.d("mNames", mNames[i]);
-//                        if (mNames[i] == null || mNames[i].trim().isEmpty()) {
-//                            mNames[i] = "No Name";
-//                        }
-//                    }
-//                    return null;
-//                }
-//
-//                @Override
-//                protected void onPostExecute(Void aVoid) {
-//                    tabs.notifyDataSetChanged();
-////                    mTitlePageIndicator.notifyDataSetChanged();
-//                }
-//            }.execute();
         }
 
         public void setWidgetIds(int[] widgetIds) {
