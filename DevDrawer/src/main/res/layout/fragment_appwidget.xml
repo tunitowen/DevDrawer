@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FAFAFA">
+    android:background="#ecf0f1">
 
 
     <TextView
@@ -25,10 +25,23 @@
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="10dp"
         android:layout_toRightOf="@id/fragment_appwidget_nametv"
+        android:layout_toLeftOf="@+id/deleteWidget"
         android:fontFamily="sans-serif-light"
         android:hint="@string/name" />
+
+    <ImageView android:id="@+id/deleteWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/delete_imageview"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/fragment_appwidget_nameet"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:clickable="true"
+
+        />
 
     <View
         android:layout_width="match_parent"
@@ -42,6 +55,12 @@
         android:layout_height="match_parent"
         android:layout_above="@id/fragment_appwidget_nameet"
         android:layout_marginBottom="1dp"
-        android:fontFamily="sans-serif-light" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="sans-serif-light"
+        android:divider="@null"
+        android:dividerHeight="5dp"
+        android:background="@android:color/transparent"/>
 
 </RelativeLayout>

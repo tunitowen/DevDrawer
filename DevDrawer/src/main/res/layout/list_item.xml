@@ -38,7 +38,7 @@
         android:paddingTop="5dp"
         android:text="Package Name"
         android:textAppearance="@android:style/TextAppearance.Holo.Small"
-        android:textColor="#f80"
+        android:textColor="@color/dev_drawer_orange"
         android:textSize="10dp" />
 
     <TextView

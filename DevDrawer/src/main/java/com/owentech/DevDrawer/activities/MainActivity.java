@@ -1,5 +1,8 @@
 package com.owentech.DevDrawer.activities;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -129,7 +133,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
         addButton.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
         mViewPager.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
         tabs.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-        tabs.setIndicatorColor(Color.parseColor("#FF8800"));
+        tabs.setIndicatorColor(getResources().getColor(R.color.dev_drawer_orange));
         findViewById(R.id.activity_main_filterTitle).setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
     }
 
@@ -213,6 +217,10 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
             }
             case Constants.MENU_LOCALE_SWITCHER: {
                 startActivity(new Intent(this, LocaleSwitcher.class));
+                break;
+            }
+            case Constants.MENU_ACTIVE_DEV: {
+                showTestNotification();
                 break;
             }
         }
@@ -365,5 +373,21 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
             mWidgetIds = widgetIds;
             updateNames();
         }
+    }
+
+    private void showTestNotification(){
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
+        notificationBuilder.setContentTitle("30DAYS");
+        notificationBuilder.setContentText("com.owentech.thirtydays");
+        notificationBuilder.setSmallIcon(R.drawable.ic_launcher);
+
+        notificationBuilder.addAction(R.drawable.ic_action_trash_white, "Uninstall", null);
+        notificationBuilder.addAction(R.drawable.ic_action_settings_white, "App Settings", null);
+        notificationBuilder.setPriority(Notification.PRIORITY_LOW);
+
+        String ns = Context.NOTIFICATION_SERVICE;
+        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(ns);;
+        mNotificationManager.notify(1,
+                notificationBuilder.build());
     }
 }
