@@ -7,7 +7,7 @@
     android:dividerPadding="8dp"
     android:divider="?android:dividerVertical"
     android:layout_height="wrap_content"
-    android:background="@drawable/card">
+    android:background="@drawable/newcard">
 
     <TextView
         android:id="@+id/packageNameTextView"
@@ -16,9 +16,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:ellipsize="end"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="sans-serif-condensed"
         android:layout_gravity="center_vertical"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textColor="#333333"/>
 
     <ImageButton
         style="?android:borderlessButtonStyle"
@@ -28,7 +29,7 @@
         android:minHeight="48dp"
         android:minWidth="48dp"
         android:scaleType="centerInside"
-        android:src="@drawable/delete_imageview" />
+        android:src="@drawable/trash" />
 
     <ImageButton
         style="?android:borderlessButtonStyle"
@@ -38,6 +39,6 @@
         android:minHeight="48dp"
         android:minWidth="48dp"
         android:scaleType="centerInside"
-        android:src="@drawable/edit_imageview" />
+        android:src="@drawable/edit" />
 
 </LinearLayout>

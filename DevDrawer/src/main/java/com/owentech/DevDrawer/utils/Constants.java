@@ -24,6 +24,8 @@ public class Constants {
     public static final int MENU_SHORTCUT = 0;
     public static final int MENU_SETTINGS = 1;
     public static final int MENU_LOCALE_SWITCHER = 2;
-    public static final int MENU_ACTIVE_DEV = 3;
+    public static final int MENU_ADD = 3;
+
+    public static final int NOTIFICATION = -101;
 
 }

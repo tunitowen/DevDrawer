@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ecf0f1"
+    android:background="#FFFFFF"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
@@ -13,76 +13,98 @@
         android:layout_height="48dip"
         android:layout_alignParentTop="true"/>
 
-    <!--<com.viewpagerindicator.TitlePageIndicator-->
-        <!--android:id="@+id/activity_main_titlepageindicator"-->
+    <!--<RelativeLayout android:id="@+id/selectionLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:layout_below="@+id/tabs">-->
+
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="OWENTECH"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:fontFamily="sans-serif-condensed"-->
+            <!--android:layout_marginLeft="20dp"/>-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/down_arrow"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="20dp"/>-->
+
+        <!--</RelativeLayout>-->
+    <!--<View android:id="@+id/selectionShadow"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="2dp"-->
+        <!--android:background="#ccc"-->
+        <!--android:layout_below="@id/selectionLayout"/>-->
+
+
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/activity_main_packagefiltercontainer"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:background="@drawable/background_repeat_dark"-->
+        <!--android:layout_below="@+id/selectionLayout"-->
+        <!--android:visibility="gone">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/activity_main_filterTitle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:fontFamily="sans-serif-condensed"-->
+            <!--android:text="@string/packagefilter"-->
+            <!--android:textColor="@android:color/black"-->
+            <!--android:textSize="14sp" />-->
+
+        <!--<AutoCompleteTextView-->
+            <!--android:id="@+id/activity_main_addPackageEditText"-->
+            <!--style="@style/AutoCompleteDevDrawerTheme"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_marginLeft="8dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:fontFamily="sans-serif-light"-->
+            <!--android:hint="@string/yourcompanyhint"-->
+            <!--android:inputType="textVisiblePassword" />-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/activity_main_addButton"-->
+            <!--style="?android:borderlessButtonStyle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:minHeight="48dp"-->
+            <!--android:minWidth="48dp"-->
+            <!--android:src="@drawable/add_imageview" />-->
+    <!--</LinearLayout>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:layout_marginLeft="50dp"-->
+        <!--android:layout_marginRight="50dp"-->
         <!--android:fontFamily="sans-serif-light"-->
-        <!--app:footerColor="#FF8800" />-->
+        <!--android:text="@string/no_widgets" />-->
 
-    <LinearLayout
-        android:id="@+id/activity_main_packagefiltercontainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tabs">
-
-        <TextView
-            android:id="@+id/activity_main_filterTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:fontFamily="sans-serif-condensed"
-            android:text="@string/packagefilter"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
-
-        <AutoCompleteTextView
-            android:id="@+id/activity_main_addPackageEditText"
-            style="@style/AutoCompleteDevDrawerTheme"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:layout_weight="1"
-            android:fontFamily="sans-serif-light"
-            android:hint="@string/yourcompanyhint"
-            android:inputType="textVisiblePassword" />
-
-        <ImageButton
-            android:id="@+id/activity_main_addButton"
-            style="?android:borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:minHeight="48dp"
-            android:minWidth="48dp"
-            android:src="@drawable/add_imageview" />
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:fontFamily="sans-serif-light"
-        android:text="@string/no_widgets" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/activity_main_packagefiltercontainer"
-        android:background="@color/dev_drawer_orange" />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@id/activity_main_packagefiltercontainer"-->
+        <!--android:background="@color/dev_drawer_orange" />-->
 
     <android.support.v4.view.ViewPager
         android:id="@+id/main_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/activity_main_packagefiltercontainer"
-        android:layout_marginTop="1dp" />
+        android:layout_below="@+id/tabs"
+         />
 
 
 </RelativeLayout>

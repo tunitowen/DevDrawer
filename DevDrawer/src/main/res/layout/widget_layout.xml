@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent">
+    android:background="#22FFFFFF">
 
     <!--<ImageView-->
         <!--android:id="@+id/orangeImage"-->
@@ -40,7 +40,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/widget_layout_titletv"
         android:divider="@null"
-        android:dividerHeight="0dp" />
+        android:layout_margin="5dp"
+        android:dividerHeight="5dp" />
 
 
 </RelativeLayout>

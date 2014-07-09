@@ -2,13 +2,11 @@ package com.owentech.DevDrawer.activities;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,6 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -34,6 +34,10 @@ import com.owentech.DevDrawer.AppWidgetFragment;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
+import com.owentech.DevDrawer.events.OttoManager;
+import com.owentech.DevDrawer.fragments.NotificationsFragment;
+import com.owentech.DevDrawer.fragments.WidgetsFragment;
 import com.owentech.DevDrawer.utils.AddAllAppsAsync;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Constants;
@@ -49,20 +53,22 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 
 public class MainActivity extends FragmentActivity implements TextWatcher, View.OnClickListener {
 
+    WidgetsFragment widgetsFragment;
+    NotificationsFragment notificationsFragment;
+
     private ViewPager mViewPager;
     private WidgetFragmentViewPagerAdapter mViewPagerAdapter;
 
 //    private TitlePageIndicator mTitlePageIndicator;
     private PagerSlidingTabStrip tabs;
-
-    private AutoCompleteTextView mAutoCompleteTextView;
-    private PartialMatchAdapter mPartialMatchAdapter;
 
     private Database mDatabase;
     private int[] mAppWidgetIds;
@@ -71,7 +77,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
-
+        ButterKnife.inject(this);
         // Set up ActionBar to use custom view (Robot Light font)
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
             getActionBar().setDisplayShowTitleEnabled(false);
@@ -106,35 +112,68 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
     private void setupViews() {
         List<String> appPackages = getExistingPackages(this);
 
-        mPartialMatchAdapter = new PartialMatchAdapter(this, appPackages);
-        mAutoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.activity_main_addPackageEditText);
-        mAutoCompleteTextView.setAdapter(mPartialMatchAdapter);
-        mAutoCompleteTextView.addTextChangedListener(this);
-
-        ImageView addButton = (ImageView) findViewById(R.id.activity_main_addButton);
-        addButton.setOnClickListener(this);
-
-
         mViewPagerAdapter = new WidgetFragmentViewPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
-        mViewPager.setAdapter(mViewPagerAdapter);
+//        mViewPager.setAdapter(mViewPagerAdapter);
 
         tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabs.setViewPager(mViewPager);
 
-        mViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.viewpager_pagemargin_width));
-        mViewPager.setPageMarginDrawable(android.R.drawable.divider_horizontal_bright);
+        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public android.support.v4.app.Fragment getItem(int position) {
+
+                switch(position){
+                    case 0:{
+                        if (widgetsFragment == null) {
+                            widgetsFragment = new WidgetsFragment();
+                        }
+                        return widgetsFragment;
+                    }
+                    case 1:{
+                        if (notificationsFragment == null) {
+                            notificationsFragment = new NotificationsFragment();
+                        }
+                        return notificationsFragment;
+                    }
+                    default:
+                        return null;
+                }
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch(position){
+                    case 0:{
+                        return "WIDGETS";
+                    }
+                    case 1:{
+                        return "NOTIFICATIONS";
+                    }
+                    default:
+                        return "Nothing";
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        });
+
+        tabs.setIndicatorColor(getResources().getColor(R.color.dev_drawer_orange));
+        tabs.setShouldExpand(true);
+        tabs.setViewPager(mViewPager);
 
         mViewPagerAdapter.setWidgetIds(mAppWidgetIds);
         mViewPagerAdapter.notifyDataSetChanged();
 
         boolean hasWidgets = mAppWidgetIds.length > 0;
-        mAutoCompleteTextView.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-        addButton.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-        mViewPager.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-        tabs.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-        tabs.setIndicatorColor(getResources().getColor(R.color.dev_drawer_orange));
-        findViewById(R.id.activity_main_filterTitle).setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+//        mAutoCompleteTextView.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+//        addButton.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+//        mViewPager.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+//        tabs.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
+//        tabs.setIndicatorColor(getResources().getColor(R.color.dev_drawer_orange));
+//        findViewById(R.id.activity_main_filterTitle).setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -162,8 +201,14 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
 
     @Override
     protected void onPause() {
-
+        OttoManager.getInstance().unregister(this);
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        OttoManager.getInstance().register(this);
+        super.onResume();
     }
 
     @Override
@@ -190,41 +235,23 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            menu.add(0, Constants.MENU_ACTIVE_DEV, 0, "Active Dev").setIcon(R.drawable.ic_action_pin).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-            menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Legacy Shortcut").setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-            menu.add(0, Constants.MENU_SETTINGS, 0, "Settings").setIcon(R.drawable.ic_action_settings_white).setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-//            menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher").setIcon(R.drawable.ic_action_globe).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        } else {
-            menu.add(0, Constants.MENU_SHORTCUT, 0, "Create Shortcut");
-            menu.add(0, Constants.MENU_SETTINGS, 0, "Settings");
-//            menu.add(0, Constants.MENU_LOCALE_SWITCHER, 0, "Locale Switcher");
-        }
-        return true;
-    }
-
-    @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
+        super.onMenuItemSelected(featureId, item);
         switch (item.getItemId()) {
-            case Constants.MENU_SHORTCUT: {
+            case R.id.menu_shortcut: {
+                Log.d("MENU", "Shortcut");
                 addShortcut(this);
-                break;
+                return true;
             }
-            case Constants.MENU_SETTINGS: {
+            case R.id.menu_settings: {
+                Log.d("MENU", "Settings");
                 startActivity(new Intent(MainActivity.this, PrefActivity.class));
-                break;
+                return true;
             }
-            case Constants.MENU_LOCALE_SWITCHER: {
-                startActivity(new Intent(this, LocaleSwitcher.class));
-                break;
-            }
-            case Constants.MENU_ACTIVE_DEV: {
-                showTestNotification();
-                break;
-            }
+            default:
+                Log.d("MENU", "Default");
+                return false;
         }
-        return false;
     }
 
     public void addShortcut(Context context) {
@@ -260,7 +287,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
 
     @Override
     public void afterTextChanged(Editable editable) {
-        mPartialMatchAdapter.getFilter().filter(editable.toString());
+//        mPartialMatchAdapter.getFilter().filter(editable.toString());
     }
 
     private AppWidgetFragment getWidgetFragment(int position) {
@@ -303,24 +330,24 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.activity_main_addButton) {
-            if (mAutoCompleteTextView.getText().length() != 0) {
-                // Check filter doesn't exist
-                int appWidgetId = getWidgetFragment(mViewPager.getCurrentItem()).getAppWidgetId();
-                if (!mDatabase.doesFilterExist(mAutoCompleteTextView.getText().toString(), appWidgetId)) {
-                    // Add the filter to the mDatabase
-                    mDatabase.addFilterToDatabase(mAutoCompleteTextView.getText().toString(), appWidgetId);
-
-                    // Check existing apps and add to installed apps table if they match new filter
-                    new AddAllAppsAsync(MainActivity.this, mAutoCompleteTextView.getText().toString(), appWidgetId).execute();
-
-                    mAutoCompleteTextView.setText("");
-                    updateFragments();
-                } else {
-                    Toast.makeText(MainActivity.this, "Filter already exists", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
+//        if (v.getId() == R.id.activity_main_addButton) {
+//            if (mAutoCompleteTextView.getText().length() != 0) {
+//                // Check filter doesn't exist
+//                int appWidgetId = getWidgetFragment(mViewPager.getCurrentItem()).getAppWidgetId();
+//                if (!mDatabase.doesFilterExist(mAutoCompleteTextView.getText().toString(), appWidgetId)) {
+//                    // Add the filter to the mDatabase
+//                    mDatabase.addFilterToDatabase(mAutoCompleteTextView.getText().toString(), appWidgetId);
+//
+//                    // Check existing apps and add to installed apps table if they match new filter
+//                    new AddAllAppsAsync(MainActivity.this, mAutoCompleteTextView.getText().toString(), appWidgetId).execute();
+//
+//                    mAutoCompleteTextView.setText("");
+//                    updateFragments();
+//                } else {
+//                    Toast.makeText(MainActivity.this, "Filter already exists", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
     }
 
     private class WidgetFragmentViewPagerAdapter extends FragmentPagerAdapter {
