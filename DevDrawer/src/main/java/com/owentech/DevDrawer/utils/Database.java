@@ -104,7 +104,7 @@ public class Database {
 
     public void renameWidget(int widgetId, String name) {
         connectDB();
-        db.execSQL("UPDATE devdrawer_widgets SET name='" + name + "' WHERE id ='" + widgetId + "'");
+        db.execSQL("UPDATE devdrawer_widgets SET name='" + name.replace("'","''") + "' WHERE id ='" + widgetId + "'");
         closeDB();
     }
 
