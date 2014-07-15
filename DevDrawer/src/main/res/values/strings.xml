@@ -20,7 +20,7 @@
 
     <string name="name">Name</string>
 
-    <string name="packagefilter">PACKAGE:</string>
+    <string name="packagefilter">PACKAGE FILTER</string>
     <string name="yourcompanyhint">your.company.*</string>
     <string name="addlocales">ADD LOCALES:</string>
     <string name="localeHint">Language name or code</string>
@@ -34,6 +34,8 @@
     <string name="add_package_filter">Add Package Filter</string>
     <string name="settings">Settings</string>
     <string name="create_shortcut">Create Shortcut</string>
+    <string name="rename_widget">RENAME WIDGET</string>
+    <string name="choose_widget">CHOOSE WIDGET</string>
 
     <array name="launching_intents">
         <item>AOSP Launcher</item>

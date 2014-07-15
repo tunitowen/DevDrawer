@@ -46,7 +46,7 @@ public class AppWidgetFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_appwidget, container, false);
 
         ListView listView = (ListView) view.findViewById(R.id.fragment_appwidget_packagesListView);
-        mFilterListAdapter = new FilterListAdapter(getActivity(), getAppWidgetId());
+        mFilterListAdapter = new FilterListAdapter(getActivity());
         listView.setAdapter(mFilterListAdapter);
 
         EditText editText = (EditText) view.findViewById(R.id.fragment_appwidget_nameet);

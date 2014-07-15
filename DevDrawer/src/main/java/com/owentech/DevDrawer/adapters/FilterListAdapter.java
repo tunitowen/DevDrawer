@@ -35,18 +35,17 @@ public class FilterListAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<PackageCollection> packageCollections;
-    private int mAppWidgetId;
+    public static int currentWidgetId = -1;
 
-    public FilterListAdapter(Activity activity, int appWidgetId) {
+    public FilterListAdapter(Activity activity) {
         this.activity = activity;
         packageCollections = new ArrayList<PackageCollection>();
-        mAppWidgetId = appWidgetId;
     }
 
     @Override
     public void notifyDataSetChanged() {
         Database database = new Database(activity);
-        packageCollections = database.getAllFiltersInDatabase(mAppWidgetId);
+        packageCollections = database.getAllFiltersInDatabase(currentWidgetId);
 
         super.notifyDataSetChanged();
     }

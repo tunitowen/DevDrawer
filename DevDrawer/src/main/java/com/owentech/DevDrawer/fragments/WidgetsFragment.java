@@ -2,8 +2,10 @@ package com.owentech.DevDrawer.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,11 +20,20 @@ import android.widget.Toast;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
 import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
+import com.owentech.DevDrawer.dialogs.ChangeWidgetNameDialogFragment;
+import com.owentech.DevDrawer.dialogs.ChooseWidgetDialogFragment;
+import com.owentech.DevDrawer.events.ChangeWidgetEvent;
 import com.owentech.DevDrawer.events.OttoManager;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
+import com.owentech.DevDrawer.events.WidgetRenamedEvent;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
+import com.owentech.DevDrawer.utils.Database;
 import com.squareup.otto.Subscribe;
 
+
+import org.w3c.dom.Text;
+
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -30,12 +41,13 @@ import butterknife.InjectView;
 /**
  * Created by tonyowen on 09/07/2014.
  */
-public class WidgetsFragment extends Fragment implements View.OnClickListener {
+public class WidgetsFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
     @InjectView(R.id.selectionLayout) RelativeLayout selectionLayout;
     @InjectView(R.id.selectionShadow) View selectionShadow;
     @InjectView(R.id.listView) ListView listView;
     @InjectView(R.id.noWidgets) TextView noWidgets;
+    @InjectView(R.id.currentWidgetName) TextView currentWidgetName;
 
     private int[] mAppWidgetIds;
     private FilterListAdapter filterListAdapter;
@@ -46,6 +58,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener {
         ButterKnife.inject(this, view);
         setHasOptionsMenu(true);
         selectionLayout.setOnClickListener(this);
+        selectionLayout.setOnLongClickListener(this);
         return view;
     }
 
@@ -66,23 +79,35 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener {
         super.onStart();
         mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(getActivity());
         showHideListView();
+        if (FilterListAdapter.currentWidgetId == -1){
+            FilterListAdapter.currentWidgetId = mAppWidgetIds[0];
+        }
 
-        if (mAppWidgetIds.length > 0){
-            filterListAdapter = new FilterListAdapter(getActivity(), mAppWidgetIds[0]);
+        if (FilterListAdapter.currentWidgetId == -1){
+            FilterListAdapter.currentWidgetId = 0;
+        }
+
+//        if (mAppWidgetIds.length > 0){
+            filterListAdapter = new FilterListAdapter(getActivity());
             listView.setAdapter(filterListAdapter);
             filterListAdapter.notifyDataSetChanged();
-        }
+            currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames().get(FilterListAdapter.currentWidgetId));
+//        }
 
-        if (mAppWidgetIds.length <= 1){
-            selectionLayout.setVisibility(View.GONE);
-            selectionShadow.setVisibility(View.GONE);
-        }
+//        if (mAppWidgetIds.length <= 1){
+//            selectionLayout.setVisibility(View.GONE);
+//            selectionShadow.setVisibility(View.GONE);
+//            filterListAdapter = new FilterListAdapter(getActivity());
+//            listView.setAdapter(filterListAdapter);
+//            filterListAdapter.notifyDataSetChanged();
+//        }
     }
 
     @Override
     public void onClick(View view) {
         if (view == selectionLayout) {
-            Toast.makeText(getActivity(), "Number of widgets " + mAppWidgetIds.length, Toast.LENGTH_LONG).show();
+            SparseArray<String> widgetNames = Database.getInstance(getActivity()).getWidgetNames();
+            showChooseWidgetDialog();
         }
     }
 
@@ -121,9 +146,21 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showAddPackageDialog(){
-        AddPackageDialogFragment addPackageDialogFragment = AddPackageDialogFragment.newInstance(null, mAppWidgetIds[0]);
+        AddPackageDialogFragment addPackageDialogFragment = AddPackageDialogFragment.newInstance(null, FilterListAdapter.currentWidgetId);
         addPackageDialogFragment.setTargetFragment(WidgetsFragment.this, 101);
         addPackageDialogFragment.show(getActivity().getSupportFragmentManager(), "dialog");
+    }
+
+    private void showChooseWidgetDialog(){
+        ChooseWidgetDialogFragment chooseWidgetDialogFragment = ChooseWidgetDialogFragment.newInstance(mAppWidgetIds[0]);
+        chooseWidgetDialogFragment.setTargetFragment(WidgetsFragment.this, 101);
+        chooseWidgetDialogFragment.show(getActivity().getSupportFragmentManager(), "dialog");
+    }
+
+    private void showChangeWidgetNameDialog(){
+        ChangeWidgetNameDialogFragment changeWidgetNameDialogFragment = ChangeWidgetNameDialogFragment.newInstance(FilterListAdapter.currentWidgetId, currentWidgetName.getText().toString());
+        changeWidgetNameDialogFragment.setTargetFragment(WidgetsFragment.this, 101);
+        changeWidgetNameDialogFragment.show(getActivity().getSupportFragmentManager(), "dialog");
     }
 
     @Subscribe
@@ -133,4 +170,22 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public boolean onLongClick(View view) {
+//        Toast.makeText(getActivity(), "Rename widget", Toast.LENGTH_SHORT).show();
+        showChangeWidgetNameDialog();
+        return true;
+    }
+
+    @Subscribe
+    public void changeWidget(ChangeWidgetEvent event){
+        FilterListAdapter.currentWidgetId = event.widgetId;
+        filterListAdapter.notifyDataSetChanged();
+        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames().get(FilterListAdapter.currentWidgetId));
+    }
+
+    @Subscribe
+    public void widgetRenamed(WidgetRenamedEvent event){
+        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames().get(FilterListAdapter.currentWidgetId));
+    }
 }

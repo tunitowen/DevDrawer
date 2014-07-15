@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,6 +26,14 @@ public class Database {
 
     SQLiteDatabase db;
     Context ctx;
+    private static Database instance;
+
+    public static Database getInstance(Context context){
+        if (instance == null){
+            instance = new Database(context);
+        }
+        return instance;
+    }
 
     public static int NOT_FOUND = 1000000;
 
@@ -123,32 +132,26 @@ public class Database {
         closeDB();
     }
 
-    public Map<Integer, String> getWidgetNames() {
-        Map<Integer, String> result = new HashMap<Integer, String>();
+    public SparseArray<String> getWidgetNames() {
+        SparseArray<String> result = new SparseArray<String>();
 
         connectDB();
+        Cursor cursor = db.query("devdrawer_widgets", null, null, null, null, null, null, null);
+        cursor.moveToFirst();
 
-        Cursor getAllCursor = db.query("devdrawer_widgets", null, null, null, null, null, null, null);
+        while (!cursor.isAfterLast()) {
 
-
-        getAllCursor.moveToFirst();
-
-        while (!getAllCursor.isAfterLast()) {
-
-            String name = getAllCursor.getString(1);
+            String name = cursor.getString(1);
             if (name == null || name.length() == 0){
                 name = "Unnamed";
             }
 
-            result.put(getAllCursor.getInt(0), name);
-            getAllCursor.moveToNext();
+            result.put(cursor.getInt(0), name);
+            cursor.moveToNext();
         }
 
-        getAllCursor.close();
+        cursor.close();
         closeDB();
-
-        closeDB();
-
         return result;
     }
 

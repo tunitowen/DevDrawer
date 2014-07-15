@@ -18,6 +18,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -379,7 +380,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
             Log.d("MainActivity", "updateNames");
             mNames = new String[mWidgetIds.length];
 
-            Map<Integer, String> widgetNames = new Database(MainActivity.this).getWidgetNames();
+            SparseArray<String> widgetNames = Database.getInstance(MainActivity.this).getWidgetNames();
             for (int i = 0; i < mWidgetIds.length; i++) {
                 mNames[i] = widgetNames.get(mWidgetIds[i]);
                 if (mNames[i] == null){

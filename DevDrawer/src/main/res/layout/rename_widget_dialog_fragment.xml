@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:minWidth="1000dp">
 
 
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="@string/packagefilter"
+        android:text="@string/rename_widget"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:layout_alignParentTop="true"
@@ -20,28 +21,28 @@
         android:background="@color/dev_drawer_orange"
         />
 
-    <AutoCompleteTextView
-        android:id="@+id/addPackage"
+    <EditText
+        android:id="@+id/editText"
         style="@style/AutoCompleteDevDrawerTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:hint="@string/yourcompanyhint"
         android:inputType="textVisiblePassword"
         android:layout_alignBottom="@+id/addButton"
         android:layout_toLeftOf="@+id/addButton"
-        android:layout_marginLeft="10dp"/>
+        android:layout_margin="10dp"
+        android:hint="Widget Name"
+        android:gravity="center"/>
 
-    <ImageButton
-        android:id="@+id/addButton"
+    <Button
+        android:id="@+id/ok"
         style="?android:borderlessButtonStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:minWidth="48dp"
         android:src="@drawable/add_imageview"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/title"
+        android:text="OK"
         android:layout_margin="10dp"/>
 
-</RelativeLayout>
+</LinearLayout>
