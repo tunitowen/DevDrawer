@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
-import com.owentech.DevDrawer.events.OttoManager;
+import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.utils.AppConstants;
 
 /**

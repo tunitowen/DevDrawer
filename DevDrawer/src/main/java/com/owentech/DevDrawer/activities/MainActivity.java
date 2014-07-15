@@ -9,9 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.PagerAdapter;
@@ -19,17 +17,16 @@ import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.owentech.DevDrawer.AppWidgetFragment;
+
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
-import com.owentech.DevDrawer.events.OttoManager;
+import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.fragments.NotificationsFragment;
 import com.owentech.DevDrawer.fragments.WidgetsFragment;
 import com.owentech.DevDrawer.utils.AppConstants;
@@ -41,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import butterknife.ButterKnife;

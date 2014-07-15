@@ -1,4 +1,4 @@
-package com.owentech.DevDrawer.events;
+package com.owentech.DevDrawer.utils;
 
 import com.squareup.otto.Bus;
 
@@ -14,5 +14,4 @@ public class OttoManager {
         }
         return instance;
     }
-
 }

@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
-import com.owentech.DevDrawer.events.OttoManager;
+import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
 import com.owentech.DevDrawer.utils.AddAllAppsAsync;
 import com.owentech.DevDrawer.utils.Database;

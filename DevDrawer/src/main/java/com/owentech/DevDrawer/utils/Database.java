@@ -79,10 +79,6 @@ public class Database {
                 + "id INTEGER PRIMARY KEY, package TEXT, filterid INTEGER, widgetid INTEGER);";
         db.execSQL(CREATE_TABLE_APPS);
 
-        String CREATE_TABLE_LOCALES = "CREATE TABLE IF NOT EXISTS devdrawer_locales ("
-                + "name TEXT);";
-        db.execSQL(CREATE_TABLE_LOCALES);
-
         String CREATE_TABLE_WIDGETS = "CREATE TABLE IF NOT EXISTS devdrawer_widgets (id INTEGER PRIMARY KEY, name TEXT);";
         db.execSQL(CREATE_TABLE_WIDGETS);
 
@@ -510,43 +506,4 @@ public class Database {
         db.execSQL("UPDATE devdrawer_filter SET package='" + newString + "' WHERE id ='" + id + "'");
         closeDB();
     }
-
-    ///////////////////////////////
-    // Method to add all locales
-    ///////////////////////////////
-    public void addLocale(String localeDescriptor) {
-        connectDB();
-
-        db.execSQL("INSERT INTO devdrawer_locales (name) VALUES ('" + localeDescriptor + "');");
-
-        closeDB();
-    }
-
-    public List<String> getLocales() {
-        connectDB();
-
-        List<String> list = new ArrayList<String>();
-
-        Cursor getAllCursor = db.query("devdrawer_locales", null, null, null, null, null, "name ASC", null);
-
-        if (getAllCursor.getCount() != 0) {
-            getAllCursor.moveToFirst();
-
-            while (!getAllCursor.isAfterLast()) {
-                list.add(getAllCursor.getString(0));
-                getAllCursor.moveToNext();
-            }
-        }
-
-        return list;
-    }
-
-    public void deleteLocale(String localeDescriptor) {
-        connectDB();
-
-        db.execSQL("DELETE FROM devdrawer_locales WHERE name = '" + localeDescriptor + "';");
-
-        closeDB();
-    }
-
 }

@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
-import com.owentech.DevDrawer.events.OttoManager;
+import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.events.WidgetRenamedEvent;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;

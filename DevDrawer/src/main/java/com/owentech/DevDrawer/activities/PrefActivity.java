@@ -72,7 +72,7 @@ public class PrefActivity extends PreferenceActivity {
 
                 preference.setSummary(newValue.toString());
 
-                Toast.makeText(PrefActivity.this, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PrefActivity.this, getString(R.string.re_add_notice), Toast.LENGTH_SHORT).show();
 
                 return false;
             }
@@ -106,7 +106,7 @@ public class PrefActivity extends PreferenceActivity {
         rootClearData.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Toast.makeText(PrefActivity.this, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PrefActivity.this, getString(R.string.re_add_notice), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -142,7 +142,7 @@ public class PrefActivity extends PreferenceActivity {
             if (activity != null) {
                 if (msg.arg1 == 1) {
                     activity.toggleRootViews(true);
-                    Toast.makeText(activity, "You may need to re-add the widget for this change to take effect", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, activity.getString(R.string.re_add_notice), Toast.LENGTH_SHORT).show();
                 } else {
                     // no root access: reset UI
                     activity.rootPref.setChecked(false);

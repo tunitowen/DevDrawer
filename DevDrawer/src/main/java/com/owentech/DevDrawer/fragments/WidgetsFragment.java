@@ -21,7 +21,7 @@ import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
 import com.owentech.DevDrawer.dialogs.ChangeWidgetNameDialogFragment;
 import com.owentech.DevDrawer.dialogs.ChooseWidgetDialogFragment;
 import com.owentech.DevDrawer.events.ChangeWidgetEvent;
-import com.owentech.DevDrawer.events.OttoManager;
+import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
 import com.owentech.DevDrawer.events.WidgetRenamedEvent;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;

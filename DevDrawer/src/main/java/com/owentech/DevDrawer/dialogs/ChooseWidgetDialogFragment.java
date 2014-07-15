@@ -1,10 +1,6 @@
 package com.owentech.DevDrawer.dialogs;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.SparseArray;
@@ -13,17 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.ChooseWidgetAdapter;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
 import com.owentech.DevDrawer.events.ChangeWidgetEvent;
-import com.owentech.DevDrawer.events.OttoManager;
+import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.utils.Database;
-
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
