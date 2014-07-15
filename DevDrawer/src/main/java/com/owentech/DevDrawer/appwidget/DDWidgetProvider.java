@@ -22,6 +22,7 @@ import android.widget.RemoteViews;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.activities.ClickHandlingActivity;
+import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
 
@@ -56,20 +57,14 @@ public class DDWidgetProvider extends AppWidgetProvider {
         PendingIntent clickPI = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         String name = new Database(context).getWidgetNames().get(appWidgetId);
-        if (name == null || name.trim().isEmpty() || name.equalsIgnoreCase("unnamed")){
+        if (name == null || name.trim().isEmpty() || name.equalsIgnoreCase(AppConstants.UNNAMED)) {
             name = "DevDrawer";
         }
 
-//        if (name == null || name.trim().isEmpty() || name.equalsIgnoreCase("unnamed")) {
-//            widget.setViewVisibility(R.id.widget_layout_titletv, View.GONE);
-//            widget.setViewVisibility(R.id.widget_layout_titledivider, View.GONE);
-//        } else {
-            widget.setViewVisibility(R.id.widget_layout_titletv, View.VISIBLE);
-            widget.setViewVisibility(R.id.widget_layout_titledivider, View.VISIBLE);
-            widget.setTextViewText(R.id.widget_layout_titletv, name);
-//        }
+        widget.setViewVisibility(R.id.widget_layout_titletv, View.VISIBLE);
+        widget.setViewVisibility(R.id.widget_layout_titledivider, View.VISIBLE);
+        widget.setTextViewText(R.id.widget_layout_titletv, name);
         widget.setPendingIntentTemplate(R.id.listView, clickPI);
-
 
         Intent refreshIntent = new Intent(context, DDWidgetProvider.class);
         refreshIntent.setAction(REFRESH);

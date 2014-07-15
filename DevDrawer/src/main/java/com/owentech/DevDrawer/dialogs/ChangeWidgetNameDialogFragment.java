@@ -3,22 +3,19 @@ package com.owentech.DevDrawer.dialogs;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import com.owentech.DevDrawer.R;
-import com.owentech.DevDrawer.adapters.ChooseWidgetAdapter;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
-import com.owentech.DevDrawer.events.ChangeWidgetEvent;
 import com.owentech.DevDrawer.events.OttoManager;
 import com.owentech.DevDrawer.events.WidgetRenamedEvent;
+import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
 
 import butterknife.ButterKnife;
@@ -52,6 +49,12 @@ public class ChangeWidgetNameDialogFragment extends DialogFragment implements Vi
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -64,7 +67,7 @@ public class ChangeWidgetNameDialogFragment extends DialogFragment implements Vi
         widgetId = getArguments().getInt(WIDGET_ID);
         edit = getArguments().getString(EDIT);
 
-        if (edit != null && !edit.equalsIgnoreCase("unnamed")){
+        if (edit != null && !edit.equalsIgnoreCase(AppConstants.UNNAMED)){
             editText.setText(edit);
         }
 

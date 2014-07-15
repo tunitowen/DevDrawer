@@ -18,7 +18,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.owentech.DevDrawer.R;
-import com.owentech.DevDrawer.utils.Constants;
+import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
 
 import java.util.ArrayList;
@@ -95,7 +95,7 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
             Intent appDetailsClickIntent = new Intent();
             Bundle appDetailsClickExtras = new Bundle();
             //appDetailsClickExtras.putBoolean("appDetails", true);
-            appDetailsClickExtras.putInt("launchType", Constants.LAUNCH_APP_DETAILS);
+            appDetailsClickExtras.putInt("launchType", AppConstants.LAUNCH_APP_DETAILS);
             appDetailsClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
             appDetailsClickIntent.putExtras(appDetailsClickExtras);
             row.setOnClickFillInIntent(R.id.appDetailsImageButton, appDetailsClickIntent);
@@ -103,21 +103,21 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
             Intent uninstallClickIntent = new Intent();
             Bundle uninstallClickExtras = new Bundle();
             //appDetailsClickExtras.putBoolean("appDetails", true);
-            uninstallClickExtras.putInt("launchType", Constants.LAUNCH_UNINSTALL);
+            uninstallClickExtras.putInt("launchType", AppConstants.LAUNCH_UNINSTALL);
             uninstallClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
             uninstallClickIntent.putExtras(uninstallClickExtras);
             row.setOnClickFillInIntent(R.id.uninstallImageButton, uninstallClickIntent);
 
             Intent clearClickIntent = new Intent();
             Bundle clearClickExtras = new Bundle();
-            clearClickExtras.putInt("launchType", Constants.LAUNCH_CLEAR);
+            clearClickExtras.putInt("launchType", AppConstants.LAUNCH_CLEAR);
             clearClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
             clearClickIntent.putExtras(clearClickExtras);
             row.setOnClickFillInIntent(R.id.clearImageButton, clearClickIntent);
 
             Intent moreClickIntent = new Intent();
             Bundle moreClickExtras = new Bundle();
-            moreClickExtras.putInt("launchType", Constants.LAUNCH_MORE);
+            moreClickExtras.putInt("launchType", AppConstants.LAUNCH_MORE);
             moreClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
             moreClickIntent.putExtras(moreClickExtras);
             row.setOnClickFillInIntent(R.id.moreImageButton, moreClickIntent);
@@ -125,7 +125,7 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
             Intent rowClickIntent = new Intent();
             Bundle rowClickExtras = new Bundle();
             //rowClickExtras.putBoolean("appDetails", false);
-            rowClickExtras.putInt("launchType", Constants.LAUNCH_APP);
+            rowClickExtras.putInt("launchType", AppConstants.LAUNCH_APP);
             rowClickExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageNames.get(position));
             rowClickIntent.putExtras(rowClickExtras);
             row.setOnClickFillInIntent(R.id.touchArea, rowClickIntent);

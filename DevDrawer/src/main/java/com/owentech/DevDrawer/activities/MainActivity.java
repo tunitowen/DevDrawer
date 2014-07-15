@@ -14,36 +14,27 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.owentech.DevDrawer.AppWidgetFragment;
 import com.owentech.DevDrawer.R;
-import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
-import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
 import com.owentech.DevDrawer.events.OttoManager;
 import com.owentech.DevDrawer.fragments.NotificationsFragment;
 import com.owentech.DevDrawer.fragments.WidgetsFragment;
-import com.owentech.DevDrawer.utils.AddAllAppsAsync;
+import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
-import com.owentech.DevDrawer.utils.Constants;
 import com.owentech.DevDrawer.utils.Database;
-import com.viewpagerindicator.TitlePageIndicator;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -51,7 +42,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import butterknife.ButterKnife;
@@ -60,18 +50,15 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 
-public class MainActivity extends FragmentActivity implements TextWatcher, View.OnClickListener {
+public class MainActivity extends FragmentActivity implements TextWatcher {
+
+    @InjectView(R.id.main_viewpager) ViewPager viewPager;
+    @InjectView(R.id.tabs) PagerSlidingTabStrip tabs;
 
     WidgetsFragment widgetsFragment;
     NotificationsFragment notificationsFragment;
 
-    private ViewPager mViewPager;
-    private WidgetFragmentViewPagerAdapter mViewPagerAdapter;
-
-//    private TitlePageIndicator mTitlePageIndicator;
-    private PagerSlidingTabStrip tabs;
-
-    private Database mDatabase;
+//    private WidgetFragmentViewPagerAdapter mViewPagerAdapter;
     private int[] mAppWidgetIds;
 
     @Override
@@ -88,94 +75,71 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
             getActionBar().setDisplayShowCustomEnabled(true);
         }
 
-        mDatabase = new Database(this);
-        mDatabase.createTables();
-
+        Database.getInstance(this).createTables();
         mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(this);
 
-        setupViews();
+        viewPager.setAdapter(pagerAdapter);
+
+        tabs.setIndicatorColor(getResources().getColor(R.color.dev_drawer_orange));
+        tabs.setShouldExpand(true);
+        tabs.setViewPager(viewPager);
 
         if (getIntent() != null) {
             int appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
             if (appWidgetId != -1) {
                 for (int i = 0; i < mAppWidgetIds.length; i++) {
                     if (appWidgetId == mAppWidgetIds[i]) {
-                        mViewPager.setCurrentItem(i);
+                        viewPager.setCurrentItem(i);
                     }
                 }
 
-                mDatabase.addWidgetToDatabase(appWidgetId, "");
+                Database.getInstance(this).addWidgetToDatabase(appWidgetId, "");
                 Crouton.makeText(this, "Press back to save the widget, not home", Style.ALERT).show();
             }
         }
     }
 
-    private void setupViews() {
-        List<String> appPackages = getExistingPackages(this);
+    private PagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+        @Override
+        public android.support.v4.app.Fragment getItem(int position) {
 
-        mViewPagerAdapter = new WidgetFragmentViewPagerAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
-//        mViewPager.setAdapter(mViewPagerAdapter);
-
-        tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-
-        mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public android.support.v4.app.Fragment getItem(int position) {
-
-                switch(position){
-                    case 0:{
-                        if (widgetsFragment == null) {
-                            widgetsFragment = new WidgetsFragment();
-                        }
-                        return widgetsFragment;
+            switch(position){
+                case 0:{
+                    if (widgetsFragment == null) {
+                        widgetsFragment = new WidgetsFragment();
                     }
-                    case 1:{
-                        if (notificationsFragment == null) {
-                            notificationsFragment = new NotificationsFragment();
-                        }
-                        return notificationsFragment;
-                    }
-                    default:
-                        return null;
+                    return widgetsFragment;
                 }
-            }
-
-            @Override
-            public CharSequence getPageTitle(int position) {
-                switch(position){
-                    case 0:{
-                        return "WIDGETS";
+                case 1:{
+                    if (notificationsFragment == null) {
+                        notificationsFragment = new NotificationsFragment();
                     }
-                    case 1:{
-                        return "NOTIFICATIONS";
-                    }
-                    default:
-                        return "Nothing";
+                    return notificationsFragment;
                 }
+                default:
+                    return null;
             }
+        }
 
-            @Override
-            public int getCount() {
-                return 2;
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch(position){
+                case 0:{
+                    return getString(R.string.tab_widgets);
+                }
+                case 1:{
+                    return getString(R.string.tab_notifications);
+                }
+                default:
+                    return "";
             }
-        });
+        }
 
-        tabs.setIndicatorColor(getResources().getColor(R.color.dev_drawer_orange));
-        tabs.setShouldExpand(true);
-        tabs.setViewPager(mViewPager);
-
-        mViewPagerAdapter.setWidgetIds(mAppWidgetIds);
-        mViewPagerAdapter.notifyDataSetChanged();
-
-        boolean hasWidgets = mAppWidgetIds.length > 0;
-//        mAutoCompleteTextView.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-//        addButton.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-//        mViewPager.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-//        tabs.setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-//        tabs.setIndicatorColor(getResources().getColor(R.color.dev_drawer_orange));
-//        findViewById(R.id.activity_main_filterTitle).setVisibility(hasWidgets ? View.VISIBLE : View.GONE);
-    }
+        @Override
+        public int getCount() {
+            return 2;
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -216,22 +180,11 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Catch the return from the EditDialog
-        if (resultCode == Constants.EDIT_DIALOG_CHANGE) {
+        if (resultCode == AppConstants.EDIT_DIALOG_CHANGE) {
             Bundle bundle = data.getExtras();
 
             Database database = new Database(this);
             database.amendFilterEntryTo(bundle.getString("id"), bundle.getString("newText"));
-
-            updateFragments();
-        }
-    }
-
-    private void updateFragments() {
-        int currentItem = mViewPager.getCurrentItem();
-        for (int i = currentItem - 1; i <= currentItem + 1; i++) {
-            if (i >= 0 && i < mViewPagerAdapter.getCount()) {
-                getWidgetFragment(i).notifyDataSetChanged();
-            }
         }
     }
 
@@ -288,11 +241,6 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
 
     @Override
     public void afterTextChanged(Editable editable) {
-//        mPartialMatchAdapter.getFilter().filter(editable.toString());
-    }
-
-    private AppWidgetFragment getWidgetFragment(int position) {
-        return (AppWidgetFragment) mViewPagerAdapter.instantiateItem(mViewPager, position);
     }
 
     // Method to get all apps installed and return as List
@@ -323,84 +271,6 @@ public class MainActivity extends FragmentActivity implements TextWatcher, View.
         ArrayList<String> appList = new ArrayList<String>(appSet);
         Collections.sort(appList, collator);
         return appList;
-    }
-
-    public void update() {
-        mViewPagerAdapter.updateNames();
-    }
-
-    @Override
-    public void onClick(View v) {
-//        if (v.getId() == R.id.activity_main_addButton) {
-//            if (mAutoCompleteTextView.getText().length() != 0) {
-//                // Check filter doesn't exist
-//                int appWidgetId = getWidgetFragment(mViewPager.getCurrentItem()).getAppWidgetId();
-//                if (!mDatabase.doesFilterExist(mAutoCompleteTextView.getText().toString(), appWidgetId)) {
-//                    // Add the filter to the mDatabase
-//                    mDatabase.addFilterToDatabase(mAutoCompleteTextView.getText().toString(), appWidgetId);
-//
-//                    // Check existing apps and add to installed apps table if they match new filter
-//                    new AddAllAppsAsync(MainActivity.this, mAutoCompleteTextView.getText().toString(), appWidgetId).execute();
-//
-//                    mAutoCompleteTextView.setText("");
-//                    updateFragments();
-//                } else {
-//                    Toast.makeText(MainActivity.this, "Filter already exists", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-    }
-
-    private class WidgetFragmentViewPagerAdapter extends FragmentPagerAdapter {
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mNames[position].toUpperCase(Locale.getDefault());
-        }
-
-        private int[] mWidgetIds;
-        private String[] mNames;
-
-        public WidgetFragmentViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-            mWidgetIds = new int[0];
-        }
-
-        @Override
-        public Fragment getItem(int i) {
-            return AppWidgetFragment.newInstance(mWidgetIds[i]);
-        }
-
-        @Override
-        public int getCount() {
-            return mWidgetIds.length;
-        }
-
-        public void updateNames() {
-            Log.d("MainActivity", "updateNames");
-            mNames = new String[mWidgetIds.length];
-
-            SparseArray<String> widgetNames = Database.getInstance(MainActivity.this).getWidgetNames();
-            for (int i = 0; i < mWidgetIds.length; i++) {
-                mNames[i] = widgetNames.get(mWidgetIds[i]);
-                if (mNames[i] == null){
-                    Log.d("mNamesNull", "Empty");
-                    mNames[i] = "Unnamed";
-                }
-                else {
-                    Log.d("mNames", mNames[i]);
-                }
-                if (mNames[i] == null || mNames[i].trim().isEmpty()) {
-                    mNames[i] = "No Name";
-                }
-            }
-            tabs.notifyDataSetChanged();
-        }
-
-        public void setWidgetIds(int[] widgetIds) {
-            mWidgetIds = widgetIds;
-            updateNames();
-        }
     }
 
     private void showTestNotification(){

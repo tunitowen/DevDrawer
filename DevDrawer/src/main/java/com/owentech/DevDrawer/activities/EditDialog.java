@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.owentech.DevDrawer.R;
-import com.owentech.DevDrawer.utils.Constants;
+import com.owentech.DevDrawer.utils.AppConstants;
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,7 +51,7 @@ public class EditDialog extends Activity {
                 bundle.putString("id", id);
                 intent.putExtras(bundle);
 
-                setResult(Constants.EDIT_DIALOG_CHANGE, intent);
+                setResult(AppConstants.EDIT_DIALOG_CHANGE, intent);
                 finish();
 
             }

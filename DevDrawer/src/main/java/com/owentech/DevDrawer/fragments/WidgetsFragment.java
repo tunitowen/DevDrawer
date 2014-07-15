@@ -2,7 +2,6 @@ package com.owentech.DevDrawer.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.util.SparseArray;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
@@ -29,11 +27,6 @@ import com.owentech.DevDrawer.events.WidgetRenamedEvent;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
 import com.squareup.otto.Subscribe;
-
-
-import org.w3c.dom.Text;
-
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -79,28 +72,17 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         super.onStart();
         mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(getActivity());
         showHideListView();
-        if (FilterListAdapter.currentWidgetId == -1){
-            FilterListAdapter.currentWidgetId = mAppWidgetIds[0];
+
+        if (mAppWidgetIds.length != 0) {
+            if (FilterListAdapter.currentWidgetId == -1) {
+                FilterListAdapter.currentWidgetId = mAppWidgetIds[0];
+            }
         }
 
-        if (FilterListAdapter.currentWidgetId == -1){
-            FilterListAdapter.currentWidgetId = 0;
-        }
-
-//        if (mAppWidgetIds.length > 0){
-            filterListAdapter = new FilterListAdapter(getActivity());
-            listView.setAdapter(filterListAdapter);
-            filterListAdapter.notifyDataSetChanged();
-            currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames().get(FilterListAdapter.currentWidgetId));
-//        }
-
-//        if (mAppWidgetIds.length <= 1){
-//            selectionLayout.setVisibility(View.GONE);
-//            selectionShadow.setVisibility(View.GONE);
-//            filterListAdapter = new FilterListAdapter(getActivity());
-//            listView.setAdapter(filterListAdapter);
-//            filterListAdapter.notifyDataSetChanged();
-//        }
+        filterListAdapter = new FilterListAdapter(getActivity());
+        listView.setAdapter(filterListAdapter);
+        filterListAdapter.notifyDataSetChanged();
+        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames().get(FilterListAdapter.currentWidgetId));
     }
 
     @Override
@@ -113,10 +95,14 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
 
     private void showHideListView(){
         if (mAppWidgetIds.length == 0){
+            selectionLayout.setVisibility(View.INVISIBLE);
+            selectionShadow.setVisibility(View.INVISIBLE);
             listView.setVisibility(View.INVISIBLE);
             noWidgets.setVisibility(View.VISIBLE);
         }
         else{
+            selectionLayout.setVisibility(View.VISIBLE);
+            selectionShadow.setVisibility(View.INVISIBLE);
             listView.setVisibility(View.VISIBLE);
             noWidgets.setVisibility(View.INVISIBLE);
         }
@@ -172,7 +158,6 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
 
     @Override
     public boolean onLongClick(View view) {
-//        Toast.makeText(getActivity(), "Rename widget", Toast.LENGTH_SHORT).show();
         showChangeWidgetNameDialog();
         return true;
     }

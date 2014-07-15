@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
 import com.owentech.DevDrawer.events.OttoManager;
-import com.owentech.DevDrawer.utils.Constants;
+import com.owentech.DevDrawer.utils.AppConstants;
 
 /**
  * Created by tonyowen on 09/07/2014.
@@ -53,7 +53,7 @@ public class NotificationsFragment extends Fragment {
     }
 
     private void showAddPackageDialog(){
-        AddPackageDialogFragment addPackageDialogFragment = AddPackageDialogFragment.newInstance(null, Constants.NOTIFICATION);
+        AddPackageDialogFragment addPackageDialogFragment = AddPackageDialogFragment.newInstance(null, AppConstants.NOTIFICATION);
         addPackageDialogFragment.setTargetFragment(NotificationsFragment.this, 101);
         addPackageDialogFragment.show(getActivity().getSupportFragmentManager(), "dialog");
     }

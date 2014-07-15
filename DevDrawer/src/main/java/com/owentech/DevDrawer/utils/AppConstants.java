@@ -7,7 +7,7 @@ package com.owentech.DevDrawer.utils;
  * Time: 21:13
  * To change this template use File | Settings | File Templates.
  */
-public class Constants {
+public class AppConstants {
 
     public static int EDIT_DIALOG_CHANGE = 1;
     public static int EDIT_DIALOG_CANCEL = 2;
@@ -27,5 +27,7 @@ public class Constants {
     public static final int MENU_ADD = 3;
 
     public static final int NOTIFICATION = -101;
+
+    public static final String UNNAMED = "unnamed";
 
 }

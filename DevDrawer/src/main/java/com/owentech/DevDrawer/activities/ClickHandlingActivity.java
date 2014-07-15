@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
-import com.owentech.DevDrawer.utils.Constants;
+import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.RootFeatures;
 
@@ -40,23 +40,23 @@ public class ClickHandlingActivity extends Activity {
         if (packageName != null && isAppInstalled(packageName)) {
 
             switch (launchType) {
-                case Constants.LAUNCH_APP: {
+                case AppConstants.LAUNCH_APP: {
                     startApp(this, packageName);
                     break;
                 }
-                case Constants.LAUNCH_APP_DETAILS: {
+                case AppConstants.LAUNCH_APP_DETAILS: {
                     startAppDetails(this, packageName);
                     break;
                 }
-                case Constants.LAUNCH_UNINSTALL: {
+                case AppConstants.LAUNCH_UNINSTALL: {
                     startUninstall(this, packageName);
                     break;
                 }
-                case Constants.LAUNCH_CLEAR: {
+                case AppConstants.LAUNCH_CLEAR: {
                     startClearData(this, packageName);
                     break;
                 }
-                case Constants.LAUNCH_MORE: {
+                case AppConstants.LAUNCH_MORE: {
                     startMoreOverflowMenu(this, packageName);
                     break;
                 }

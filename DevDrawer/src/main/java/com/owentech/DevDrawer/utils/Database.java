@@ -11,9 +11,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -143,7 +141,7 @@ public class Database {
 
             String name = cursor.getString(1);
             if (name == null || name.length() == 0){
-                name = "Unnamed";
+                name = AppConstants.UNNAMED;
             }
 
             result.put(cursor.getInt(0), name);
@@ -280,7 +278,7 @@ public class Database {
 
         connectDB();
 
-        Cursor getAllCursor = db.query("devdrawer_app", null, null, null, null, null, (order.equals(Constants.ORDER_ORIGINAL)) ? null : "package ASC", null);
+        Cursor getAllCursor = db.query("devdrawer_app", null, null, null, null, null, (order.equals(AppConstants.ORDER_ORIGINAL)) ? null : "package ASC", null);
 
         Log.d("DATABASE", "getAllAppsInDatabase: " + Integer.toString(getAllCursor.getCount()));
 
@@ -299,7 +297,7 @@ public class Database {
         getAllCursor.close();
         closeDB();
 
-        if (order.equals(Constants.ORDER_ORIGINAL)) {
+        if (order.equals(AppConstants.ORDER_ORIGINAL)) {
             Collections.reverse(Arrays.asList(packages));
         }
 
@@ -314,7 +312,7 @@ public class Database {
 
         connectDB();
 
-        Cursor getAllCursor = db.query("devdrawer_app", null, "widgetid = " + widgetId, null, null, null, (order.equals(Constants.ORDER_ORIGINAL)) ? null : "package ASC", null);
+        Cursor getAllCursor = db.query("devdrawer_app", null, "widgetid = " + widgetId, null, null, null, (order.equals(AppConstants.ORDER_ORIGINAL)) ? null : "package ASC", null);
 
         Log.d("DATABASE", "getAllAppsInDatabase: " + Integer.toString(getAllCursor.getCount()));
 
@@ -333,7 +331,7 @@ public class Database {
         getAllCursor.close();
         closeDB();
 
-        if (order.equals(Constants.ORDER_ORIGINAL)) {
+        if (order.equals(AppConstants.ORDER_ORIGINAL)) {
             Collections.reverse(Arrays.asList(packages));
         }
 

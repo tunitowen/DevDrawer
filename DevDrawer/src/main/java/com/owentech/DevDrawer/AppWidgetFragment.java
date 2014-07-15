@@ -85,10 +85,7 @@ public class AppWidgetFragment extends Fragment {
                 if (!name.equals(mCurrentDatabaseName)) {
                     new Database(getActivity()).renameWidget(getAppWidgetId(), name);
                     mCurrentDatabaseName = name;
-
                     new DDWidgetProvider().onUpdate(getActivity(), AppWidgetManager.getInstance(getActivity()), new int[]{getAppWidgetId()});
-
-                    ((MainActivity) getActivity()).update();
                 }
             }
         }

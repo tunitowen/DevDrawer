@@ -46,4 +46,7 @@
         <item>devdrawer</item>
     </array>
 
+    <string name="tab_widgets">WIDGETS</string>
+    <string name="tab_notifications">NOTIFICATIONS</string>
+
 </resources>
