@@ -52,7 +52,6 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
     private String editString;
     private int widgetId;
     private List<String> appPackages;
-    private Database database;
 
     public AddPackageDialogFragment() {
         // Empty constructor required for DialogFragment
@@ -82,7 +81,6 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
         View view = inflater.inflate(R.layout.add_package_dialog_fragment, container);
         ButterKnife.inject(this, view);
 
-        database = new Database(getActivity());
         widgetId = getArguments().getInt(WIDGET_ID);
 
         if (editString != null) {
@@ -105,9 +103,9 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
 
                 if (addPackage.getText().length() != 0) {
                     // Check filter doesn't exist
-                    if (!database.doesFilterExist(addPackage.getText().toString(), widgetId)) {
+                    if (!Database.getInstance(getActivity()).doesFilterExist(addPackage.getText().toString(), widgetId)) {
                         // Add the filter to the mDatabase
-                        database.addFilterToDatabase(addPackage.getText().toString(), widgetId);
+                        Database.getInstance(getActivity()).addFilterToDatabase(addPackage.getText().toString(), widgetId);
 
                         // Check existing apps and add to installed apps table if they match new filter
                         new AddAllAppsAsync(getActivity(), addPackage.getText().toString(), widgetId).execute();
