@@ -3,7 +3,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_add"
         android:title="@string/add_package_filter"
-        android:icon="@drawable/add"
+        android:icon="@drawable/addwhite"
         android:showAsAction="always" />
 
     <item android:id="@+id/menu_shortcut"

@@ -39,8 +39,8 @@ public class NotificationHelper {
         notificationBuilder.setContentText(packageName);
         notificationBuilder.setSmallIcon(R.drawable.notifcationicon);
         notificationBuilder.setLargeIcon(convertFromDrawable(applicationIcon));
-        notificationBuilder.addAction(R.drawable.ic_action_trash_white, "Uninstall", uninstallPendingIntent(context, packageName, id));
-        notificationBuilder.addAction(R.drawable.ic_action_settings_white, "App Settings", appDetailsPendingIntent(context, packageName, id));
+        notificationBuilder.addAction(R.drawable.trashwhite, "Uninstall", uninstallPendingIntent(context, packageName, id));
+        notificationBuilder.addAction(R.drawable.settingswhite, "App Settings", appDetailsPendingIntent(context, packageName, id));
         notificationBuilder.setPriority(Notification.PRIORITY_LOW);
         notificationBuilder.setContentIntent(contentPendingIntent(context, packageName, id));
 

@@ -263,20 +263,4 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
         Collections.sort(appList, collator);
         return appList;
     }
-
-    private void showTestNotification(){
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this);
-        notificationBuilder.setContentTitle("30DAYS");
-        notificationBuilder.setContentText("com.owentech.thirtydays");
-        notificationBuilder.setSmallIcon(R.drawable.ic_launcher);
-
-        notificationBuilder.addAction(R.drawable.ic_action_trash_white, "Uninstall", null);
-        notificationBuilder.addAction(R.drawable.ic_action_settings_white, "App Settings", null);
-        notificationBuilder.setPriority(Notification.PRIORITY_LOW);
-
-        String ns = Context.NOTIFICATION_SERVICE;
-        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(ns);;
-        mNotificationManager.notify(1,
-                notificationBuilder.build());
-    }
 }
