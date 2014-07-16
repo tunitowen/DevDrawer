@@ -26,7 +26,6 @@ import java.util.List;
 public class AddAllAppsAsync extends AsyncTask<Void, Void, Void> {
     ProgressDialog progressDialog;
     Context context;
-    Database database;
     String newFilter;
     int widgetId;
 
@@ -49,8 +48,6 @@ public class AddAllAppsAsync extends AsyncTask<Void, Void, Void> {
         List<String> appPackages = new ArrayList<String>();
         PackageManager pm;
         List<ResolveInfo> list;
-
-        database = new Database(context);
 
         // get installed applications
         pm = context.getPackageManager();
@@ -79,9 +76,9 @@ public class AddAllAppsAsync extends AsyncTask<Void, Void, Void> {
         // If the list is > 0 add the packages to the database
         if (appPackages.size() != 0) {
             for (String s : appPackages) {
-                List<PackageCollection> packageCollections = database.getAllFiltersInDatabase();
+                List<PackageCollection> packageCollections = Database.getInstance(context).getAllFiltersInDatabase();
 
-                database.addAppToDatabase(s, packageCollections.get(packageCollections.size() - 1).mId, widgetId);
+                Database.getInstance(context).addAppToDatabase(s, packageCollections.get(packageCollections.size() - 1).mId, widgetId);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

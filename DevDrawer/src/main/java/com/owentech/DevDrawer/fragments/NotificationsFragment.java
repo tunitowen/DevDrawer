@@ -12,11 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.owentech.DevDrawer.R;
-import com.owentech.DevDrawer.adapters.FilterListAdapter;
+import com.owentech.DevDrawer.adapters.NotificationFilterAdapter;
 import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
-import com.owentech.DevDrawer.utils.AppWidgetUtil;
-import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.squareup.otto.Subscribe;
@@ -30,7 +28,7 @@ import butterknife.InjectView;
 public class NotificationsFragment extends Fragment {
 
     @InjectView(R.id.listView) ListView listView;
-    private FilterListAdapter filterListAdapter;
+    private NotificationFilterAdapter notificationFilterAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,10 +42,10 @@ public class NotificationsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        FilterListAdapter.currentWidgetId = AppConstants.NOTIFICATION;
-        filterListAdapter = new FilterListAdapter(getActivity());
-        listView.setAdapter(filterListAdapter);
-        filterListAdapter.notifyDataSetChanged();
+        NotificationFilterAdapter.currentWidgetId = AppConstants.NOTIFICATION;
+        notificationFilterAdapter = new NotificationFilterAdapter(getActivity());
+        listView.setAdapter(notificationFilterAdapter);
+        notificationFilterAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -83,8 +81,8 @@ public class NotificationsFragment extends Fragment {
 
     @Subscribe
     public void packageAdded(PackageAddedEvent event){
-        if (filterListAdapter != null){
-            filterListAdapter.notifyDataSetChanged();
+        if (notificationFilterAdapter != null){
+            notificationFilterAdapter.notifyDataSetChanged();
         }
     }
 }

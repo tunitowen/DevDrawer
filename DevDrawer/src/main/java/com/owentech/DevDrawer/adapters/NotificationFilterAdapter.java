@@ -1,13 +1,5 @@
 package com.owentech.DevDrawer.adapters;
 
-/**
- * Created with IntelliJ IDEA.
- * User: owent
- * Date: 29/01/2013
- * Time: 16:54
- * To change this template use File | Settings | File Templates.
- */
-
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -16,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -31,13 +22,16 @@ import com.owentech.DevDrawer.utils.PackageCollection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilterListAdapter extends BaseAdapter {
+/**
+ * Created by tonyowen on 16/07/2014.
+ */
+public class NotificationFilterAdapter extends BaseAdapter {
 
     private Activity activity;
     private List<PackageCollection> packageCollections;
     public static int currentWidgetId = -1;
 
-    public FilterListAdapter(Activity activity) {
+    public NotificationFilterAdapter(Activity activity) {
         this.activity = activity;
         packageCollections = new ArrayList<PackageCollection>();
     }
@@ -88,7 +82,7 @@ public class FilterListAdapter extends BaseAdapter {
         holder.txtPackageName.setText(packageCollections.get(position).mPackageName);
 
         // OnClick action for Delete Button
-        holder.deleteButton.setOnClickListener(new OnClickListener() {
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 Database.getInstance(activity).removeFilterFromDatabase(packageCollections.get(position).mId);
@@ -106,7 +100,7 @@ public class FilterListAdapter extends BaseAdapter {
         });
 
         // OnClick action for Edit Button
-        holder.editButton.setOnClickListener(new OnClickListener() {
+        holder.editButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
                 Intent intent = new Intent(activity, EditDialog.class);

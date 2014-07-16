@@ -25,6 +25,7 @@ import android.widget.RemoteViews;
 import com.astuetz.PagerSlidingTabStrip;
 
 import com.owentech.DevDrawer.R;
+import com.owentech.DevDrawer.adapters.FilterListAdapter;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.fragments.NotificationsFragment;
@@ -39,6 +40,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Filter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -178,9 +180,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
         // Catch the return from the EditDialog
         if (resultCode == AppConstants.EDIT_DIALOG_CHANGE) {
             Bundle bundle = data.getExtras();
-
-            Database database = new Database(this);
-            database.amendFilterEntryTo(bundle.getString("id"), bundle.getString("newText"));
+            Database.getInstance(this).amendFilterEntryTo(bundle.getString("id"), bundle.getString("newText"));
         }
     }
 
@@ -189,17 +189,14 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
         super.onMenuItemSelected(featureId, item);
         switch (item.getItemId()) {
             case R.id.menu_shortcut: {
-                Log.d("MENU", "Shortcut");
                 addShortcut(this);
                 return true;
             }
             case R.id.menu_settings: {
-                Log.d("MENU", "Settings");
                 startActivity(new Intent(MainActivity.this, PrefActivity.class));
                 return true;
             }
             default:
-                Log.d("MENU", "Default");
                 return false;
         }
     }
@@ -221,8 +218,6 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
     @Override
     protected void onStop() {
         super.onStop();
-        //TODO is this really needed? It makes the prefActivity to close the app on backpress
-        // this is called to prevent a new app, back pressed, opening this activity
         finish();
     }
 

@@ -28,7 +28,6 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 
     private Context context = null;
     private int appWidgetId;
-    Database database;
 
     PackageManager pm;
     List<ResolveInfo> list;
@@ -42,9 +41,7 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
         // Create the database tables
-        database = new Database(context);
-        database.createTables();
-
+        Database.getInstance(context).createTables();
         onDataSetChanged();
     }
 
@@ -167,7 +164,7 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Get all apps from the app table for this widget
-        String[] packages = database.getAllAppsInDatabase(sp.getString("widgetSorting", "added"), appWidgetId);
+        String[] packages = Database.getInstance(context).getAllAppsInDatabase(sp.getString("widgetSorting", "added"), appWidgetId);
         pm = context.getPackageManager();
 
         // Defensive code, was getting some strange behaviour and forcing the lists seems to fix
@@ -182,7 +179,6 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 
         // Loop though adding details from PackageManager to the lists
         for (String s : packages) {
-            Log.d("DDWidgetViewsFactory", "String is: " + s);
             ApplicationInfo applicationInfo;
 
             try {

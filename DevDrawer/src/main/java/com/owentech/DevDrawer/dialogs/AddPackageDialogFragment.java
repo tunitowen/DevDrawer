@@ -99,8 +99,6 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Send back to main activity
-
                 if (addPackage.getText().length() != 0) {
                     // Check filter doesn't exist
                     if (!Database.getInstance(getActivity()).doesFilterExist(addPackage.getText().toString(), widgetId)) {

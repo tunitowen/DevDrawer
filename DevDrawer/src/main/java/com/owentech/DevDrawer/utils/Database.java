@@ -273,17 +273,11 @@ public class Database {
         String[] packages;
 
         connectDB();
-
         Cursor getAllCursor = db.query("devdrawer_app", null, null, null, null, null, (order.equals(AppConstants.ORDER_ORIGINAL)) ? null : "package ASC", null);
-
-        Log.d("DATABASE", "getAllAppsInDatabase: " + Integer.toString(getAllCursor.getCount()));
-
         getAllCursor.moveToFirst();
-
         packages = new String[getAllCursor.getCount()];
 
         int i = 0;
-
         while (!getAllCursor.isAfterLast()) {
             packages[i] = getAllCursor.getString(1);
             i++;
@@ -307,17 +301,11 @@ public class Database {
         String[] packages;
 
         connectDB();
-
         Cursor getAllCursor = db.query("devdrawer_app", null, "widgetid = " + widgetId, null, null, null, (order.equals(AppConstants.ORDER_ORIGINAL)) ? null : "package ASC", null);
-
-        Log.d("DATABASE", "getAllAppsInDatabase: " + Integer.toString(getAllCursor.getCount()));
-
         getAllCursor.moveToFirst();
-
         packages = new String[getAllCursor.getCount()];
 
         int i = 0;
-
         while (!getAllCursor.isAfterLast()) {
             packages[i] = getAllCursor.getString(1);
             i++;
@@ -427,19 +415,15 @@ public class Database {
     /////////////////////////////////////////////////////////////////////
     // Method to parse each row and return if the new package matches
     /////////////////////////////////////////////////////////////////////
-    // TODO: Make this work for exact package name
     public int parseAndMatch(String p) {
 
         int match = NOT_FOUND;
 
         connectDB();
-
         Cursor getAllCursor = db.query("devdrawer_filter", null, null, null, null, null, null, null);
-
         getAllCursor.moveToFirst();
 
         while (!getAllCursor.isAfterLast()) {
-
             String packageFilter = getAllCursor.getString(1).toLowerCase();
 
             if (packageFilter.contains("*")) {
@@ -448,36 +432,27 @@ public class Database {
             } else {
                 if (p.toLowerCase().equals(packageFilter.toLowerCase()))
                     match = Integer.valueOf(getAllCursor.getString(0));
-
             }
-
             getAllCursor.moveToNext();
-
         }
 
         getAllCursor.close();
         closeDB();
-
         return match;
-
     }
 
     /////////////////////////////////////////////////////////////////////
     // Method to parse each row and return if the new package matches
     /////////////////////////////////////////////////////////////////////
-    // TODO: Make this work for exact package name
     public int parseAndMatch(String p, int widgetId) {
 
         int match = NOT_FOUND;
 
         connectDB();
-
         Cursor getAllCursor = db.query("devdrawer_filter", null, "widgetid = " + widgetId, null, null, null, null, null);
-
         getAllCursor.moveToFirst();
 
         while (!getAllCursor.isAfterLast()) {
-
             String packageFilter = getAllCursor.getString(1).toLowerCase();
 
             if (packageFilter.contains("*")) {
@@ -486,18 +461,14 @@ public class Database {
             } else {
                 if (p.toLowerCase().equals(packageFilter.toLowerCase()))
                     match = Integer.valueOf(getAllCursor.getString(0));
-
             }
-
             getAllCursor.moveToNext();
-
         }
 
         getAllCursor.close();
         closeDB();
 
         return match;
-
     }
 
     ///////////////////////////////////

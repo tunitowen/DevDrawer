@@ -30,7 +30,7 @@ public class NotificationHelper {
     public static Drawable applicationIcon;
     public static int applicationUid;
 
-    public static void showNotification(Context context, String packageName){
+    public static void showNotification(Context context, String packageName, int id){
 
         getAppInformation(context, packageName);
 
@@ -38,30 +38,20 @@ public class NotificationHelper {
         notificationBuilder.setContentTitle(applicationName);
         notificationBuilder.setContentText(packageName);
         notificationBuilder.setSmallIcon(R.drawable.notifcationicon);
-
-        Intent uninstallIntent = new Intent(context, ClickHandlingActivity.class);
-        Bundle uninstallExtras = new Bundle();
-        uninstallExtras.putInt("launchType", AppConstants.LAUNCH_UNINSTALL);
-        uninstallExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageName);
-        uninstallIntent.putExtras(uninstallExtras);
-        PendingIntent uninstallPendingIntent = PendingIntent.getActivity(context, 0, uninstallIntent, PendingIntent.FLAG_ONE_SHOT);
-
-        Intent appDetailsIntent = new Intent(context, ClickHandlingActivity.class);
-        Bundle appDetailsExtras = new Bundle();
-        appDetailsExtras.putInt("launchType", AppConstants.LAUNCH_APP_DETAILS);
-        appDetailsExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageName);
-        appDetailsIntent.putExtras(appDetailsExtras);
-        PendingIntent appDetailsPendingIntent = PendingIntent.getActivity(context, 0, appDetailsIntent, PendingIntent.FLAG_ONE_SHOT);
-
-        notificationBuilder.addAction(R.drawable.ic_action_trash_white, "Uninstall", uninstallPendingIntent);
-        notificationBuilder.addAction(R.drawable.ic_action_settings_white, "App Settings", appDetailsPendingIntent);
+        notificationBuilder.setLargeIcon(convertFromDrawable(applicationIcon));
+        notificationBuilder.addAction(R.drawable.ic_action_trash_white, "Uninstall", uninstallPendingIntent(context, packageName, id));
+        notificationBuilder.addAction(R.drawable.ic_action_settings_white, "App Settings", appDetailsPendingIntent(context, packageName, id));
         notificationBuilder.setPriority(Notification.PRIORITY_LOW);
-        notificationBuilder.setAutoCancel(true);
+        notificationBuilder.setContentIntent(contentPendingIntent(context, packageName, id));
 
-        String ns = Context.NOTIFICATION_SERVICE;
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(ns);;
-        mNotificationManager.notify(applicationUid,
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(id,
                 notificationBuilder.build());
+    }
+
+    public static void removeNotification(Context context, int id){
+        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(id);
     }
 
     // Method to get all apps from the app database and add to the dataset
@@ -83,8 +73,47 @@ public class NotificationHelper {
     }
 
     // Method to return a bitmap from drawable
-    public Bitmap convertFromDrawable(Drawable d) {
+    public static Bitmap convertFromDrawable(Drawable d) {
         return ((BitmapDrawable) d).getBitmap();
+    }
+
+    private static PendingIntent uninstallPendingIntent(Context context, String pName, int id){
+        Intent uninstallIntent = new Intent(context, ClickHandlingActivity.class);
+        uninstallIntent.setAction(Long.toString(System.currentTimeMillis()));
+        Bundle uninstallExtras = new Bundle();
+        uninstallExtras.putInt("launchType", AppConstants.LAUNCH_UNINSTALL);
+        uninstallExtras.putString(DDWidgetProvider.PACKAGE_STRING, pName);
+        uninstallIntent.putExtras(uninstallExtras);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, uninstallIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        pendingIntent.cancel();
+        pendingIntent = PendingIntent.getActivity(context, id, uninstallIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        return pendingIntent;
+    }
+
+    private static PendingIntent appDetailsPendingIntent(Context context, String pName, int id){
+        Intent appDetailsIntent = new Intent(context, ClickHandlingActivity.class);
+        appDetailsIntent.setAction(Long.toString(System.currentTimeMillis()));
+        Bundle appDetailsExtras = new Bundle();
+        appDetailsExtras.putInt("launchType", AppConstants.LAUNCH_APP_DETAILS);
+        appDetailsExtras.putString(DDWidgetProvider.PACKAGE_STRING, pName);
+        appDetailsIntent.putExtras(appDetailsExtras);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, appDetailsIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        pendingIntent.cancel();
+        pendingIntent = PendingIntent.getActivity(context, id, appDetailsIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        return pendingIntent;
+    }
+
+    private static PendingIntent contentPendingIntent(Context context, String pName, int id){
+        Intent openAppIntent = new Intent(context, ClickHandlingActivity.class);
+        openAppIntent.setAction(Long.toString(System.currentTimeMillis()));
+        Bundle openAppExtras = new Bundle();
+        openAppExtras.putInt("launchType", AppConstants.LAUNCH_APP);
+        openAppExtras.putString(DDWidgetProvider.PACKAGE_STRING, packageName);
+        openAppIntent.putExtras(openAppExtras);
+        PendingIntent openAppPendingIntent = PendingIntent.getActivity(context, 0, openAppIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        openAppPendingIntent.cancel();
+        openAppPendingIntent = PendingIntent.getActivity(context, 0, openAppIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        return openAppPendingIntent;
     }
 
 }

@@ -37,26 +37,19 @@ public class AppInstalledReceiver extends BroadcastReceiver {
             for (int appWidgetId : appWidgetIds) {
                 int match = Database.getInstance(context).parseAndMatch(newPackage, appWidgetId);
                 if (match != Database.NOT_FOUND) {
-                    Log.d(TAG, "Matches Filter");
                     Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), Integer.toString(match), appWidgetId);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
                     }
-                } else {
-                    Log.d(TAG, "Doesn't Match Filter");
                 }
             }
-            Log.d(TAG, "Trying Notification");
+
             int match = Database.getInstance(context).parseAndMatch(newPackage, AppConstants.NOTIFICATION);
             if (match != Database.NOT_FOUND){
-                Log.d(TAG, "Notification Match");
                 Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), Integer.toString(match), AppConstants.NOTIFICATION);
-                NotificationHelper.showNotification(context, newPackage);
-            }
-            else{
-                Log.d(TAG, "Notification No Match");
+                NotificationHelper.showNotification(context, newPackage, match);
             }
         }
     }

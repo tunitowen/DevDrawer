@@ -10,12 +10,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.DebugLog;
 import com.owentech.DevDrawer.utils.RootFeatures;
 
 /**
@@ -41,22 +43,27 @@ public class ClickHandlingActivity extends Activity {
 
             switch (launchType) {
                 case AppConstants.LAUNCH_APP: {
+                    DebugLog.d("LAUNCH_APP");
                     startApp(this, packageName);
                     break;
                 }
                 case AppConstants.LAUNCH_APP_DETAILS: {
+                    DebugLog.d("LAUNCH_APP_DETIALS");
                     startAppDetails(this, packageName);
                     break;
                 }
                 case AppConstants.LAUNCH_UNINSTALL: {
+                    DebugLog.d("LAUNCH_UNINSTALL");
                     startUninstall(this, packageName);
                     break;
                 }
                 case AppConstants.LAUNCH_CLEAR: {
+                    DebugLog.d("LAUNCH_CLEAR");
                     startClearData(this, packageName);
                     break;
                 }
                 case AppConstants.LAUNCH_MORE: {
+                    DebugLog.d("LAUNCH_MORE");
                     startMoreOverflowMenu(this, packageName);
                     break;
                 }

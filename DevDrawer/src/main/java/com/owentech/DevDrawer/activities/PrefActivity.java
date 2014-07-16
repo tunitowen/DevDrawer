@@ -114,7 +114,6 @@ public class PrefActivity extends PreferenceActivity {
 
     @Override
     public void onBackPressed() {
-        //TODO check the todo on MainActivity. This is a workaround to it
         startActivity(new Intent(PrefActivity.this, MainActivity.class));
         finish();
     }

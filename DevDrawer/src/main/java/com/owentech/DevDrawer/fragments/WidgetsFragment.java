@@ -21,6 +21,7 @@ import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
 import com.owentech.DevDrawer.dialogs.ChangeWidgetNameDialogFragment;
 import com.owentech.DevDrawer.dialogs.ChooseWidgetDialogFragment;
 import com.owentech.DevDrawer.events.ChangeWidgetEvent;
+import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
 import com.owentech.DevDrawer.events.WidgetRenamedEvent;
@@ -74,7 +75,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         showHideListView();
 
         if (mAppWidgetIds.length != 0) {
-            if (FilterListAdapter.currentWidgetId == -1) {
+            if (FilterListAdapter.currentWidgetId == -1 || FilterListAdapter.currentWidgetId == AppConstants.NOTIFICATION) {
                 FilterListAdapter.currentWidgetId = mAppWidgetIds[0];
             }
         }
@@ -83,6 +84,11 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         listView.setAdapter(filterListAdapter);
         filterListAdapter.notifyDataSetChanged();
         currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames().get(FilterListAdapter.currentWidgetId));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -123,9 +129,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        Log.d("MENU", "WidgetsFragment");
         if (item.getItemId() == R.id.menu_add) {
-            Log.d("MENU", "Add");
             showAddPackageDialog();
         }
         return false;
