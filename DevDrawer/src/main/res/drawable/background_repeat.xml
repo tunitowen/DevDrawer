@@ -1,9 +1,0 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item>
-        <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
-                android:src="@drawable/background_texture"
-                android:tileMode="repeat" />
-    </item>
-
-</layer-list>

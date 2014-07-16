@@ -47,7 +47,7 @@
             android:id="@+id/uninstallImageButton"
             android:layout_alignTop="@+id/imageView"
             android:layout_alignBottom="@+id/imageView"
-            android:src="@drawable/delete_imageview" android:scaleType="centerInside"
+            android:src="@drawable/trash" android:scaleType="centerInside"
             android:layout_toLeftOf="@+id/appDetailsImageButton"/>
     <ImageView
             android:layout_width="48dp"
@@ -55,13 +55,13 @@
             android:id="@+id/appDetailsImageButton" android:layout_alignParentRight="true"
             android:layout_alignTop="@+id/imageView"
             android:layout_alignBottom="@+id/imageView"
-            android:src="@drawable/settings_imageview" android:scaleType="centerInside"/>
+            android:src="@drawable/settings" android:scaleType="centerInside"/>
     <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:id="@+id/clearImageButton"
             android:layout_alignTop="@+id/imageView"
             android:layout_alignBottom="@+id/imageView"
-            android:src="@drawable/clear_imageview" android:scaleType="centerInside"
+            android:src="@drawable/clear" android:scaleType="centerInside"
             android:layout_toLeftOf="@+id/uninstallImageButton"/>
 </RelativeLayout>

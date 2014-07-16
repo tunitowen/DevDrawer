@@ -41,7 +41,6 @@
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:minWidth="48dp"
-        android:src="@drawable/add_imageview"
         android:text="OK"
         android:layout_margin="10dp"/>
 

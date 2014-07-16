@@ -64,7 +64,7 @@
         android:id="@+id/uninstallImageButton"
         android:layout_alignTop="@+id/imageView"
         android:layout_alignBottom="@+id/imageView"
-        android:src="@drawable/delete_imageview"
+        android:src="@drawable/trash"
         android:scaleType="centerInside"
         android:layout_toLeftOf="@+id/moreImageButton" />
 
@@ -75,7 +75,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/imageView"
         android:layout_alignBottom="@+id/imageView"
-        android:src="@drawable/more_imageview"
+        android:src="@drawable/overflow"
         android:scaleType="centerInside" />
 
 

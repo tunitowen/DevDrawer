@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:padding="5dp"
-    android:background="@drawable/newcard">
+    android:background="@drawable/cardbackground">
 
     <Button
         android:id="@+id/touchArea"
@@ -65,7 +65,7 @@
         android:layout_alignTop="@+id/imageView"
         android:layout_toLeftOf="@+id/appDetailsImageButton"
         android:scaleType="centerInside"
-        android:src="@drawable/delete_imageview" />
+        android:src="@drawable/trash" />
 
     <ImageView
         android:id="@+id/appDetailsImageButton"
@@ -75,6 +75,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/imageView"
         android:scaleType="centerInside"
-        android:src="@drawable/settings_imageview" />
+        android:src="@drawable/settings"/>
 
 </RelativeLayout>

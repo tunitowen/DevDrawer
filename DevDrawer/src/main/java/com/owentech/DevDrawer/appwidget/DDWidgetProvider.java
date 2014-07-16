@@ -48,9 +48,7 @@ public class DDWidgetProvider extends AppWidgetProvider {
         svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-
-        int widgetLayoutResId = sp.getString("theme", "Light").equals("Light") ? R.layout.widget_layout : R.layout.widget_layout_dark;
-        RemoteViews widget = new RemoteViews(context.getPackageName(), widgetLayoutResId);
+        RemoteViews widget = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         widget.setRemoteAdapter(R.id.listView, svcIntent);
 
         Intent clickIntent = new Intent(context, ClickHandlingActivity.class);
@@ -62,7 +60,6 @@ public class DDWidgetProvider extends AppWidgetProvider {
         }
 
         widget.setViewVisibility(R.id.widget_layout_titletv, View.VISIBLE);
-        widget.setViewVisibility(R.id.widget_layout_titledivider, View.VISIBLE);
         widget.setTextViewText(R.id.widget_layout_titletv, name);
         widget.setPendingIntentTemplate(R.id.listView, clickPI);
 

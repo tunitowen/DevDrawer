@@ -72,21 +72,6 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
             row.setTextViewText(R.id.packageNameTextView, packageNames.get(position));
             row.setTextViewText(R.id.appNameTextView, applicationNames.get(position));
             row.setImageViewBitmap(R.id.imageView, convertFromDrawable(applicationIcons.get(position)));
-
-            if (sp.getString("theme", "Light").equals("Light")) {
-                row.setTextColor(R.id.appNameTextView, context.getResources().getColor(R.color.app_name_light));
-                row.setImageViewResource(R.id.appDetailsImageButton, R.drawable.settings_imageview);
-                row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview);
-                row.setImageViewResource(R.id.clearImageButton, R.drawable.clear_imageview);
-                row.setImageViewResource(R.id.moreImageButton, R.drawable.more_imageview);
-            } else {
-                row.setTextColor(R.id.appNameTextView, context.getResources().getColor(R.color.app_name_dark));
-                row.setImageViewResource(R.id.appDetailsImageButton, R.drawable.settings_imageview_dark);
-                row.setImageViewResource(R.id.uninstallImageButton, R.drawable.delete_imageview_dark);
-                row.setImageViewResource(R.id.clearImageButton, R.drawable.clear_imageview_dark);
-                row.setImageViewResource(R.id.moreImageButton, R.drawable.more_imageview_dark);
-            }
-
             row.setViewVisibility(R.id.clearImageButton, rootClearData ? View.VISIBLE : View.GONE);
 
             Intent appDetailsClickIntent = new Intent();

@@ -7,7 +7,7 @@
     android:dividerPadding="8dp"
     android:divider="?android:dividerVertical"
     android:layout_height="wrap_content"
-    android:background="@drawable/newcard">
+    android:background="@drawable/cardbackground">
 
     <TextView
         android:id="@+id/packageNameTextView"

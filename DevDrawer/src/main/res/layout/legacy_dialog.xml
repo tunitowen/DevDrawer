@@ -4,4 +4,4 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/legacyListView"
-        android:background="@drawable/background_repeat"/>
+        android:background="#ecf0f1"/>

@@ -9,5 +9,5 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView"
             android:minHeight="20dp"
-            android:background="@drawable/background_repeat"/>
+        android:background="#ecf0f1"/>
 </RelativeLayout>

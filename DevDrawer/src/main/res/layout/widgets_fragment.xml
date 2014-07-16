@@ -43,7 +43,8 @@
         android:gravity="center"
         android:text="There are no widgets created yet,\nadd one to start"
         android:textColor="#333333"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:background="#ecf0f1"/>
 
     <ListView
         android:id="@+id/listView"

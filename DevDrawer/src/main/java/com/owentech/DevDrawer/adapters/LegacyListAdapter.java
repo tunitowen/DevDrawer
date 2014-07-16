@@ -93,23 +93,14 @@ public class LegacyListAdapter extends BaseAdapter {
         holder.packageName.setText(packageNames.get(position));
         holder.appName.setText(applicationNames.get(position));
 
-        if (sp.getString("theme", "Light").equals("Light")) {
-            holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_light));
-            if (holder.delete != null) holder.delete.setImageResource(R.drawable.delete_imageview);
-            if (holder.settings != null)
-                holder.settings.setImageResource(R.drawable.settings_imageview);
-            if (holder.clear != null) holder.clear.setImageResource(R.drawable.clear_imageview);
-            if (holder.more != null) holder.more.setImageResource(R.drawable.more_imageview);
-        } else {
-            holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_dark));
-            if (holder.delete != null)
-                holder.delete.setImageResource(R.drawable.delete_imageview_dark);
-            if (holder.settings != null)
-                holder.settings.setImageResource(R.drawable.settings_imageview_dark);
-            if (holder.clear != null)
-                holder.clear.setImageResource(R.drawable.clear_imageview_dark);
-            if (holder.more != null) holder.more.setImageResource(R.drawable.more_imageview_dark);
-        }
+
+//        holder.appName.setTextColor(activity.getResources().getColor(R.color.app_name_light));
+//        if (holder.delete != null) holder.delete.setImageResource(R.drawable.delete_imageview);
+//        if (holder.settings != null)
+//            holder.settings.setImageResource(R.drawable.settings_imageview);
+//        if (holder.clear != null) holder.clear.setImageResource(R.drawable.clear_imageview);
+//        if (holder.more != null) holder.more.setImageResource(R.drawable.more_imageview);
+
 
         if (holder.delete != null) holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override

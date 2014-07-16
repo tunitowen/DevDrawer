@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:minWidth="48dp"
-        android:src="@drawable/add_imageview"
+        android:src="@drawable/add"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/title"
         android:layout_margin="10dp"/>
