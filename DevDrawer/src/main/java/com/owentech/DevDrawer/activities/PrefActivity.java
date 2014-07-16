@@ -39,11 +39,11 @@ public class PrefActivity extends PreferenceActivity {
         sp = getPreferenceManager().getSharedPreferences();
 
         ListPreference activityChoicePref = (ListPreference) findPreference("widgetSorting");
-        ListPreference themePref = (ListPreference) findPreference("theme");
+//        ListPreference themePref = (ListPreference) findPreference("theme");
         ListPreference intentsPref = (ListPreference) findPreference("launchingIntents");
 
         activityChoicePref.setSummary(nameFromValue(sp.getString("widgetSorting", "order"), activityChoicePref));
-        themePref.setSummary(sp.getString("theme", "Light"));
+//        themePref.setSummary(sp.getString("theme", "Light"));
         intentsPref.setSummary(intentNameFromValue(sp.getString("launchingIntents", "aosp"), intentsPref));
 
         activityChoicePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -63,20 +63,20 @@ public class PrefActivity extends PreferenceActivity {
             }
         });
 
-        themePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString(preference.getKey(), newValue.toString());
-                editor.commit();
-
-                preference.setSummary(newValue.toString());
-
-                Toast.makeText(PrefActivity.this, getString(R.string.re_add_notice), Toast.LENGTH_SHORT).show();
-
-                return false;
-            }
-        });
+//        themePref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+//            @Override
+//            public boolean onPreferenceChange(Preference preference, Object newValue) {
+//                SharedPreferences.Editor editor = sp.edit();
+//                editor.putString(preference.getKey(), newValue.toString());
+//                editor.commit();
+//
+//                preference.setSummary(newValue.toString());
+//
+//                Toast.makeText(PrefActivity.this, getString(R.string.re_add_notice), Toast.LENGTH_SHORT).show();
+//
+//                return false;
+//            }
+//        });
 
         intentsPref.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
