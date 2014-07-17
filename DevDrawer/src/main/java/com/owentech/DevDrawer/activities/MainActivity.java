@@ -1,7 +1,5 @@
 package com.owentech.DevDrawer.activities;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -11,21 +9,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.astuetz.PagerSlidingTabStrip;
-
 import com.owentech.DevDrawer.R;
-import com.owentech.DevDrawer.adapters.FilterListAdapter;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.fragments.ShortcutFragment;
 import com.owentech.DevDrawer.utils.OttoManager;
@@ -57,8 +51,6 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
     WidgetsFragment widgetsFragment;
     NotificationsFragment notificationsFragment;
     ShortcutFragment shortcutFragment;
-
-//    private WidgetFragmentViewPagerAdapter mViewPagerAdapter;
     private int[] mAppWidgetIds;
 
     @Override
@@ -81,7 +73,6 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
         viewPager.setAdapter(pagerAdapter);
 
         tabs.setIndicatorColor(getResources().getColor(R.color.dev_drawer_orange));
-//        tabs.setShouldExpand(true);
         tabs.setViewPager(viewPager);
 
         if (getIntent() != null) {
@@ -94,7 +85,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
                 }
 
                 Database.getInstance(this).addWidgetToDatabase(appWidgetId, "");
-                Crouton.makeText(this, "Press back to save the widget, not home", Style.ALERT).show();
+                Crouton.makeText(this, getString(R.string.back_to_save), Style.ALERT).show();
             }
         }
     }
@@ -222,7 +213,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
         intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
         intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "^DevDrawer");
         intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context, R.drawable.shortcut_icon));
-        intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+        intent.setAction(getString(R.string.action_install_shortcut));
         context.sendBroadcast(intent);
     }
 

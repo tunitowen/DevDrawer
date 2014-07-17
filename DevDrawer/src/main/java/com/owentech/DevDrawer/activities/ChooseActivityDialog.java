@@ -17,6 +17,9 @@ import com.owentech.DevDrawer.adapters.ActivityListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created with IntelliJ IDEA.
  * User: owent
@@ -26,7 +29,7 @@ import java.util.List;
  */
 public class ChooseActivityDialog extends Activity implements ListView.OnItemClickListener {
 
-    ListView listView;
+    @InjectView(R.id.listView) ListView listView;
     String packageName;
     List<String> activitiesList;
 
@@ -34,10 +37,8 @@ public class ChooseActivityDialog extends Activity implements ListView.OnItemCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice);
-
+        ButterKnife.inject(this);
         packageName = getIntent().getStringExtra("packageName");
-
-        listView = (ListView) findViewById(R.id.listView);
 
         try {
             activitiesList = getActivityList(packageName);
@@ -47,18 +48,14 @@ public class ChooseActivityDialog extends Activity implements ListView.OnItemCli
 
         listView.setAdapter(new ActivityListAdapter(this, activitiesList));
         listView.setOnItemClickListener(this);
-
     }
 
     private List<String> getActivityList(String packageName)
             throws PackageManager.NameNotFoundException {
 
         PackageManager pm = this.getPackageManager();
-
         List<String> adapter = new ArrayList<String>();
-
-        PackageInfo info = pm.getPackageInfo(packageName,
-                PackageManager.GET_ACTIVITIES);
+        PackageInfo info = pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
         ActivityInfo[] list = info.activities;
 
         if (list != null && list.length != 0) {
@@ -68,20 +65,15 @@ public class ChooseActivityDialog extends Activity implements ListView.OnItemCli
                 }
             }
         }
-
         return adapter;
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName(
-                packageName, activitiesList.get(i)
-                .toString()
-        ));
+        intent.setComponent(new ComponentName(packageName, activitiesList.get(i)));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
-
 }

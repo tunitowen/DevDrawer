@@ -10,6 +10,9 @@ import android.widget.EditText;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.utils.AppConstants;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created with IntelliJ IDEA.
  * User: owent
@@ -19,22 +22,18 @@ import com.owentech.DevDrawer.utils.AppConstants;
  */
 public class EditDialog extends Activity {
 
-    EditText editText;
-    Button changeButton;
+    @InjectView(R.id.editDialogEditText) EditText editText;
+    @InjectView(R.id.changeButton) Button changeButton;
 
-    String originalText;
-    String id;
+    private String originalText;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_dialog);
-
-        editText = (EditText) findViewById(R.id.editDialogEditText);
-        changeButton = (Button) findViewById(R.id.changeButton);
-
+        ButterKnife.inject(this);
         Bundle bundle = getIntent().getExtras();
-
         originalText = bundle.getString("text");
         id = bundle.getString("id");
 
@@ -44,19 +43,15 @@ public class EditDialog extends Activity {
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
                 bundle.putString("newText", editText.getText().toString());
                 bundle.putString("id", id);
                 intent.putExtras(bundle);
-
                 setResult(AppConstants.EDIT_DIALOG_CHANGE, intent);
                 finish();
-
             }
         });
-
     }
 
     @Override
