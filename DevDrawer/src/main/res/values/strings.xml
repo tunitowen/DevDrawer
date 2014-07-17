@@ -48,6 +48,7 @@
 
     <string name="tab_widgets">WIDGETS</string>
     <string name="tab_notifications">NOTIFICATIONS</string>
+    <string name="tab_shortcut">SHORTCUT</string>
     <string name="re_add_notice">You may need to re-add the widget for this change to take effect</string>
 
 </resources>

@@ -27,6 +27,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.fragments.ShortcutFragment;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.fragments.NotificationsFragment;
 import com.owentech.DevDrawer.fragments.WidgetsFragment;
@@ -55,6 +56,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
 
     WidgetsFragment widgetsFragment;
     NotificationsFragment notificationsFragment;
+    ShortcutFragment shortcutFragment;
 
 //    private WidgetFragmentViewPagerAdapter mViewPagerAdapter;
     private int[] mAppWidgetIds;
@@ -79,7 +81,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
         viewPager.setAdapter(pagerAdapter);
 
         tabs.setIndicatorColor(getResources().getColor(R.color.dev_drawer_orange));
-        tabs.setShouldExpand(true);
+//        tabs.setShouldExpand(true);
         tabs.setViewPager(viewPager);
 
         if (getIntent() != null) {
@@ -114,6 +116,13 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
                     }
                     return notificationsFragment;
                 }
+                case 2:{
+                    if (shortcutFragment == null) {
+                        shortcutFragment = new ShortcutFragment();
+                    }
+                    return shortcutFragment;
+                }
+
                 default:
                     return null;
             }
@@ -128,6 +137,9 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
                 case 1:{
                     return getString(R.string.tab_notifications);
                 }
+                case 2:{
+                    return getString(R.string.tab_shortcut);
+                }
                 default:
                     return "";
             }
@@ -135,7 +147,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     };
 

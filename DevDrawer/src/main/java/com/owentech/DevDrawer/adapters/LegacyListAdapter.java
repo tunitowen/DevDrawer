@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.activities.ClickHandlingActivity;
+import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
 
 import java.util.ArrayList;
@@ -151,7 +152,7 @@ public class LegacyListAdapter extends BaseAdapter {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
 
         // Get all apps from the app table
-        String[] packages = Database.getInstance(activity).getAllAppsInDatabase(sp.getString("widgetSorting", "added"));
+        String[] packages = Database.getInstance(activity).getAllAppsInDatabase(sp.getString("widgetSorting", "added"), AppConstants.SHORTCUT);
         pm = activity.getPackageManager();
 
         // Defensive code, was getting some strange behaviour and forcing the lists seems to fix

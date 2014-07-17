@@ -27,6 +27,7 @@ public class AppConstants {
     public static final int MENU_ADD = 3;
 
     public static final int NOTIFICATION = -101;
+    public static final int SHORTCUT = -102;
 
     public static final String UNNAMED = "unnamed";
 

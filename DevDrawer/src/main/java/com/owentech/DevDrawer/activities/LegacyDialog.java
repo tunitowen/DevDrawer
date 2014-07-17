@@ -25,19 +25,6 @@ public class LegacyDialog extends Activity {
         legacyListView = (ListView) findViewById(R.id.legacyListView);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-        int bgResId = -1;
-        if (sharedPreferences.getString("theme", "Light").equals("Light")) {
-//            bgResId = R.drawable.background_repeat;
-        } else {
-//            bgResId = R.drawable.background_repeat_dark;
-        }
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            legacyListView.setBackgroundDrawable(getResources().getDrawable(bgResId));
-        } else {
-            setLegacyBackgroundPostJB(bgResId);
-        }
-
         LegacyListAdapter listAdapter = new LegacyListAdapter(this);
         legacyListView.setAdapter(listAdapter);
     }
