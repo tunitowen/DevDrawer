@@ -67,8 +67,6 @@ public class ActivityListAdapter extends BaseAdapter {
         holder.txtActivityName.setText(activityList.get(position)
                 .substring(activityList.get(position).lastIndexOf('.'), activityList.get(position).length()));
 
-        // OnClick action for Delete Button
-
         return convertView;
     }
 

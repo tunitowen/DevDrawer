@@ -23,8 +23,6 @@ import com.owentech.DevDrawer.utils.NotificationHelper;
 
 public class AppInstalledReceiver extends BroadcastReceiver {
 
-    public static String TAG = "DevDrawer-AppInstalledReceiver";
-
     @Override
     public void onReceive(Context context, Intent intent) {
         // New app has been installed, check and add to the database / widget

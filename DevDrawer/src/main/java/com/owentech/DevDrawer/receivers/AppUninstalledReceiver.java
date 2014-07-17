@@ -23,8 +23,6 @@ import com.owentech.DevDrawer.utils.NotificationHelper;
  */
 public class AppUninstalledReceiver extends BroadcastReceiver {
 
-    public static String TAG = "DevDrawer-AppUninstalledReceiver";
-
     @Override
     public void onReceive(Context context, Intent intent) {
         // App has been removed, if it is in the app table remove from the widget
@@ -33,7 +31,6 @@ public class AppUninstalledReceiver extends BroadcastReceiver {
         Database.getInstance(context).createTables();
 
         if (Database.getInstance(context).getAppsCount() != 0) {
-
             if (Database.getInstance(context).doesAppExistInDb(uninstalledPackage)) {
                 Database.getInstance(context).deleteAppFromDb(uninstalledPackage);
 
@@ -44,7 +41,6 @@ public class AppUninstalledReceiver extends BroadcastReceiver {
                 }
                 int match = Database.getInstance(context).parseAndMatch(uninstalledPackage, AppConstants.NOTIFICATION);
                 NotificationHelper.removeNotification(context, match);
-
             }
         }
     }
