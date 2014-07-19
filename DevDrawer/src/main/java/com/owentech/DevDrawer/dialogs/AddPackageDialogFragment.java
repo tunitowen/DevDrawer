@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -44,7 +45,7 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
     @InjectView(R.id.addPackage)
     AutoCompleteTextView addPackage;
     @InjectView(R.id.addButton)
-    ImageButton addButton;
+    Button addButton;
 
     private PartialMatchAdapter partialMatchAdapter;
     final private static String EDIT = "edit";

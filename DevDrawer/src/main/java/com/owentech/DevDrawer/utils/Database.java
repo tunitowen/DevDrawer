@@ -456,11 +456,14 @@ public class Database {
             String packageFilter = getAllCursor.getString(1).toLowerCase();
 
             if (packageFilter.contains("*")) {
-                if (p.toLowerCase().startsWith(packageFilter.toLowerCase().substring(0, packageFilter.indexOf("*"))))
+                if (p.toLowerCase().startsWith(packageFilter.toLowerCase().substring(0, packageFilter.indexOf("*")))) {
                     match = Integer.valueOf(getAllCursor.getString(0));
-            } else {
-                if (p.toLowerCase().equals(packageFilter.toLowerCase()))
+                }
+            }
+            else {
+                if (p.toLowerCase().equals(packageFilter.toLowerCase())) {
                     match = Integer.valueOf(getAllCursor.getString(0));
+                }
             }
             getAllCursor.moveToNext();
         }

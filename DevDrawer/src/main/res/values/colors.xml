@@ -3,4 +3,5 @@
     <color name="app_name_light">#333333</color>
     <color name="app_name_dark">#EBEBEB</color>
     <color name="dev_drawer_orange">#f57c00</color>
+    <color name="dev_drawer_orange_5p_darker">#E86F00</color>
 </resources>

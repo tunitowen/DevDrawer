@@ -22,6 +22,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.fragments.ShortcutFragment;
+import com.owentech.DevDrawer.utils.DebugLog;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.fragments.NotificationsFragment;
 import com.owentech.DevDrawer.fragments.WidgetsFragment;
@@ -58,13 +59,17 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-        // Set up ActionBar to use custom view (Robot Light font)
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-            getActionBar().setDisplayShowTitleEnabled(false);
-            LayoutInflater inflater = LayoutInflater.from(this);
-            View customView = inflater.inflate(R.layout.custom_ab_title, null);
-            getActionBar().setCustomView(customView);
-            getActionBar().setDisplayShowCustomEnabled(true);
+
+        // TODO: Remove / Fix for final L release
+        if (Build.VERSION.SDK_INT != 20) {
+            // Set up ActionBar to use custom view (Robot Light font)
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
+                getActionBar().setDisplayShowTitleEnabled(false);
+                LayoutInflater inflater = LayoutInflater.from(this);
+                View customView = inflater.inflate(R.layout.custom_ab_title, null);
+                getActionBar().setCustomView(customView);
+                getActionBar().setDisplayShowCustomEnabled(true);
+            }
         }
 
         Database.getInstance(this).createTables();

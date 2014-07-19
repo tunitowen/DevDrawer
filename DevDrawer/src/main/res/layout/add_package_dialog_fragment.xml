@@ -3,7 +3,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minWidth="1000dp">
+    android:minWidth="1000dp"
+    android:padding="20dp">
 
 
     <TextView
@@ -12,12 +13,11 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/packagefilter"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         android:layout_alignParentTop="true"
-        android:gravity="center"
+        android:gravity="left"
         android:padding="5dp"
-        android:background="@color/dev_drawer_orange"
         />
 
     <AutoCompleteTextView
@@ -28,20 +28,22 @@
         android:fontFamily="sans-serif-light"
         android:hint="@string/yourcompanyhint"
         android:inputType="textVisiblePassword"
-        android:layout_alignBottom="@+id/addButton"
-        android:layout_toLeftOf="@+id/addButton"
-        android:layout_marginLeft="10dp"/>
+        android:layout_below="@+id/title"/>
 
-    <ImageButton
+    <Button
         android:id="@+id/addButton"
-        style="?android:borderlessButtonStyle"
+        style="@android:style/Widget.Material.Button.Borderless"
+        android:text="Add Filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:minWidth="48dp"
         android:src="@drawable/add"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/title"
-        android:layout_margin="10dp"/>
+        android:layout_below="@+id/addPackage"
+        android:textAllCaps="true"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        />
 
 </RelativeLayout>
