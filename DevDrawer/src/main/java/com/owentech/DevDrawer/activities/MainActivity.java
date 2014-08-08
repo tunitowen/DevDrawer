@@ -1,10 +1,13 @@
 package com.owentech.DevDrawer.activities;
 
+import android.app.ActionBar;
+import android.app.FragmentTransaction;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -17,11 +20,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RemoteViews;
+import android.widget.Toolbar;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.fragments.ShortcutFragment;
+import com.owentech.DevDrawer.slidingtabs.SlidingTabLayout;
 import com.owentech.DevDrawer.utils.DebugLog;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.fragments.NotificationsFragment;
@@ -47,8 +52,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class MainActivity extends FragmentActivity implements TextWatcher {
 
     @InjectView(R.id.main_viewpager) ViewPager viewPager;
-    @InjectView(R.id.tabs) PagerSlidingTabStrip tabs;
-
+    @InjectView(R.id.sliding_tabs) SlidingTabLayout slidingTabLayout;
     WidgetsFragment widgetsFragment;
     NotificationsFragment notificationsFragment;
     ShortcutFragment shortcutFragment;
@@ -58,6 +62,12 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
+
+        Toolbar mActionBarToolbar = (Toolbar)findViewById(R.id.toolbar_actionbar);
+        if (mActionBarToolbar != null) {
+            setActionBar(mActionBarToolbar);
+        }
+
         ButterKnife.inject(this);
 
         // TODO: Remove / Fix for final L release
@@ -72,13 +82,16 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
             }
         }
 
+
         Database.getInstance(this).createTables();
         mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(this);
 
         viewPager.setAdapter(pagerAdapter);
+//        slidingTabLayout.setDistributeEvenly(true);
+        slidingTabLayout.setViewPager(viewPager);
 
-        tabs.setIndicatorColor(getResources().getColor(R.color.dev_drawer_orange));
-        tabs.setViewPager(viewPager);
+//        slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.dev_drawer_orange));
+
 
         if (getIntent() != null) {
             int appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);

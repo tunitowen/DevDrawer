@@ -26,6 +26,22 @@
         <item name="android:colorPrimaryDark">@color/dev_drawer_orange_5p_darker</item>
         <item name="android:colorAccent">@color/dev_drawer_orange</item>
 
+        <item name="android:actionBarTheme">@style/ActionBarThemeOverlay</item>
+        <item name="android:windowActionBar">false</item> <!-- replaced by toolbar -->
+        <item name="android:windowNoTitle">true</item>
+
+    </style>
+
+    <style name="ActionBarThemeOverlay" parent="">
+        <!--<item name="android:background">@color/dev_drawer_orange</item>-->
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:colorControlNormal">#fff</item>
+        <item name="android:colorControlHighlight">#FFc107</item>
+    </style>
+
+    <style name="HeaderBar">
+        <item name="android:elevation">2dp</item>
+        <item name="android:background">?android:colorPrimary</item>
     </style>
 
     <!--<style name="ActionBar.Solid.Devdrawertheme" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">-->

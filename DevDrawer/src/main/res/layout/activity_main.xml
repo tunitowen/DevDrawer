@@ -7,103 +7,31 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
-    <com.astuetz.PagerSlidingTabStrip
-        android:id="@+id/tabs"
+    <LinearLayout android:id="@+id/header"
+        style="@style/HeaderBar"
         android:layout_width="match_parent"
-        android:layout_height="48dip"
-        android:layout_alignParentTop="true"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <!--<RelativeLayout android:id="@+id/selectionLayout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="48dp"-->
-        <!--android:layout_below="@+id/tabs">-->
+        <Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            android:theme="@style/ActionBarThemeOverlay"
+            android:id="@+id/toolbar_actionbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize" />
 
-        <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="OWENTECH"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:fontFamily="sans-serif-condensed"-->
-            <!--android:layout_marginLeft="20dp"/>-->
-
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@drawable/down_arrow"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_marginRight="20dp"/>-->
-
-        <!--</RelativeLayout>-->
-    <!--<View android:id="@+id/selectionShadow"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="2dp"-->
-        <!--android:background="#ccc"-->
-        <!--android:layout_below="@id/selectionLayout"/>-->
-
-
-
-    <!--<LinearLayout-->
-        <!--android:id="@+id/activity_main_packagefiltercontainer"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/selectionLayout"-->
-        <!--android:visibility="gone">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/activity_main_filterTitle"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_marginLeft="8dp"-->
-            <!--android:fontFamily="sans-serif-condensed"-->
-            <!--android:text="@string/packagefilter"-->
-            <!--android:textColor="@android:color/black"-->
-            <!--android:textSize="14sp" />-->
-
-        <!--<AutoCompleteTextView-->
-            <!--android:id="@+id/activity_main_addPackageEditText"-->
-            <!--style="@style/AutoCompleteDevDrawerTheme"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:layout_marginLeft="8dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:fontFamily="sans-serif-light"-->
-            <!--android:hint="@string/yourcompanyhint"-->
-            <!--android:inputType="textVisiblePassword" />-->
-
-        <!--<ImageButton-->
-            <!--android:id="@+id/activity_main_addButton"-->
-            <!--style="?android:borderlessButtonStyle"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_vertical"-->
-            <!--android:minHeight="48dp"-->
-            <!--android:minWidth="48dp"-->
-            <!--android:src="@drawable/add_imageview" />-->
-    <!--</LinearLayout>-->
-
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:layout_marginLeft="50dp"-->
-        <!--android:layout_marginRight="50dp"-->
-        <!--android:fontFamily="sans-serif-light"-->
-        <!--android:text="@string/no_widgets" />-->
-
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:layout_below="@id/activity_main_packagefiltercontainer"-->
-        <!--android:background="@color/dev_drawer_orange" />-->
+        <com.owentech.DevDrawer.slidingtabs.SlidingTabLayout
+            android:id="@+id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true"
+            />
+    </LinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/main_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tabs"
+        android:layout_below="@+id/header"
          />
 
 

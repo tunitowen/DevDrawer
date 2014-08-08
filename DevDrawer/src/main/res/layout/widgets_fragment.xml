@@ -8,7 +8,8 @@
         android:id="@+id/selectionLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/tabs">
+        android:elevation="3dp"
+        android:background="#FFFFFF">
 
         <TextView android:id="@+id/currentWidgetName"
             android:layout_width="match_parent"
@@ -16,7 +17,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
             android:fontFamily="sans-serif-condensed"
-            android:text="OWENTECH" />
+            android:text="OWENTECH"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -33,7 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/selectionLayout"
-        android:background="#ccc" />
+        android:background="#ccc"
+        android:visibility="gone"/>
 
     <TextView android:id="@+id/noWidgets"
         android:layout_width="match_parent"
@@ -44,13 +46,14 @@
         android:text="There are no widgets created yet,\nadd one to start"
         android:textColor="#333333"
         android:textSize="18sp"
-        android:background="#ecf0f1"/>
+        android:background="#ecf0f1"
+        android:layout_below="@+id/selectionLayout"/>
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/selectionShadow"
+        android:layout_below="@+id/selectionLayout"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp"

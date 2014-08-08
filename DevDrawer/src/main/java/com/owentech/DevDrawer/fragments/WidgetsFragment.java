@@ -108,7 +108,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         }
         else{
             selectionLayout.setVisibility(View.VISIBLE);
-            selectionShadow.setVisibility(View.INVISIBLE);
+//            selectionShadow.setVisibility(View.INVISIBLE);
             listView.setVisibility(View.VISIBLE);
             noWidgets.setVisibility(View.INVISIBLE);
         }
