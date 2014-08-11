@@ -1,5 +1,7 @@
 package com.owentech.DevDrawer.utils;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -7,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.widget.Toast;
+
+import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -126,12 +130,15 @@ public class Database {
         closeDB();
     }
 
-    public SparseArray<String> getWidgetNames() {
+    public SparseArray<String> getWidgetNames(Context context) {
         SparseArray<String> result = new SparseArray<String>();
 
         connectDB();
         Cursor cursor = db.query("devdrawer_widgets", null, null, null, null, null, null, null);
         cursor.moveToFirst();
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
 
         while (!cursor.isAfterLast()) {
 
@@ -140,7 +147,19 @@ public class Database {
                 name = AppConstants.UNNAMED;
             }
 
-            result.put(cursor.getInt(0), name);
+            boolean exists = false;
+            for (int i : ids){
+                if (cursor.getInt(0) == i){
+                    exists = true;
+                }
+            }
+
+            if (exists) {
+                result.put(cursor.getInt(0), name);
+            }
+            else{
+                removeWidgetFromDatabase(cursor.getInt(0));
+            }
             cursor.moveToNext();
         }
 

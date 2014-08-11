@@ -14,7 +14,7 @@
         android:id="@+id/widget_layout_titletv"
         android:layout_width="wrap_content"
         android:textColor="#FFFFFF"
-        android:background="@color/dev_drawer_orange"
+        android:background="@color/devDrawerPrimary"
         android:textSize="14sp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"

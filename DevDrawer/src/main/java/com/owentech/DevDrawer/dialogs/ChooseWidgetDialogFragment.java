@@ -57,7 +57,7 @@ public class ChooseWidgetDialogFragment extends DialogFragment implements Adapte
         ButterKnife.inject(this, view);
 
         widgetId = getArguments().getInt(WIDGET_ID);
-        widgetNames = Database.getInstance(getActivity()).getWidgetNames();
+        widgetNames = Database.getInstance(getActivity()).getWidgetNames(getActivity());
 
         chooseWidgetAdapter = new ChooseWidgetAdapter(getActivity());
         listView.setAdapter(chooseWidgetAdapter);

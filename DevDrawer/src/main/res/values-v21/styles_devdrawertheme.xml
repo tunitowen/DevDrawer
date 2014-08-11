@@ -21,10 +21,10 @@
 
     <style name="Theme.Devdrawertheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
         <!--   your app's branding color (for the app bar) -->
-        <item name="android:colorPrimary">@color/dev_drawer_orange</item>
+        <item name="android:colorPrimary">@color/devDrawerPrimary</item>
         <!--   darker variant of colorPrimary (for status bar, contextual app bars) -->
-        <item name="android:colorPrimaryDark">@color/dev_drawer_orange_5p_darker</item>
-        <item name="android:colorAccent">@color/dev_drawer_orange</item>
+        <item name="android:colorPrimaryDark">@color/devDrawerDark</item>
+        <item name="android:colorAccent">@color/devDrawerPrimary</item>
 
         <item name="android:actionBarTheme">@style/ActionBarThemeOverlay</item>
         <item name="android:windowActionBar">false</item> <!-- replaced by toolbar -->
@@ -37,6 +37,7 @@
         <item name="android:textColorPrimary">#fff</item>
         <item name="android:colorControlNormal">#fff</item>
         <item name="android:colorControlHighlight">#FFc107</item>
+        <item name="android:actionMenuTextColor">#333</item>
     </style>
 
     <style name="HeaderBar">

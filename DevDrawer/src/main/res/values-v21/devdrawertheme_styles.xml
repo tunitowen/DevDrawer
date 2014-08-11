@@ -20,7 +20,7 @@
   </style>
   
   <style name="AutoCompleteDevDrawerTheme" parent="android:Widget.Material.Light.AutoCompleteTextView">
-      <item name="android:colorAccent">@color/dev_drawer_orange</item>
+      <item name="android:colorAccent">@color/devDrawerPrimary</item>
       <!--<item name="android:dropDownSelector">@drawable/list_selector_holo_light</item>-->
 	  <!--<item name="android:background">@drawable/edit_text_holo_light</item>-->
 	  <!--<item name="android:textColor">#333333</item>-->

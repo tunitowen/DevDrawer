@@ -18,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:gravity="center"
         android:padding="5dp"
-        android:background="@color/dev_drawer_orange"
+        android:background="@color/devDrawerPrimary"
         />
 
     <EditText

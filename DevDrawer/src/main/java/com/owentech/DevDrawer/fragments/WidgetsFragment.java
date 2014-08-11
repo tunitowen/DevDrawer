@@ -3,6 +3,7 @@ package com.owentech.DevDrawer.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -27,6 +28,8 @@ import com.owentech.DevDrawer.events.PackageAddedEvent;
 import com.owentech.DevDrawer.events.WidgetRenamedEvent;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
+import com.shamanland.fab.FloatingActionButton;
+import com.shamanland.fab.ShowHideOnScroll;
 import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
@@ -42,6 +45,8 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     @InjectView(R.id.listView) ListView listView;
     @InjectView(R.id.noWidgets) TextView noWidgets;
     @InjectView(R.id.currentWidgetName) TextView currentWidgetName;
+    @InjectView(R.id.fab) FloatingActionButton fab;
+    CardView card;
 
     private int[] mAppWidgetIds;
     private FilterListAdapter filterListAdapter;
@@ -53,6 +58,16 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         setHasOptionsMenu(true);
         selectionLayout.setOnClickListener(this);
         selectionLayout.setOnLongClickListener(this);
+
+        fab.setColor(getResources().getColor(R.color.devDrawerPrimary));
+        fab.initBackground();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddPackageDialog();
+            }
+        });
+        listView.setOnTouchListener(new ShowHideOnScroll(fab));
         return view;
     }
 
@@ -83,7 +98,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         filterListAdapter = new FilterListAdapter(getActivity());
         listView.setAdapter(filterListAdapter);
         filterListAdapter.notifyDataSetChanged();
-        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames().get(FilterListAdapter.currentWidgetId));
+        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames(getActivity()).get(FilterListAdapter.currentWidgetId));
     }
 
     @Override
@@ -94,7 +109,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     @Override
     public void onClick(View view) {
         if (view == selectionLayout) {
-            SparseArray<String> widgetNames = Database.getInstance(getActivity()).getWidgetNames();
+            SparseArray<String> widgetNames = Database.getInstance(getActivity()).getWidgetNames(getActivity());
             showChooseWidgetDialog();
         }
     }
@@ -170,11 +185,11 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     public void changeWidget(ChangeWidgetEvent event){
         FilterListAdapter.currentWidgetId = event.widgetId;
         filterListAdapter.notifyDataSetChanged();
-        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames().get(FilterListAdapter.currentWidgetId));
+        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames(getActivity()).get(FilterListAdapter.currentWidgetId));
     }
 
     @Subscribe
     public void widgetRenamed(WidgetRenamedEvent event){
-        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames().get(FilterListAdapter.currentWidgetId));
+        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames(getActivity()).get(FilterListAdapter.currentWidgetId));
     }
 }

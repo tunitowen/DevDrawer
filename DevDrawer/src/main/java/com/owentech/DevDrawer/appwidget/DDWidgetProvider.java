@@ -54,7 +54,7 @@ public class DDWidgetProvider extends AppWidgetProvider {
         Intent clickIntent = new Intent(context, ClickHandlingActivity.class);
         PendingIntent clickPI = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        String name = new Database(context).getWidgetNames().get(appWidgetId);
+        String name = new Database(context).getWidgetNames(context).get(appWidgetId);
         if (name == null || name.trim().isEmpty() || name.equalsIgnoreCase(AppConstants.UNNAMED)) {
             name = "DevDrawer";
         }

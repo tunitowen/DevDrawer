@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="50dp"
+    android:background="@drawable/cardbackground"
     android:padding="5dp"
-    android:background="@drawable/cardbackground">
+    >
 
     <Button
         android:id="@+id/touchArea"
@@ -41,7 +41,7 @@
             android:fontFamily="sans-serif-condensed"
             android:lines="1"
             android:text="Package Name"
-            android:textColor="@color/dev_drawer_orange"
+            android:textColor="@color/devDrawerPrimary"
             android:textSize="12sp" />
 
         <TextView

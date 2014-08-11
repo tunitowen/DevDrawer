@@ -21,7 +21,7 @@ public class ChooseWidgetAdapter extends BaseAdapter {
 
     public ChooseWidgetAdapter(Activity activity) {
         this.activity = activity;
-        widgets = Database.getInstance(activity).getWidgetNames();
+        widgets = Database.getInstance(activity).getWidgetNames(activity);
     }
 
 
