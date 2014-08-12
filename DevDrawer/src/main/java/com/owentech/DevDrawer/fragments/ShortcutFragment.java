@@ -19,6 +19,7 @@ import com.owentech.DevDrawer.events.PackageAddedEvent;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.shamanland.fab.FloatingActionButton;
+import com.shamanland.fab.ShowHideOnScroll;
 import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
@@ -47,6 +48,8 @@ public class ShortcutFragment extends Fragment {
                 showAddPackageDialog();
             }
         });
+        listView.setOnTouchListener(new ShowHideOnScroll(fab));
+
 
         return view;
     }
