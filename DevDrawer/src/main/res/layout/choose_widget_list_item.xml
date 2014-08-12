@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:textSize="20sp"
-        android:gravity="center"
+        android:gravity="left"
+        android:textColor="@color/devDrawerDark"
         android:padding="10dp"/>
 
 </LinearLayout>

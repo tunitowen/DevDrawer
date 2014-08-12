@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:minWidth="1000dp">
+    android:minWidth="1000dp"
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/title"
@@ -12,18 +13,17 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/choose_widget"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
+        android:gravity="left"
         android:padding="5dp"
-        android:background="@color/devDrawerPrimary"
         />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+        android:layout_marginTop="10dp"
+        />
 
 </LinearLayout>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:minWidth="1000dp">
+    android:minWidth="1000dp"
+    android:padding="20dp">
 
 
     <TextView
@@ -13,12 +13,11 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/rename_widget"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
-        android:layout_alignParentTop="true"
-        android:gravity="center"
+        android:gravity="left"
         android:padding="5dp"
-        android:background="@color/devDrawerPrimary"
+        android:layout_alignParentTop="true"
         />
 
     <EditText
@@ -28,20 +27,24 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:inputType="textVisiblePassword"
-        android:layout_alignBottom="@+id/addButton"
-        android:layout_toLeftOf="@+id/addButton"
         android:layout_margin="10dp"
         android:hint="Widget Name"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="10dp"/>
 
     <Button
         android:id="@+id/ok"
-        style="?android:borderlessButtonStyle"
-        android:layout_width="match_parent"
+        style="@android:style/Widget.Material.Button.Borderless"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
         android:minWidth="48dp"
-        android:text="OK"
-        android:layout_margin="10dp"/>
+        android:text="   OK   "
+        android:layout_margin="10dp"
+        android:layout_below="@+id/editText"
+        android:padding="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentRight="true"/>
 
-</LinearLayout>
+</RelativeLayout>
