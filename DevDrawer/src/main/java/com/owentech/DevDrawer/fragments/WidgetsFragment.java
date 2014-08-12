@@ -1,6 +1,8 @@
 package com.owentech.DevDrawer.fragments;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,7 +50,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     @InjectView(R.id.listView) ListView listView;
     @InjectView(R.id.noWidgets) CardView noWidgets;
     @InjectView(R.id.currentWidgetName) TextView currentWidgetName;
-    @InjectView(R.id.fab) FloatingActionButton fab;
+    @InjectView(R.id.fab) ImageButton fab;
 
     private int[] mAppWidgetIds;
     private FilterListAdapter filterListAdapter;
@@ -59,15 +63,17 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         selectionLayout.setOnClickListener(this);
         selectionLayout.setOnLongClickListener(this);
 
-        fab.setColor(getResources().getColor(R.color.devDrawerPrimary));
-        fab.initBackground();
+        //Outline
+        int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
+        Outline outline = new Outline();
+        outline.setOval(0, 0, size, size);
+        fab.setOutline(outline);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showAddPackageDialog();
             }
         });
-        listView.setOnTouchListener(new ShowHideOnScroll(fab));
         return view;
     }
 
@@ -132,6 +138,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
             listView.setVisibility(View.VISIBLE);
             noWidgets.setVisibility(View.INVISIBLE);
             fab.setVisibility(View.VISIBLE);
+
         }
     }
 

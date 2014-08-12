@@ -1,6 +1,7 @@
 package com.owentech.DevDrawer.fragments;
 
 import android.app.Activity;
+import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.owentech.DevDrawer.R;
@@ -31,7 +33,7 @@ import butterknife.InjectView;
 public class ShortcutFragment extends Fragment {
 
     @InjectView(R.id.listView) ListView listView;
-    @InjectView(R.id.fab) FloatingActionButton fab;
+    @InjectView(R.id.fab) ImageButton fab;
     private ShortcutFilterAdapter shortcutFilterAdapter;
 
     @Override
@@ -40,16 +42,17 @@ public class ShortcutFragment extends Fragment {
         ButterKnife.inject(this, view);
         setHasOptionsMenu(true);
 
-        fab.setColor(getResources().getColor(R.color.devDrawerPrimary));
-        fab.initBackground();
+        //Outline
+        int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
+        Outline outline = new Outline();
+        outline.setOval(0, 0, size, size);
+        fab.setOutline(outline);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showAddPackageDialog();
             }
         });
-        listView.setOnTouchListener(new ShowHideOnScroll(fab));
-
 
         return view;
     }

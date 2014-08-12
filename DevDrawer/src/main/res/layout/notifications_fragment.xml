@@ -17,13 +17,28 @@
         android:divider="@null"
         android:dividerHeight="5dp" />
 
-    <com.shamanland.fab.FloatingActionButton
+    <!--<com.shamanland.fab.FloatingActionButton-->
+        <!--android:id="@+id/fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/addwhite"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--/>-->
+
+    <ImageButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/addwhite"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ripple"
+        android:stateListAnimator="@anim/anim"
+        android:src="@drawable/addwhite"
+        android:elevation="4dp"
         />
 
 </RelativeLayout>
