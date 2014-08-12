@@ -45,54 +45,8 @@
         <item name="android:background">?android:colorPrimary</item>
     </style>
 
-    <style name="devDrawerOverflowMenu" parent="@android:style/Widget.Material.PopupMenu.Overflow">
-        <item name="android:textColorPrimary">#000</item>
-        <item name="android:textColor">#000</item>
-        <item name="android:actionMenuTextColor">#000</item>
+    <style name="devDrawerOverflowMenu">
+        <item name="android:popupBackground">@color/devDrawerDark</item>
     </style>
-
-    <!--<style name="ActionBar.Solid.Devdrawertheme" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">-->
-        <!--<item name="android:background">@drawable/ab_solid_devdrawertheme</item>-->
-        <!--<item name="android:backgroundStacked">@drawable/ab_stacked_solid_devdrawertheme</item>-->
-        <!--<item name="android:backgroundSplit">@drawable/ab_bottom_solid_devdrawertheme</item>-->
-        <!--<item name="android:progressBarStyle">@style/ProgressBar.Devdrawertheme</item>-->
-    <!--</style>-->
-
-    <!--<style name="ActionBar.Transparent.Devdrawertheme" parent="@android:style/Widget.Holo.ActionBar">-->
-        <!--<item name="android:background">@drawable/ab_transparent_devdrawertheme</item>-->
-        <!--<item name="android:progressBarStyle">@style/ProgressBar.Devdrawertheme</item>-->
-    <!--</style>-->
-
-    <!--<style name="PopupMenu.Devdrawertheme" parent="@android:style/Widget.Holo.ListPopupWindow">-->
-        <!--<item name="android:popupBackground">@drawable/menu_dropdown_panel_devdrawertheme</item>	-->
-    <!--</style>-->
-
-    <!--<style name="DropDownListView.Devdrawertheme" parent="@android:style/Widget.Holo.ListView.DropDown">-->
-        <!--<item name="android:listSelector">@drawable/selectable_background_devdrawertheme</item>-->
-    <!--</style>-->
-
-    <!--<style name="ActionBarTabStyle.Devdrawertheme" parent="@android:style/Widget.Holo.ActionBar.TabView">-->
-        <!--<item name="android:background">@drawable/tab_indicator_ab_devdrawertheme</item>-->
-    <!--</style>-->
-
-    <!--<style name="DropDownNav.Devdrawertheme" parent="@android:style/Widget.Holo.Spinner">-->
-        <!--<item name="android:background">@drawable/spinner_background_ab_devdrawertheme</item>-->
-        <!--<item name="android:popupBackground">@drawable/menu_dropdown_panel_devdrawertheme</item>-->
-        <!--<item name="android:dropDownSelector">@drawable/selectable_background_devdrawertheme</item>-->
-    <!--</style>-->
-    <!---->
-    <!--<style name="ProgressBar.Devdrawertheme" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">-->
-        <!--<item name="android:progressDrawable">@drawable/progress_horizontal_devdrawertheme</item>-->
-    <!--</style>-->
-    <!---->
-    <!--<style name="ActionButton.CloseMode.Devdrawertheme" parent="@android:style/Widget.Holo.ActionButton.CloseMode">-->
-        <!--<item name="android:background">@drawable/btn_cab_done_devdrawertheme</item>-->
-    <!--</style>-->
-
-    <!--&lt;!&ndash; this style is only referenced in a Light.DarkActionBar based theme &ndash;&gt;-->
-    <!--<style name="Theme.Devdrawertheme.Widget" parent="@android:style/Theme.Holo">-->
-        <!--<item name="android:popupMenuStyle">@style/PopupMenu.Devdrawertheme</item>-->
-        <!--<item name="android:dropDownListViewStyle">@style/DropDownListView.Devdrawertheme</item>-->
-    <!--</style>-->
 
 </resources>
