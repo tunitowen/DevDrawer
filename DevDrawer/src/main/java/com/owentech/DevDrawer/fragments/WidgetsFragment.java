@@ -1,6 +1,7 @@
 package com.owentech.DevDrawer.fragments;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -43,10 +44,9 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     @InjectView(R.id.selectionLayout) RelativeLayout selectionLayout;
     @InjectView(R.id.selectionShadow) View selectionShadow;
     @InjectView(R.id.listView) ListView listView;
-    @InjectView(R.id.noWidgets) TextView noWidgets;
+    @InjectView(R.id.noWidgets) CardView noWidgets;
     @InjectView(R.id.currentWidgetName) TextView currentWidgetName;
     @InjectView(R.id.fab) FloatingActionButton fab;
-    CardView card;
 
     private int[] mAppWidgetIds;
     private FilterListAdapter filterListAdapter;
@@ -98,7 +98,11 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         filterListAdapter = new FilterListAdapter(getActivity());
         listView.setAdapter(filterListAdapter);
         filterListAdapter.notifyDataSetChanged();
-        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames(getActivity()).get(FilterListAdapter.currentWidgetId));
+        String widgetName = Database.getInstance(getActivity()).getWidgetNames(getActivity()).get(FilterListAdapter.currentWidgetId);
+        if (AppConstants.UNNAMED.equals(widgetName)){
+            widgetName = "Unnamed Widget";
+        }
+        currentWidgetName.setText(widgetName);
     }
 
     @Override
@@ -116,16 +120,18 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
 
     private void showHideListView(){
         if (mAppWidgetIds.length == 0){
-            selectionLayout.setVisibility(View.INVISIBLE);
-            selectionShadow.setVisibility(View.INVISIBLE);
+            selectionLayout.setVisibility(View.GONE);
+            selectionShadow.setVisibility(View.GONE);
             listView.setVisibility(View.INVISIBLE);
             noWidgets.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.GONE);
         }
         else{
-            selectionLayout.setVisibility(View.VISIBLE);
+//            selectionLayout.setVisibility(View.VISIBLE);
 //            selectionShadow.setVisibility(View.INVISIBLE);
             listView.setVisibility(View.VISIBLE);
             noWidgets.setVisibility(View.INVISIBLE);
+            fab.setVisibility(View.VISIBLE);
         }
     }
 
@@ -137,7 +143,14 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
             menu.findItem(R.id.menu_add).setVisible(false);
         }
         else{
-            menu.findItem(R.id.menu_add).setVisible(true);
+            // TODO: Remove / Fix for final L release
+            if (Build.VERSION.SDK_INT != 20) {
+                menu.findItem(R.id.menu_add).setVisible(true);
+            }
+            else{
+                menu.findItem(R.id.menu_add).setVisible(false);
+            }
+
         }
     }
 

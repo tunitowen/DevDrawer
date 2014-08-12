@@ -2,11 +2,12 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightViewBackground">
 
     <RelativeLayout
         android:id="@+id/selectionLayout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:elevation="3dp"
         android:background="#FFFFFF">
@@ -37,8 +38,19 @@
         android:background="#ccc"
         android:visibility="gone"/>
 
-    <TextView android:id="@+id/noWidgets"
-        android:layout_width="match_parent"
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/noWidgets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="4dp"
+        android:padding="10dp"
+        android:layout_centerInParent="true">
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:fontFamily="sans-serif-condensed"
@@ -46,8 +58,9 @@
         android:text="There are no widgets created yet,\nadd one to start"
         android:textColor="#333333"
         android:textSize="18sp"
-        android:background="#ecf0f1"
         android:layout_below="@+id/selectionLayout"/>
+
+    </android.support.v7.widget.CardView>
 
     <ListView
         android:id="@+id/listView"
@@ -57,7 +70,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp"
-        android:background="#ecf0f1"
+        android:background="@color/lightViewBackground"
         android:divider="@null"
         android:dividerHeight="5dp"/>
 

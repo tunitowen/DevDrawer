@@ -18,6 +18,7 @@ import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.OttoManager;
+import com.shamanland.fab.FloatingActionButton;
 import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
@@ -28,8 +29,8 @@ import butterknife.InjectView;
  */
 public class ShortcutFragment extends Fragment {
 
-    @InjectView(R.id.listView)
-    ListView listView;
+    @InjectView(R.id.listView) ListView listView;
+    @InjectView(R.id.fab) FloatingActionButton fab;
     private ShortcutFilterAdapter shortcutFilterAdapter;
 
     @Override
@@ -37,6 +38,16 @@ public class ShortcutFragment extends Fragment {
         View view = inflater.inflate(R.layout.notifications_fragment, container, false);
         ButterKnife.inject(this, view);
         setHasOptionsMenu(true);
+
+        fab.setColor(getResources().getColor(R.color.devDrawerPrimary));
+        fab.initBackground();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAddPackageDialog();
+            }
+        });
+
         return view;
     }
 
@@ -65,6 +76,7 @@ public class ShortcutFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         getActivity().getMenuInflater().inflate(R.menu.notifications_menu, menu);
+        menu.findItem(R.id.menu_add).setVisible(false);
     }
 
     @Override

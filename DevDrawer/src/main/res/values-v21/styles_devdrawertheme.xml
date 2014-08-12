@@ -19,7 +19,7 @@
 
 <resources>
 
-    <style name="Theme.Devdrawertheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+    <style name="Theme.Devdrawertheme" parent="@android:style/Theme.Material.Light">
         <!--   your app's branding color (for the app bar) -->
         <item name="android:colorPrimary">@color/devDrawerPrimary</item>
         <!--   darker variant of colorPrimary (for status bar, contextual app bars) -->
@@ -37,12 +37,18 @@
         <item name="android:textColorPrimary">#fff</item>
         <item name="android:colorControlNormal">#fff</item>
         <item name="android:colorControlHighlight">#FFc107</item>
-        <item name="android:actionMenuTextColor">#333</item>
+        <item name="android:actionOverflowMenuStyle">@style/devDrawerOverflowMenu</item>
     </style>
 
     <style name="HeaderBar">
         <item name="android:elevation">2dp</item>
         <item name="android:background">?android:colorPrimary</item>
+    </style>
+
+    <style name="devDrawerOverflowMenu" parent="@android:style/Widget.Material.PopupMenu.Overflow">
+        <item name="android:textColorPrimary">#000</item>
+        <item name="android:textColor">#000</item>
+        <item name="android:actionMenuTextColor">#000</item>
     </style>
 
     <!--<style name="ActionBar.Solid.Devdrawertheme" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">-->
