@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +35,7 @@ import butterknife.InjectView;
  */
 public class ShortcutFragment extends Fragment {
 
-    @InjectView(R.id.listView) ListView listView;
+    @InjectView(R.id.recyclerView) RecyclerView recyclerView;
     @InjectView(R.id.fab) ImageButton fab;
     private ShortcutFilterAdapter shortcutFilterAdapter;
 
@@ -63,8 +66,10 @@ public class ShortcutFragment extends Fragment {
 
         ShortcutFilterAdapter.currentWidgetId = AppConstants.SHORTCUT;
         shortcutFilterAdapter = new ShortcutFilterAdapter(getActivity());
-        listView.setAdapter(shortcutFilterAdapter);
-        shortcutFilterAdapter.notifyDataSetChanged();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(shortcutFilterAdapter);
     }
 
     @Override
@@ -102,7 +107,7 @@ public class ShortcutFragment extends Fragment {
     @Subscribe
     public void packageAdded(PackageAddedEvent event){
         if (shortcutFilterAdapter != null){
-            shortcutFilterAdapter.notifyDataSetChanged();
+            shortcutFilterAdapter.updatePackageCollections();
         }
     }
 }

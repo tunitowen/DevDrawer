@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.graphics.Outline;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,13 +34,13 @@ import butterknife.InjectView;
  */
 public class NotificationsFragment extends Fragment {
 
-    @InjectView(R.id.listView) ListView listView;
+    @InjectView(R.id.recyclerView) RecyclerView recyclerView;
     @InjectView(R.id.fab) ImageButton fab;
     private NotificationFilterAdapter notificationFilterAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.notifications_fragment, container, false);
+        View view = inflater.inflate(R.layout.notifications_fragment_new, container, false);
         ButterKnife.inject(this, view);
         setHasOptionsMenu(true);
 
@@ -62,8 +65,13 @@ public class NotificationsFragment extends Fragment {
 
         NotificationFilterAdapter.currentWidgetId = AppConstants.NOTIFICATION;
         notificationFilterAdapter = new NotificationFilterAdapter(getActivity());
-        listView.setAdapter(notificationFilterAdapter);
-        notificationFilterAdapter.notifyDataSetChanged();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(notificationFilterAdapter);
+
+//        listView.setAdapter(notificationFilterAdapter);
+//        notificationFilterAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -101,7 +109,7 @@ public class NotificationsFragment extends Fragment {
     @Subscribe
     public void packageAdded(PackageAddedEvent event){
         if (notificationFilterAdapter != null){
-            notificationFilterAdapter.notifyDataSetChanged();
+            notificationFilterAdapter.updatePackageCollections();
         }
     }
 }

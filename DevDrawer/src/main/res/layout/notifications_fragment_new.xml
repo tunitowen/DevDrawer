@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightViewBackground">
+
+    <!--<ListView-->
+    <!--android:id="@+id/listView"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@+id/selectionShadow"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_marginRight="10dp"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:background="@android:color/transparent"-->
+    <!--android:divider="@null"-->
+    <!--android:dividerHeight="5dp" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -15,6 +28,15 @@
         android:layout_marginTop="10dp"
 
         />
+
+    <!--<com.shamanland.fab.FloatingActionButton-->
+    <!--android:id="@+id/fab"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:src="@drawable/addwhite"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--/>-->
 
     <ImageButton
         android:id="@+id/fab"
