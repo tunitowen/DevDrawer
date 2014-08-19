@@ -7,6 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -47,7 +50,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
 
     @InjectView(R.id.selectionLayout) RelativeLayout selectionLayout;
     @InjectView(R.id.selectionShadow) View selectionShadow;
-    @InjectView(R.id.listView) ListView listView;
+    @InjectView(R.id.recyclerView) RecyclerView recyclerView;
     @InjectView(R.id.noWidgets) CardView noWidgets;
     @InjectView(R.id.currentWidgetName) TextView currentWidgetName;
     @InjectView(R.id.fab) ImageButton fab;
@@ -102,8 +105,11 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         }
 
         filterListAdapter = new FilterListAdapter(getActivity());
-        listView.setAdapter(filterListAdapter);
-        filterListAdapter.notifyDataSetChanged();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(filterListAdapter);
+
         String widgetName = Database.getInstance(getActivity()).getWidgetNames(getActivity()).get(FilterListAdapter.currentWidgetId);
         if (AppConstants.UNNAMED.equals(widgetName)){
             widgetName = "Unnamed Widget";
@@ -128,14 +134,14 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         if (mAppWidgetIds.length == 0){
             selectionLayout.setVisibility(View.GONE);
             selectionShadow.setVisibility(View.GONE);
-            listView.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
             noWidgets.setVisibility(View.VISIBLE);
             fab.setVisibility(View.GONE);
         }
         else{
 //            selectionLayout.setVisibility(View.VISIBLE);
 //            selectionShadow.setVisibility(View.INVISIBLE);
-            listView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
             noWidgets.setVisibility(View.INVISIBLE);
             fab.setVisibility(View.VISIBLE);
 
@@ -191,7 +197,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     @Subscribe
     public void packageAdded(PackageAddedEvent event){
         if (filterListAdapter != null){
-            filterListAdapter.notifyDataSetChanged();
+            filterListAdapter.updatePackageCollections();
         }
     }
 
