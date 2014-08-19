@@ -22,6 +22,7 @@ import com.owentech.DevDrawer.adapters.ShortcutFilterAdapter;
 import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
 import com.owentech.DevDrawer.utils.AppConstants;
+import com.owentech.DevDrawer.utils.DebugLog;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.shamanland.fab.FloatingActionButton;
 import com.shamanland.fab.ShowHideOnScroll;
@@ -38,6 +39,7 @@ public class ShortcutFragment extends Fragment {
     @InjectView(R.id.recyclerView) RecyclerView recyclerView;
     @InjectView(R.id.fab) ImageButton fab;
     private ShortcutFilterAdapter shortcutFilterAdapter;
+    float originalFabY;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class ShortcutFragment extends Fragment {
                 showAddPackageDialog();
             }
         });
-
+        originalFabY = fab.getTranslationY();
         return view;
     }
 
@@ -70,6 +72,35 @@ public class ShortcutFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(shortcutFilterAdapter);
+
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            boolean up = false;
+
+            @Override
+            public void onScrollStateChanged(int scrollState) {
+                if (scrollState == 0) {
+                    if (up){
+                        DebugLog.d("Scroll finished up");
+                        fab.animate().translationY(originalFabY+500);
+                    }
+                    else{
+                        DebugLog.d("Scroll finished down");
+                        fab.animate().translationY(originalFabY);
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(int i, int i2) {
+                if (i < i2) {
+                    up = true;
+                }
+                else{
+                    up = false;
+                }
+            }
+        });
+
     }
 
     @Override

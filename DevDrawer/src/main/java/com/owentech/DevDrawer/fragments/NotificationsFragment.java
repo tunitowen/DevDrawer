@@ -11,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -20,6 +23,7 @@ import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.NotificationFilterAdapter;
 import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
+import com.owentech.DevDrawer.utils.DebugLog;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.shamanland.fab.FloatingActionButton;
@@ -28,6 +32,7 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import eu.chainfire.libsuperuser.Debug;
 
 /**
  * Created by tonyowen on 09/07/2014.
@@ -37,6 +42,7 @@ public class NotificationsFragment extends Fragment {
     @InjectView(R.id.recyclerView) RecyclerView recyclerView;
     @InjectView(R.id.fab) ImageButton fab;
     private NotificationFilterAdapter notificationFilterAdapter;
+    float originalFabY;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +62,8 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+        originalFabY = fab.getTranslationY();
+
         return view;
     }
 
@@ -70,8 +78,33 @@ public class NotificationsFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(notificationFilterAdapter);
 
-//        listView.setAdapter(notificationFilterAdapter);
-//        notificationFilterAdapter.notifyDataSetChanged();
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+           boolean up = false;
+
+            @Override
+            public void onScrollStateChanged(int scrollState) {
+                if (scrollState == 0) {
+                    if (up){
+                        DebugLog.d("Scroll finished up");
+                        fab.animate().translationY(originalFabY+500);
+                    }
+                    else{
+                        DebugLog.d("Scroll finished down");
+                        fab.animate().translationY(originalFabY);
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(int i, int i2) {
+                if (i < i2) {
+                    up = true;
+                }
+                else{
+                    up = false;
+                }
+            }
+        });
     }
 
     @Override
