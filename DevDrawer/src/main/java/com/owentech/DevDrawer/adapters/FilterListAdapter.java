@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.activities.EditDialog;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.PackageCollection;
 
@@ -80,7 +82,8 @@ public class FilterListAdapter extends RecyclerView.Adapter<FilterListAdapter.Li
     public void onBindViewHolder(ListItemViewHolder viewHolder, final int position) {
 
         viewHolder.txtPackageName.setText(packageCollections.get(position).mPackageName);
-
+        viewHolder.deleteButton.setImageDrawable(AppWidgetUtil.getColoredDrawable(activity, R.drawable.trash, activity.getResources().getColor(R.color.devDrawerDark)));
+        viewHolder.editButton.setImageDrawable(AppWidgetUtil.getColoredDrawable(activity, R.drawable.edit, activity.getResources().getColor(R.color.devDrawerDark)));
         // OnClick action for Delete Button
         viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
 

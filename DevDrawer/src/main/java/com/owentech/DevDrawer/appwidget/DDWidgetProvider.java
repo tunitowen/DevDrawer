@@ -14,6 +14,12 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -59,8 +65,28 @@ public class DDWidgetProvider extends AppWidgetProvider {
             name = "DevDrawer";
         }
 
+        if (true){
+            widget.setViewVisibility(R.id.lightHeader, View.VISIBLE);
+            widget.setViewVisibility(R.id.darkHeader, View.INVISIBLE);
+            widget.setViewVisibility(R.id.lightBackground, View.VISIBLE);
+            widget.setViewVisibility(R.id.darkBackground, View.INVISIBLE);
+//            widget.setTextColor(R.id.widget_layout_titletv, context.getResources().getColor(android.R.color.white));
+//            widget.setImageViewBitmap(R.id.refresh, drawableToBitmap(AppWidgetUtil.getColoredDrawable(context, R.drawable.refresh, context.getResources().getColor(android.R.color.white))));
+//            widget.setTextColor(R.id.widget_layout_titletv, context.getResources().getColor(android.R.color.black));
+//            widget.setImageViewBitmap(R.id.refresh, drawableToBitmap(AppWidgetUtil.getColoredDrawable(context, R.drawable.refresh, context.getResources().getColor(android.R.color.black))));
+        }
+        else{
+            widget.setViewVisibility(R.id.lightHeader, View.INVISIBLE);
+            widget.setViewVisibility(R.id.darkHeader, View.VISIBLE);
+            widget.setViewVisibility(R.id.lightBackground, View.INVISIBLE);
+            widget.setViewVisibility(R.id.darkBackground, View.VISIBLE);
+//            widget.setTextColor(R.id.widget_layout_titletv, context.getResources().getColor(android.R.color.white));
+//            widget.setImageViewBitmap(R.id.refresh, drawableToBitmap(AppWidgetUtil.getColoredDrawable(context, R.drawable.refresh, context.getResources().getColor(android.R.color.white))));
+        }
+
         widget.setViewVisibility(R.id.widget_layout_titletv, View.VISIBLE);
         widget.setTextViewText(R.id.widget_layout_titletv, name);
+
         widget.setPendingIntentTemplate(R.id.listView, clickPI);
 
         Intent refreshIntent = new Intent(context, DDWidgetProvider.class);
@@ -96,5 +122,19 @@ public class DDWidgetProvider extends AppWidgetProvider {
         }
     }
 
+    public static Bitmap drawableToBitmap (Drawable drawable) {
+
+        int width = drawable.getIntrinsicWidth();
+        width = width > 0 ? width : 1;
+        int height = drawable.getIntrinsicHeight();
+        height = height > 0 ? height : 1;
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
+    }
 
 }

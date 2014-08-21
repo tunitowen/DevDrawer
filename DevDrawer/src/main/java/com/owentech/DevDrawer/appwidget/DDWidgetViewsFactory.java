@@ -178,7 +178,7 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
     }
 
     // Method to return a bitmap from drawable
-    public Bitmap convertFromDrawable(Drawable d) {
+    public static Bitmap convertFromDrawable(Drawable d) {
         return ((BitmapDrawable) d).getBitmap();
     }
 }
