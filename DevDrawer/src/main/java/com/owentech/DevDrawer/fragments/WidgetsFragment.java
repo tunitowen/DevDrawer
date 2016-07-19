@@ -69,10 +69,10 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         selectionLayout.setOnLongClickListener(this);
 
         //Outline
-        int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
-        Outline outline = new Outline();
-        outline.setOval(0, 0, size, size);
-        fab.setOutline(outline);
+//        int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
+//        Outline outline = new Outline();
+//        outline.setOval(0, 0, size, size);
+//        fab.setOutline(outline);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,34 +112,6 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(filterListAdapter);
-
-        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            boolean up = false;
-
-            @Override
-            public void onScrollStateChanged(int scrollState) {
-                if (scrollState == 0) {
-                    if (up){
-                        DebugLog.d("Scroll finished up");
-                        fab.animate().translationY(originalFabY+500);
-                    }
-                    else{
-                        DebugLog.d("Scroll finished down");
-                        fab.animate().translationY(originalFabY);
-                    }
-                }
-            }
-
-            @Override
-            public void onScrolled(int i, int i2) {
-                if (i < i2) {
-                    up = true;
-                }
-                else{
-                    up = false;
-                }
-            }
-        });
 
         String widgetName = Database.getInstance(getActivity()).getWidgetNames(getActivity()).get(FilterListAdapter.currentWidgetId);
         if (AppConstants.UNNAMED.equals(widgetName)){

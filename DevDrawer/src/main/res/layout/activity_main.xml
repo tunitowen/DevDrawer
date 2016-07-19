@@ -7,31 +7,15 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
 
-    <LinearLayout android:id="@+id/header"
-        style="@style/HeaderBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-            android:theme="@style/ActionBarThemeOverlay"
-            android:id="@+id/toolbar_actionbar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:actionBarSize" />
-
-        <com.owentech.DevDrawer.slidingtabs.SlidingTabLayout
-            android:id="@+id/sliding_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true"
-            />
-    </LinearLayout>
+    <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?android:actionBarSize" />-->
 
     <android.support.v4.view.ViewPager
         android:id="@+id/main_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/header"
          />
 
 

@@ -1,33 +1,29 @@
 package com.owentech.DevDrawer.activities;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.Toolbar;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.fragments.ShortcutFragment;
-import com.owentech.DevDrawer.slidingtabs.SlidingTabLayout;
-import com.owentech.DevDrawer.utils.DebugLog;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.fragments.NotificationsFragment;
 import com.owentech.DevDrawer.fragments.WidgetsFragment;
@@ -45,14 +41,11 @@ import java.util.logging.Filter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 
-public class MainActivity extends FragmentActivity implements TextWatcher {
+public class MainActivity extends AppCompatActivity implements TextWatcher {
 
     @InjectView(R.id.main_viewpager) ViewPager viewPager;
-    @InjectView(R.id.sliding_tabs) SlidingTabLayout slidingTabLayout;
     WidgetsFragment widgetsFragment;
     NotificationsFragment notificationsFragment;
     ShortcutFragment shortcutFragment;
@@ -62,36 +55,12 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
-
-        Toolbar mActionBarToolbar = (Toolbar)findViewById(R.id.toolbar_actionbar);
-        if (mActionBarToolbar != null) {
-            setActionBar(mActionBarToolbar);
-        }
-
         ButterKnife.inject(this);
-
-        // TODO: Remove / Fix for final L release
-        if (Build.VERSION.SDK_INT != 20) {
-            // Set up ActionBar to use custom view (Robot Light font)
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB) {
-                getActionBar().setDisplayShowTitleEnabled(false);
-                LayoutInflater inflater = LayoutInflater.from(this);
-                View customView = inflater.inflate(R.layout.custom_ab_title, null);
-                getActionBar().setCustomView(customView);
-                getActionBar().setDisplayShowCustomEnabled(true);
-            }
-        }
-
 
         Database.getInstance(this).createTables();
         mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(this);
 
         viewPager.setAdapter(pagerAdapter);
-//        slidingTabLayout.setDistributeEvenly(true);
-        slidingTabLayout.setViewPager(viewPager);
-
-//        slidingTabLayout.setBackgroundColor(getResources().getColor(R.color.dev_drawer_orange));
-
 
         if (getIntent() != null) {
             int appWidgetId = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
@@ -103,7 +72,6 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
                 }
 
                 Database.getInstance(this).addWidgetToDatabase(appWidgetId, "");
-                Crouton.makeText(this, getString(R.string.back_to_save), Style.ALERT).show();
             }
         }
     }
@@ -206,8 +174,8 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
     }
 
     @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        super.onMenuItemSelected(featureId, item);
+    public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.menu_shortcut: {
                 addShortcut(this);
@@ -218,7 +186,7 @@ public class MainActivity extends FragmentActivity implements TextWatcher {
                 return true;
             }
             default:
-                return false;
+                return super.onOptionsItemSelected(item);
         }
     }
 

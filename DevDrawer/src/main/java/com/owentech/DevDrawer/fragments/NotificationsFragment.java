@@ -32,7 +32,6 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import eu.chainfire.libsuperuser.Debug;
 
 /**
  * Created by tonyowen on 09/07/2014.
@@ -51,10 +50,10 @@ public class NotificationsFragment extends Fragment {
         setHasOptionsMenu(true);
 
         //Outline
-        int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
-        Outline outline = new Outline();
-        outline.setOval(0, 0, size, size);
-        fab.setOutline(outline);
+//        int size = getResources().getDimensionPixelSize(R.dimen.fab_size);
+//        Outline outline = new Outline();
+//        outline.setOval(0, 0, size, size);
+//        fab.se.setOutline(outline);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,8 +81,9 @@ public class NotificationsFragment extends Fragment {
            boolean up = false;
 
             @Override
-            public void onScrollStateChanged(int scrollState) {
-                if (scrollState == 0) {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == 0) {
                     if (up){
                         DebugLog.d("Scroll finished up");
                         fab.animate().translationY(originalFabY+500);
@@ -96,13 +96,14 @@ public class NotificationsFragment extends Fragment {
             }
 
             @Override
-            public void onScrolled(int i, int i2) {
-                if (i < i2) {
-                    up = true;
-                }
-                else{
-                    up = false;
-                }
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+//                if (i < i2) {
+//                    up = true;
+//                }
+//                else{
+//                    up = false;
+//                }
             }
         });
     }

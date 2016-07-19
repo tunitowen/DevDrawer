@@ -25,24 +25,5 @@
                         android:defaultValue="added"/>
 
     </PreferenceCategory>
-    <!--<PreferenceCategory android:title="Widget Theme">-->
-        <!--<ListPreference android:key="theme"-->
-                        <!--android:title="Theme"-->
-                        <!--android:entries="@array/widget_themes"-->
-                        <!--android:entryValues="@array/widget_themes"-->
-                        <!--android:defaultValue="Light"/>-->
-    <!--</PreferenceCategory>-->
-
-    <PreferenceCategory android:title="Root access">
-        <SwitchPreference android:key="rootEnabled"
-                          android:title="Advanced features"
-                          android:defaultValue="false"/>
-        <CheckBoxPreference android:key="rootQuickUninstall"
-                            android:title="Quick uninstall"
-                            android:defaultValue="false" />
-        <CheckBoxPreference android:key="rootClearData"
-                            android:title="Clear data"
-                            android:defaultValue="false" />
-    </PreferenceCategory>
 
 </PreferenceScreen>
