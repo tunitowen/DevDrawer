@@ -13,6 +13,10 @@ import android.widget.Toast;
 
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.data.OpenHelper;
+import com.owentech.DevDrawer.data.model.App;
+import com.owentech.DevDrawer.data.model.AppModel;
+import com.owentech.DevDrawer.data.model.Filter;
+import com.owentech.DevDrawer.data.model.FilterModel;
 import com.owentech.DevDrawer.data.model.Widget;
 import com.owentech.DevDrawer.data.model.WidgetModel;
 
@@ -125,8 +129,9 @@ public class Database {
     public SparseArray<String> getWidgetNames(Context context) {
         SparseArray<String> result = new SparseArray<String>();
 
+
         connectDB();
-        Cursor cursor = db.query("devdrawer_widgets", null, null, null, null, null, null, null);
+        Cursor cursor = OpenHelper.getInstance(ctx).getWritableDatabase().rawQuery(Widget.SELECTALLWIDGETS, new String[0]);
         cursor.moveToFirst();
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -160,37 +165,16 @@ public class Database {
         return result;
     }
 
-    // ////////////////////////////////////////////////
-    // Method to add an entry into the filter table
-    // ///////////////////////////////////////////////
-    public void addFilterToDatabase(String p, int widgetId) {
-        // connect
-        connectDB();
-
-        // add accident entry
-        String packageInsertQuery = "INSERT INTO 'devdrawer_filter' (package, widgetid)" + "VALUES" + "('" + p + "', " + widgetId + ");";
-
-        db.execSQL(packageInsertQuery);
-
-        // close
-        closeDB();
+    public void addFilterToDatabase(String packageFilter, long widgetId) {
+        Filter.InsertFilter insertFilter = new FilterModel.InsertFilter(OpenHelper.getInstance(ctx).getWritableDatabase());
+        insertFilter.bind(packageFilter, widgetId);
+        insertFilter.program.execute();
     }
-
-    // ///////////////////////////////////////////////
-    // Method to add package to installed apps table
-    // ///////////////////////////////////////////////
-    public void addAppToDatabase(String p, String filterId, int widgetId) {
-        // connect
-        connectDB();
-
-        // add accident entry
-        String packageInsertQuery = "INSERT INTO 'devdrawer_app' "
-                + "(package, filterid, widgetid)" + "VALUES" + "('" + p + "', " + filterId + ", " + String.valueOf(widgetId) + ");";
-
-        db.execSQL(packageInsertQuery);
-
-        // close
-        closeDB();
+    
+    public void addAppToDatabase(String packageFilter, String filterId, long widgetId) {
+        App.InsertApp insertApp = new AppModel.InsertApp(OpenHelper.getInstance(ctx).getWritableDatabase());
+        insertApp.bind(packageFilter, Long.valueOf(filterId), widgetId);
+        insertApp.program.execute();
     }
 
     // ////////////////////////////////////////////////////
