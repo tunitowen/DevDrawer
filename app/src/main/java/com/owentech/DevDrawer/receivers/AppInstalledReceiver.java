@@ -28,8 +28,6 @@ public class AppInstalledReceiver extends BroadcastReceiver {
         // New app has been installed, check and add to the database / widget
         String newPackage = intent.getData().getSchemeSpecificPart();
 
-        Database.getInstance(context).createTables();
-
         if (Database.getInstance(context).getFiltersCount() != 0) {
             int[] appWidgetIds = AppWidgetUtil.findAppWidgetIds(context);
             for (int appWidgetId : appWidgetIds) {

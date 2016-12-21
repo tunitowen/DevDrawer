@@ -40,8 +40,6 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
         this.context = context;
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
-        // Create the database tables
-        Database.getInstance(context).createTables();
         onDataSetChanged();
     }
 

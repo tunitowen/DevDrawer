@@ -5,12 +5,16 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Path;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
 import android.widget.Toast;
 
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.data.OpenHelper;
+import com.owentech.DevDrawer.data.model.Widget;
+import com.owentech.DevDrawer.data.model.WidgetModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +47,6 @@ public class Database {
             dropTables();
             PreferenceManager.getDefaultSharedPreferences(ctx).edit().putBoolean("HASMULTIPLEWIDGETS", true).commit();
         }
-        createTables();
     }
 
     ///////////////////////////////////
@@ -91,19 +94,17 @@ public class Database {
     }
 
 
-    public void addWidgetToDatabase(int widgetId, String name) {
-        connectDB();
+    public void addWidgetToDatabase(long widgetId, String name) {
 
-        String insertQuery = "INSERT INTO 'devdrawer_widgets' (id, name) VALUES (" + widgetId + ", '" + name + "')";
-        db.execSQL(insertQuery);
-
-        closeDB();
+        Widget.AddWiget addWiget = new WidgetModel.AddWiget(OpenHelper.getInstance(ctx).getWritableDatabase());
+        addWiget.bind(widgetId, name);
+        addWiget.program.execute();
     }
 
-    public void renameWidget(int widgetId, String name) {
-        connectDB();
-        db.execSQL("UPDATE devdrawer_widgets SET name='" + name.replace("'","''") + "' WHERE id ='" + widgetId + "'");
-        closeDB();
+    public void renameWidget(long widgetId, String name) {
+        Widget.RenameWidget renameWidget = new WidgetModel.RenameWidget(OpenHelper.getInstance(ctx).getWritableDatabase());
+        renameWidget.bind(name, widgetId);
+        renameWidget.program.execute();
     }
 
     public void removeWidgetFromDatabase(int widgetId) {

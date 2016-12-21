@@ -28,8 +28,6 @@ public class AppUninstalledReceiver extends BroadcastReceiver {
         // App has been removed, if it is in the app table remove from the widget
         String uninstalledPackage = intent.getData().getSchemeSpecificPart();
 
-        Database.getInstance(context).createTables();
-
         if (Database.getInstance(context).getAppsCount() != 0) {
             if (Database.getInstance(context).doesAppExistInDb(uninstalledPackage)) {
                 Database.getInstance(context).deleteAppFromDb(uninstalledPackage);

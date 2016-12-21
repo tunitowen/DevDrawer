@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        Database.getInstance(this).createTables();
         mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(this);
 
         viewPager.setAdapter(pagerAdapter);

@@ -10,7 +10,7 @@ import com.owentech.DevDrawer.data.model.WidgetModel;
 
 public class OpenHelper extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "sqldelight.db";
+    public static final String DB_NAME = "DevDrawer.db";
     public static final int DB_VERSION = 1;
 
     private static OpenHelper instance;
