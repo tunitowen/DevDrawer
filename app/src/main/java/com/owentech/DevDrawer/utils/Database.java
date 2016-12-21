@@ -17,13 +17,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: owent
- * Date: 29/01/2013
- * Time: 07:08
- * To change this template use File | Settings | File Templates.
- */
 public class Database {
 
     SQLiteDatabase db;
@@ -68,9 +61,6 @@ public class Database {
         db.close();
     }
 
-    /////////////////////////////////////////
-    // Method to create tables in database
-    /////////////////////////////////////////
     public void createTables() {
         connectDB();
 
@@ -99,6 +89,7 @@ public class Database {
 
         closeDB();
     }
+
 
     public void addWidgetToDatabase(int widgetId, String name) {
         connectDB();

@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS devdrawer_widgets (id INTEGER PRIMARY KEY, name TEXT);
+
+AddWiget:
+INSERT INTO devdrawer_widgets (id, name) VALUES (?, ?);
+
+RenameWidget:
+UPDATE devdrawer_widgets SET name=? WHERE id = ?;
+
+RemoveWidget:
+DELETE FROM devdrawer_widgets WHERE id = ?;
+
+SelectAllWidgets:
+SELECT * FROM devdrawer_widgets;

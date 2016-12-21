@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS devdrawer_app (id INTEGER PRIMARY KEY, package TEXT, filterid INTEGER, widgetid INTEGER);
+
+InsertApp:
+INSERT INTO devdrawer_app (package, filterid, widgetid) VALUES (?, ?, ?);
+
+RemoveApp:
+DELETE FROM devdrawer_app WHERE filterid = ?;
+
+SelectAllAppsForWidgetId:
+SELECT * FROM devdrawer_app WHERE widgetid = ? ORDER BY package ASC;
+
+GetAppsCount:
+SELECT count(*) FROM devdrawer_app;
+
+GetAppsCountForPackage:
+SELECT count(*) FROM devdrawer_app WHERE package = ?;
+
+DeleteAppsForPackage:
+DELETE FROM devdrawer_app WHERE package = ?;
