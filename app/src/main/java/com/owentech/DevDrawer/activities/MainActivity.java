@@ -156,13 +156,14 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         super.onResume();
     }
 
+    // TODO: 28/12/2016 re-write, should not convert
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Catch the return from the EditDialog
         if (resultCode == AppConstants.EDIT_DIALOG_CHANGE) {
             Bundle bundle = data.getExtras();
-            Database.getInstance(this).amendFilterEntryTo(bundle.getString("id"), bundle.getString("newText"));
+            Database.getInstance(this).amendFilterEntryTo(Long.valueOf(bundle.getString("id")), bundle.getString("newText"));
         }
     }
 

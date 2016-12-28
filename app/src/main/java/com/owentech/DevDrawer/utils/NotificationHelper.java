@@ -30,7 +30,7 @@ public class NotificationHelper {
     public static Drawable applicationIcon;
     public static int applicationUid;
 
-    public static void showNotification(Context context, String packageName, int id){
+    public static void showNotification(Context context, String packageName, long id){
 
         getAppInformation(context, packageName);
 
@@ -39,13 +39,13 @@ public class NotificationHelper {
         notificationBuilder.setContentText(packageName);
         notificationBuilder.setSmallIcon(R.drawable.notifcationicon);
         notificationBuilder.setLargeIcon(convertFromDrawable(applicationIcon));
-        notificationBuilder.addAction(R.drawable.trashwhite, "Uninstall", uninstallPendingIntent(context, packageName, id));
-        notificationBuilder.addAction(R.drawable.settingswhite, "App Settings", appDetailsPendingIntent(context, packageName, id));
+        notificationBuilder.addAction(R.drawable.trashwhite, "Uninstall", uninstallPendingIntent(context, packageName, (int)id));
+        notificationBuilder.addAction(R.drawable.settingswhite, "App Settings", appDetailsPendingIntent(context, packageName, (int)id));
         notificationBuilder.setPriority(Notification.PRIORITY_LOW);
-        notificationBuilder.setContentIntent(contentPendingIntent(context, packageName, id));
+        notificationBuilder.setContentIntent(contentPendingIntent(context, packageName, (int)id));
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(id,
+        mNotificationManager.notify((int)id,
                 notificationBuilder.build());
     }
 

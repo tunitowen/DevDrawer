@@ -108,9 +108,9 @@ public class Database {
         insertFilter.program.execute();
     }
 
-    public void addAppToDatabase(String packageFilter, String filterId, long widgetId) {
+    public void addAppToDatabase(String packageFilter, long filterId, long widgetId) {
         App.InsertApp insertApp = new AppModel.InsertApp(OpenHelper.getInstance(context).getWritableDatabase());
-        insertApp.bind(packageFilter, Long.valueOf(filterId), widgetId);
+        insertApp.bind(packageFilter, filterId, widgetId);
         insertApp.program.execute();
     }
 

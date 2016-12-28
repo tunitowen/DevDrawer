@@ -101,7 +101,8 @@ public class ShortcutFilterAdapter extends RecyclerView.Adapter<ShortcutFilterAd
                 Intent intent = new Intent(activity, EditDialog.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("text", packageCollections.get(position).mPackageName);
-                bundle.putString("id", packageCollections.get(position).mId);
+                // TODO: 28/12/2016 rewrite
+                bundle.putString("id", String.valueOf(packageCollections.get(position).mId));
                 intent.putExtras(bundle);
 
                 activity.startActivityForResult(intent, 0);

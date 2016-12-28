@@ -147,7 +147,7 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Get all apps from the app table for this widget
-        String[] packages = Database.getInstance(context).getAllAppsInDatabase(sp.getString("widgetSorting", "added"), appWidgetId);
+        String[] packages = Database.getInstance(context).getAllAppsInDatabase(appWidgetId);
         pm = context.getPackageManager();
 
         // Defensive code, was getting some strange behaviour and forcing the lists seems to fix

@@ -152,7 +152,7 @@ public class LegacyListAdapter extends BaseAdapter {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
 
         // Get all apps from the app table
-        String[] packages = Database.getInstance(activity).getAllAppsInDatabase(sp.getString("widgetSorting", "added"), AppConstants.SHORTCUT);
+        String[] packages = Database.getInstance(activity).getAllAppsInDatabase(AppConstants.SHORTCUT);
         pm = activity.getPackageManager();
 
         // Defensive code, was getting some strange behaviour and forcing the lists seems to fix

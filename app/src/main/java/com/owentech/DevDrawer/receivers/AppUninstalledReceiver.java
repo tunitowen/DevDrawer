@@ -37,8 +37,8 @@ public class AppUninstalledReceiver extends BroadcastReceiver {
                     int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
                     appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
                 }
-                int match = Database.getInstance(context).parseAndMatch(uninstalledPackage, AppConstants.NOTIFICATION);
-                NotificationHelper.removeNotification(context, match);
+                long match = Database.getInstance(context).parseAndMatch(uninstalledPackage, AppConstants.NOTIFICATION);
+                NotificationHelper.removeNotification(context, (int)match);
             }
         }
     }

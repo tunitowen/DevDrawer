@@ -31,9 +31,9 @@ public class AppInstalledReceiver extends BroadcastReceiver {
         if (Database.getInstance(context).getFiltersCount() != 0) {
             int[] appWidgetIds = AppWidgetUtil.findAppWidgetIds(context);
             for (int appWidgetId : appWidgetIds) {
-                int match = Database.getInstance(context).parseAndMatch(newPackage, appWidgetId);
+                long match = Database.getInstance(context).parseAndMatch(newPackage, appWidgetId);
                 if (match != Database.NOT_FOUND) {
-                    Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), Integer.toString(match), appWidgetId);
+                    Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), match, appWidgetId);
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -42,9 +42,9 @@ public class AppInstalledReceiver extends BroadcastReceiver {
                 }
             }
 
-            int match = Database.getInstance(context).parseAndMatch(newPackage, AppConstants.NOTIFICATION);
+            long match = Database.getInstance(context).parseAndMatch(newPackage, AppConstants.NOTIFICATION);
             if (match != Database.NOT_FOUND){
-                Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), Integer.toString(match), AppConstants.NOTIFICATION);
+                Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), match, AppConstants.NOTIFICATION);
                 NotificationHelper.showNotification(context, newPackage, match);
             }
         }
