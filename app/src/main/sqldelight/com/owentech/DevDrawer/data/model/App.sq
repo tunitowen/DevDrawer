@@ -17,3 +17,6 @@ SELECT count(*) FROM devdrawer_app WHERE package = ?;
 
 DeleteAppsForPackage:
 DELETE FROM devdrawer_app WHERE package = ?;
+
+DeleteAppsForWidgetId:
+DELETE FROM devdrawer_app WHERE widgetid = ?;

@@ -5,11 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Path;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.util.SparseArray;
-import android.widget.Toast;
 
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.data.OpenHelper;
@@ -21,14 +17,11 @@ import com.owentech.DevDrawer.data.model.Widget;
 import com.owentech.DevDrawer.data.model.WidgetModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class Database {
 
-    SQLiteDatabase db;
-    Context ctx;
+    Context context;
     private static Database instance;
 
     public static Database getInstance(Context context){
@@ -40,98 +33,43 @@ public class Database {
 
     public static int NOT_FOUND = 1000000;
 
-    private static final String TAG = "DevDrawer-Database";
-
-    public Database(Context ctx) {
-        this.ctx = ctx;
-
-        int[] appWidgetIds = AppWidgetUtil.findAppWidgetIds(ctx);
-        if (appWidgetIds.length > 0 && !PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("HASMULTIPLEWIDGETS", false)) {
-            Toast.makeText(ctx, "Please remove and re-add your widgets", Toast.LENGTH_LONG).show();
-            dropTables();
-            PreferenceManager.getDefaultSharedPreferences(ctx).edit().putBoolean("HASMULTIPLEWIDGETS", true).commit();
-        }
+    public Database(Context context) {
+        this.context = context;
     }
-
-    ///////////////////////////////////
-    // Method to connect to database
-    ///////////////////////////////////
-    @SuppressWarnings("Deprecation")
-    public void connectDB() {
-        db = ctx.openOrCreateDatabase("DevDrawer.db", 0, null);
-    }
-
-    ////////////////////////////////////////
-    // Method to close database connection
-    ////////////////////////////////////////
-    public void closeDB() {
-        db.close();
-    }
-
-    public void createTables() {
-        connectDB();
-
-        // create tables
-        String CREATE_TABLE_FILTER = "CREATE TABLE IF NOT EXISTS devdrawer_filter ("
-                + "id INTEGER PRIMARY KEY, package TEXT, widgetid INTEGER);";
-        db.execSQL(CREATE_TABLE_FILTER);
-
-        String CREATE_TABLE_APPS = "CREATE TABLE IF NOT EXISTS devdrawer_app ("
-                + "id INTEGER PRIMARY KEY, package TEXT, filterid INTEGER, widgetid INTEGER);";
-        db.execSQL(CREATE_TABLE_APPS);
-
-        String CREATE_TABLE_WIDGETS = "CREATE TABLE IF NOT EXISTS devdrawer_widgets (id INTEGER PRIMARY KEY, name TEXT);";
-        db.execSQL(CREATE_TABLE_WIDGETS);
-
-        closeDB();
-    }
-
-    public void dropTables() {
-        connectDB();
-
-        db.execSQL("DROP TABLE IF EXISTS devdrawer_filter");
-        db.execSQL("DROP TABLE IF EXISTS devdrawer_app");
-        db.execSQL("DROP TABLE IF EXISTS devdrawer_locales");
-        db.execSQL("DROP TABLE IF EXISTS devdrawer_widgets");
-
-        closeDB();
-    }
-
 
     public void addWidgetToDatabase(long widgetId, String name) {
-
-        Widget.AddWiget addWiget = new WidgetModel.AddWiget(OpenHelper.getInstance(ctx).getWritableDatabase());
+        Widget.AddWiget addWiget = new WidgetModel.AddWiget(OpenHelper.getInstance(context).getWritableDatabase());
         addWiget.bind(widgetId, name);
         addWiget.program.execute();
     }
 
     public void renameWidget(long widgetId, String name) {
-        Widget.RenameWidget renameWidget = new WidgetModel.RenameWidget(OpenHelper.getInstance(ctx).getWritableDatabase());
+        Widget.RenameWidget renameWidget = new WidgetModel.RenameWidget(OpenHelper.getInstance(context).getWritableDatabase());
         renameWidget.bind(name, widgetId);
         renameWidget.program.execute();
     }
 
-    public void removeWidgetFromDatabase(int widgetId) {
-        connectDB();
+    public void removeWidgetFromDatabase(long widgetId) {
+        SQLiteDatabase db = OpenHelper.getInstance(context).getWritableDatabase();
 
-        String query = "DELETE FROM 'devdrawer_widgets' WHERE id = " + widgetId;
-        db.execSQL(query);
+        WidgetModel.RemoveWidget removeWidget = new WidgetModel.RemoveWidget(db);
+        removeWidget.bind(widgetId);
+        removeWidget.program.execute();
 
-        query = "DELETE FROM 'devdrawer_filter' WHERE widgetId = " + widgetId;
-        db.execSQL(query);
+        FilterModel.DeleteFiltersForWidgetId deleteFiltersForWidgetId = new FilterModel.DeleteFiltersForWidgetId(db);
+        deleteFiltersForWidgetId.bind(widgetId);
+        deleteFiltersForWidgetId.program.execute();
 
-        query = "DELETE FROM 'devdrawer_app' WHERE widgetId = " + widgetId;
-        db.execSQL(query);
-
-        closeDB();
+        AppModel.DeleteAppsForWidgetId deleteAppsForWidgetId = new AppModel.DeleteAppsForWidgetId(db);
+        deleteAppsForWidgetId.bind(widgetId);
+        deleteAppsForWidgetId.program.execute();
     }
 
+    // TODO: 28/12/2016 re-write
     public SparseArray<String> getWidgetNames(Context context) {
-        SparseArray<String> result = new SparseArray<String>();
+        SparseArray<String> result = new SparseArray<>();
 
-
-        connectDB();
-        Cursor cursor = OpenHelper.getInstance(ctx).getWritableDatabase().rawQuery(Widget.SELECTALLWIDGETS, new String[0]);
+        Cursor cursor = OpenHelper.getInstance(this.context).getWritableDatabase().rawQuery(Widget.SELECTALLWIDGETS, new String[0]);
         cursor.moveToFirst();
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -161,320 +99,161 @@ public class Database {
         }
 
         cursor.close();
-        closeDB();
         return result;
     }
 
     public void addFilterToDatabase(String packageFilter, long widgetId) {
-        Filter.InsertFilter insertFilter = new FilterModel.InsertFilter(OpenHelper.getInstance(ctx).getWritableDatabase());
+        Filter.InsertFilter insertFilter = new FilterModel.InsertFilter(OpenHelper.getInstance(context).getWritableDatabase());
         insertFilter.bind(packageFilter, widgetId);
         insertFilter.program.execute();
     }
-    
+
     public void addAppToDatabase(String packageFilter, String filterId, long widgetId) {
-        App.InsertApp insertApp = new AppModel.InsertApp(OpenHelper.getInstance(ctx).getWritableDatabase());
+        App.InsertApp insertApp = new AppModel.InsertApp(OpenHelper.getInstance(context).getWritableDatabase());
         insertApp.bind(packageFilter, Long.valueOf(filterId), widgetId);
         insertApp.program.execute();
     }
 
-    // ////////////////////////////////////////////////////
-    // Method to remove an entry from the filters tables
-    // ////////////////////////////////////////////////////
-    public void removeFilterFromDatabase(String i) {
-        // connect
-        connectDB();
-
-        // add accident entry
-        String packageDeleteQuery = "DELETE FROM 'devdrawer_filter' WHERE id = '" + i + "'";
-
-        db.execSQL(packageDeleteQuery);
-
-        // close
-        closeDB();
+    public void removeFilterFromDatabase(long i) {
+        Filter.RemoveFilter removeFilter = new FilterModel.RemoveFilter(OpenHelper.getInstance(context).getWritableDatabase());
+        removeFilter.bind(i);
+        removeFilter.program.execute();
     }
 
-    // ////////////////////////////////////////////////////
-    // Method to remove an entry from the filters tables
-    // ////////////////////////////////////////////////////
-    public void removeAppFromDatabase(String filterId) {
-        // connect
-        connectDB();
-
-        // add accident entry
-        String packageDeleteQuery = "DELETE FROM 'devdrawer_app' WHERE filterid = '" + filterId + "'";
-
-        db.execSQL(packageDeleteQuery);
-
-        // close
-        closeDB();
+    public void removeAppFromDatabase(long filterId) {
+        App.RemoveApp removeApp = new AppModel.RemoveApp(OpenHelper.getInstance(context).getWritableDatabase());
+        removeApp.bind(filterId);
+        removeApp.program.execute();
     }
 
-    //////////////////////////////////////////////////////
-    // Method to get all the entries in the filter table
-    //////////////////////////////////////////////////////
     public List<PackageCollection> getAllFiltersInDatabase() {
 
-        connectDB();
+        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTALLFILTERS, new String[0]);
+        List<PackageCollection> packageCollections = new ArrayList<>();
 
-        Cursor getAllCursor = db.query("devdrawer_filter", null, null, null, null, null, null, null);
+        cursor.moveToFirst();
 
-        List<PackageCollection> packageCollections = new ArrayList<PackageCollection>();
-
-        getAllCursor.moveToFirst();
-
-        while (!getAllCursor.isAfterLast()) {
-
-            packageCollections.add(new PackageCollection(getAllCursor.getString(0), getAllCursor.getString(1)));
-            getAllCursor.moveToNext();
+        while (!cursor.isAfterLast()) {
+            Filter filter = Filter.MAPPER.map(cursor);
+            packageCollections.add(new PackageCollection(filter.id(), filter.package_()));
+            cursor.moveToNext();
         }
 
-        getAllCursor.close();
-        closeDB();
-
+        cursor.close();
         return packageCollections;
 
     }
 
-    //////////////////////////////////////////////////////
-    // Method to get all the entries in the filter table for given widgetId
-    //////////////////////////////////////////////////////
+    // TODO: 28/12/2016 will have broken something by changing PackageCollection, move away from that object
     public List<PackageCollection> getAllFiltersInDatabase(int widgetId) {
 
-        connectDB();
+        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTFILTERSFORWIDGETID, new String[]{String.valueOf(widgetId)});
+        List<PackageCollection> packageCollections = new ArrayList<>();
 
-        Cursor getAllCursor = db.query("devdrawer_filter", null, "widgetid = " + widgetId, null, null, null, null, null);
+        cursor.moveToFirst();
 
-        List<PackageCollection> packageCollections = new ArrayList<PackageCollection>();
-
-        getAllCursor.moveToFirst();
-
-        while (!getAllCursor.isAfterLast()) {
-
-            packageCollections.add(new PackageCollection(getAllCursor.getString(0), getAllCursor.getString(1)));
-            getAllCursor.moveToNext();
+        while (!cursor.isAfterLast()) {
+            Filter filter = Filter.MAPPER.map(cursor);
+            packageCollections.add(new PackageCollection(filter.id(), filter.package_()));
+            cursor.moveToNext();
         }
 
-        getAllCursor.close();
-        closeDB();
-
-        return packageCollections;
-
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // Method to get all the packages in the installed apps table
-    ////////////////////////////////////////////////////////////////
-    public String[] getAllAppsInDatabase(String order) {
-        String[] packages;
-
-        connectDB();
-        Cursor getAllCursor = db.query("devdrawer_app", null, null, null, null, null, (order.equals(AppConstants.ORDER_ORIGINAL)) ? null : "package ASC", null);
-        getAllCursor.moveToFirst();
-        packages = new String[getAllCursor.getCount()];
-
-        int i = 0;
-        while (!getAllCursor.isAfterLast()) {
-            packages[i] = getAllCursor.getString(1);
-            i++;
-            getAllCursor.moveToNext();
-        }
-
-        getAllCursor.close();
-        closeDB();
-
-        if (order.equals(AppConstants.ORDER_ORIGINAL)) {
-            Collections.reverse(Arrays.asList(packages));
-        }
-
-        return packages;
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // Method to get all the packages in the installed apps table for given widgetId
-    ////////////////////////////////////////////////////////////////
-    public String[] getAllAppsInDatabase(String order, int widgetId) {
-        String[] packages;
-
-        connectDB();
-        Cursor getAllCursor = db.query("devdrawer_app", null, "widgetid = " + widgetId, null, null, null, (order.equals(AppConstants.ORDER_ORIGINAL)) ? null : "package ASC", null);
-        getAllCursor.moveToFirst();
-        packages = new String[getAllCursor.getCount()];
-
-        int i = 0;
-        while (!getAllCursor.isAfterLast()) {
-            packages[i] = getAllCursor.getString(1);
-            i++;
-            getAllCursor.moveToNext();
-        }
-
-        getAllCursor.close();
-        closeDB();
-
-        if (order.equals(AppConstants.ORDER_ORIGINAL)) {
-            Collections.reverse(Arrays.asList(packages));
-        }
-
-        return packages;
-    }
-
-
-
-    // ////////////////////////////////////////////////////
-    // Method to get a count of rows in the filter table
-    // ////////////////////////////////////////////////////
-    public int getFiltersCount() {
-        // connect
-        connectDB();
-
-        Cursor countCursor = db.rawQuery("SELECT count(*) FROM devdrawer_filter", null);
-
-        // get number of rows
-        countCursor.moveToFirst();
-        int count = countCursor.getInt(0);
-        countCursor.close();
-
-        // close
-        closeDB();
-
-        return count;
-
-    }
-
-    ///////////////////////////////////////////////////////////////
-    // Method to determine whether the new filter already exists
-    ///////////////////////////////////////////////////////////////
-    public boolean doesFilterExist(String s, int appWidgetId) {
-        // connect
-        connectDB();
-
-        Cursor countCursor = db.rawQuery("SELECT count(*) FROM devdrawer_filter WHERE package = '" + s + "' AND widgetid = " + appWidgetId, null);
-
-        // get number of rows
-        countCursor.moveToFirst();
-        int count = countCursor.getInt(0);
-        countCursor.close();
-
-        // close
-        closeDB();
-
-        if (count == 0)
-            return false;
-        else
-            return true;
-    }
-
-    // ////////////////////////////////////////////////////////////
-    // Method to get a count of rows in the installed apps tables
-    // ////////////////////////////////////////////////////////////
-    public int getAppsCount() {
-        // connect
-        connectDB();
-
-        Cursor countCursor = db.rawQuery("SELECT count(*) FROM devdrawer_app", null);
-
-        // get number of rows
-        countCursor.moveToFirst();
-        int count = countCursor.getInt(0);
-        countCursor.close();
-
-        // close
-        closeDB();
-
-        return count;
-
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////
-    // Method to check whether the app being install exists in the installed package table
-    /////////////////////////////////////////////////////////////////////////////////////////
-    public boolean doesAppExistInDb(String s) {
-        connectDB();
-
-        Cursor cursor = db.query("devdrawer_app", null, "package = '" + s + "'", null, null, null, null, null);
-        int count = cursor.getCount();
         cursor.close();
-        closeDB();
+        return packageCollections;
+    }
+
+    public String[] getAllAppsInDatabase(int widgetId) {
+        String[] packages;
+
+        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(App.SELECTALLAPPSFORWIDGETID, new String[]{String.valueOf(widgetId)});
+        cursor.moveToFirst();
+        packages = new String[cursor.getCount()];
+
+        int i = 0;
+        while (!cursor.isAfterLast()) {
+            App app = App.MAPPER.map(cursor);
+            packages[i] = app.package_();
+            i++;
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return packages;
+    }
+
+    public int getFiltersCount() {
+        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.GETFILTERCOUNT, new String[0]);
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        cursor.close();
+        return count;
+    }
+
+    public boolean doesFilterExist(String s, int appWidgetId) {
+        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.GETFILTERCOUNTFORPACKAGEANDWIDGETID, new String[]{s, String.valueOf(appWidgetId)});
+
+        // get number of rows
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        cursor.close();
 
         return count != 0;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Method to delete a package from the installed package table
-    ////////////////////////////////////////////////////////////////
+    public int getAppsCount() {
+        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(App.GETAPPSCOUNT, new String[0]);
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        cursor.close();
+        return count;
+    }
+
+    public boolean doesAppExistInDb(String s) {
+        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(App.GETAPPSCOUNTFORPACKAGE, new String[]{s});
+        int count = cursor.getCount();
+        cursor.close();
+        return count != 0;
+    }
+
     public void deleteAppFromDb(String packageName) {
-        connectDB();
-        db.execSQL("DELETE FROM devdrawer_app WHERE package ='" + packageName + "'");
-        closeDB();
+        App.DeleteAppsForPackage deleteAppsForPackage = new AppModel.DeleteAppsForPackage(OpenHelper.getInstance(context).getWritableDatabase());
+        deleteAppsForPackage.bind(packageName);
+        deleteAppsForPackage.program.execute();
     }
 
-    /////////////////////////////////////////////////////////////////////
-    // Method to parse each row and return if the new package matches
-    /////////////////////////////////////////////////////////////////////
-    public int parseAndMatch(String p) {
+    // TODO: 28/12/2016 re-write, disgusting.
+    public long parseAndMatch(String p, int widgetId) {
 
-        int match = NOT_FOUND;
+        long match = NOT_FOUND;
 
-        connectDB();
-        Cursor getAllCursor = db.query("devdrawer_filter", null, null, null, null, null, null, null);
-        getAllCursor.moveToFirst();
+        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTFILTERSFORWIDGETID, new String[]{p});
+        cursor.moveToFirst();
 
-        while (!getAllCursor.isAfterLast()) {
-            String packageFilter = getAllCursor.getString(1).toLowerCase();
-
-            if (packageFilter.contains("*")) {
-                if (p.toLowerCase().startsWith(packageFilter.toLowerCase().substring(0, packageFilter.indexOf("*"))))
-                    match = Integer.valueOf(getAllCursor.getString(0));
-            } else {
-                if (p.toLowerCase().equals(packageFilter.toLowerCase()))
-                    match = Integer.valueOf(getAllCursor.getString(0));
-            }
-            getAllCursor.moveToNext();
-        }
-
-        getAllCursor.close();
-        closeDB();
-        return match;
-    }
-
-    /////////////////////////////////////////////////////////////////////
-    // Method to parse each row and return if the new package matches
-    /////////////////////////////////////////////////////////////////////
-    public int parseAndMatch(String p, int widgetId) {
-
-        int match = NOT_FOUND;
-
-        connectDB();
-        Cursor getAllCursor = db.query("devdrawer_filter", null, "widgetid = " + widgetId, null, null, null, null, null);
-        getAllCursor.moveToFirst();
-
-        while (!getAllCursor.isAfterLast()) {
-            String packageFilter = getAllCursor.getString(1).toLowerCase();
+        while (!cursor.isAfterLast()) {
+            Filter filter = Filter.MAPPER.map(cursor);
+            String packageFilter = filter.package_();
 
             if (packageFilter.contains("*")) {
                 if (p.toLowerCase().startsWith(packageFilter.toLowerCase().substring(0, packageFilter.indexOf("*")))) {
-                    match = Integer.valueOf(getAllCursor.getString(0));
+                    match = filter.id();
                 }
             }
             else {
                 if (p.toLowerCase().equals(packageFilter.toLowerCase())) {
-                    match = Integer.valueOf(getAllCursor.getString(0));
+                    match = filter.id();
                 }
             }
-            getAllCursor.moveToNext();
+            cursor.moveToNext();
         }
 
-        getAllCursor.close();
-        closeDB();
-
+        cursor.close();
         return match;
     }
 
-    ///////////////////////////////////
-    // Method to amend a filter entry
-    ///////////////////////////////////
-    public void amendFilterEntryTo(String id, String newString) {
-        connectDB();
-        db.execSQL("UPDATE devdrawer_filter SET package='" + newString + "' WHERE id ='" + id + "'");
-        closeDB();
+    // TODO: 28/12/2016 This is going to break calls, string to long.
+    public void amendFilterEntryTo(long id, String newString) {
+        Filter.AmendFilter amendFilter = new FilterModel.AmendFilter(OpenHelper.getInstance(context).getWritableDatabase());
+        amendFilter.bind(newString, id);
+        amendFilter.program.execute();
     }
 }

@@ -15,8 +15,11 @@ SELECT * FROM devdrawer_filter WHERE widgetid = ?;
 GetFilterCount:
 SELECT count(*) FROM devdrawer_filter;
 
-GetFilterCountForFilterId:
+GetFilterCountForPackageAndWidgetId:
 SELECT count(*) FROM devdrawer_filter WHERE package = ? AND widgetid = ?;
 
 AmendFilter:
 UPDATE devdrawer_filter SET package = ? WHERE id = ?;
+
+DeleteFiltersForWidgetId:
+DELETE FROM devdrawer_filter WHERE widgetid = ?;
