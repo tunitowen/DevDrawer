@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.activities.EditDialog;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.data.model.Filter;
 import com.owentech.DevDrawer.utils.Database;
-import com.owentech.DevDrawer.utils.PackageCollection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +29,12 @@ import java.util.List;
 public class NotificationFilterAdapter extends RecyclerView.Adapter<NotificationFilterAdapter.ListItemViewHolder> {
 
     private Activity activity;
-    private List<PackageCollection> packageCollections;
+    private List<Filter> packageCollections;
     public static int currentWidgetId = -1;
 
     public NotificationFilterAdapter(Activity activity) {
         this.activity = activity;
-        packageCollections = new ArrayList<PackageCollection>();
+        packageCollections = new ArrayList<Filter>();
         updatePackageCollections();
     }
 
@@ -73,14 +73,14 @@ public class NotificationFilterAdapter extends RecyclerView.Adapter<Notification
     @Override
     public void onBindViewHolder(ListItemViewHolder viewHolder, final int position) {
 
-        viewHolder.txtPackageName.setText(packageCollections.get(position).mPackageName);
+        viewHolder.txtPackageName.setText(packageCollections.get(position).package_());
 
         // OnClick action for Delete Button
         viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                Database.getInstance(activity).removeFilterFromDatabase(packageCollections.get(position).mId);
-                Database.getInstance(activity).removeAppFromDatabase(packageCollections.get(position).mId);
+                Database.getInstance(activity).removeFilterFromDatabase(packageCollections.get(position).id());
+                Database.getInstance(activity).removeAppFromDatabase(packageCollections.get(position).id());
                 updatePackageCollections();
                 notifyDataSetChanged();
 
@@ -100,9 +100,9 @@ public class NotificationFilterAdapter extends RecyclerView.Adapter<Notification
             public void onClick(View view) {
                 Intent intent = new Intent(activity, EditDialog.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("text", packageCollections.get(position).mPackageName);
+                bundle.putString("text", packageCollections.get(position).package_());
                 // TODO: 28/12/2016 rewrite.
-                bundle.putString("id", String.valueOf(packageCollections.get(position).mId));
+                bundle.putString("id", String.valueOf(packageCollections.get(position).id()));
                 intent.putExtras(bundle);
 
                 activity.startActivityForResult(intent, 0);

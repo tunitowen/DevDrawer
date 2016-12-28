@@ -126,40 +126,39 @@ public class Database {
         removeApp.program.execute();
     }
 
-    public List<PackageCollection> getAllFiltersInDatabase() {
+    public List<Filter> getAllFiltersInDatabase() {
 
         Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTALLFILTERS, new String[0]);
-        List<PackageCollection> packageCollections = new ArrayList<>();
+        List<Filter> filters = new ArrayList<>();
 
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
             Filter filter = Filter.MAPPER.map(cursor);
-            packageCollections.add(new PackageCollection(filter.id(), filter.package_()));
+            filters.add(filter);
             cursor.moveToNext();
         }
 
         cursor.close();
-        return packageCollections;
+        return filters;
 
     }
 
-    // TODO: 28/12/2016 will have broken something by changing PackageCollection, move away from that object
-    public List<PackageCollection> getAllFiltersInDatabase(int widgetId) {
+    public List<Filter> getAllFiltersInDatabase(int widgetId) {
 
         Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTFILTERSFORWIDGETID, new String[]{String.valueOf(widgetId)});
-        List<PackageCollection> packageCollections = new ArrayList<>();
+        List<Filter> filters = new ArrayList<>();
 
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
             Filter filter = Filter.MAPPER.map(cursor);
-            packageCollections.add(new PackageCollection(filter.id(), filter.package_()));
+            filters.add(filter);
             cursor.moveToNext();
         }
 
         cursor.close();
-        return packageCollections;
+        return filters;
     }
 
     public String[] getAllAppsInDatabase(int widgetId) {
@@ -250,7 +249,6 @@ public class Database {
         return match;
     }
 
-    // TODO: 28/12/2016 This is going to break calls, string to long.
     public void amendFilterEntryTo(long id, String newString) {
         Filter.AmendFilter amendFilter = new FilterModel.AmendFilter(OpenHelper.getInstance(context).getWritableDatabase());
         amendFilter.bind(newString, id);

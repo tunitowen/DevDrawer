@@ -12,6 +12,7 @@ import android.os.Build;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.data.model.Filter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,9 +77,9 @@ public class AddAllAppsAsync extends AsyncTask<Void, Void, Void> {
         // If the list is > 0 add the packages to the database
         if (appPackages.size() != 0) {
             for (String s : appPackages) {
-                List<PackageCollection> packageCollections = Database.getInstance(context).getAllFiltersInDatabase();
+                List<Filter> packageCollections = Database.getInstance(context).getAllFiltersInDatabase();
 
-                Database.getInstance(context).addAppToDatabase(s, packageCollections.get(packageCollections.size() - 1).mId, widgetId);
+                Database.getInstance(context).addAppToDatabase(s, packageCollections.get(packageCollections.size() - 1).id(), widgetId);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
