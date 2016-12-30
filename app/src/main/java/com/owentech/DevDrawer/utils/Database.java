@@ -50,20 +50,26 @@ public class Database {
         renameWidget.program.execute();
     }
 
-    public void removeWidgetFromDatabase(long widgetId) {
-        SQLiteDatabase db = OpenHelper.getInstance(context).getWritableDatabase();
+    public Callable<Boolean> removeWidgetFromDatabase(final long widgetId) {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                SQLiteDatabase db = OpenHelper.getInstance(context).getWritableDatabase();
 
-        WidgetModel.RemoveWidget removeWidget = new WidgetModel.RemoveWidget(db);
-        removeWidget.bind(widgetId);
-        removeWidget.program.execute();
+                WidgetModel.RemoveWidget removeWidget = new WidgetModel.RemoveWidget(db);
+                removeWidget.bind(widgetId);
+                removeWidget.program.execute();
 
-        FilterModel.DeleteFiltersForWidgetId deleteFiltersForWidgetId = new FilterModel.DeleteFiltersForWidgetId(db);
-        deleteFiltersForWidgetId.bind(widgetId);
-        deleteFiltersForWidgetId.program.execute();
+                FilterModel.DeleteFiltersForWidgetId deleteFiltersForWidgetId = new FilterModel.DeleteFiltersForWidgetId(db);
+                deleteFiltersForWidgetId.bind(widgetId);
+                deleteFiltersForWidgetId.program.execute();
 
-        AppModel.DeleteAppsForWidgetId deleteAppsForWidgetId = new AppModel.DeleteAppsForWidgetId(db);
-        deleteAppsForWidgetId.bind(widgetId);
-        deleteAppsForWidgetId.program.execute();
+                AppModel.DeleteAppsForWidgetId deleteAppsForWidgetId = new AppModel.DeleteAppsForWidgetId(db);
+                deleteAppsForWidgetId.bind(widgetId);
+                deleteAppsForWidgetId.program.execute();
+                return true;
+            }
+        };
     }
 
     // TODO: 28/12/2016 re-write
@@ -97,7 +103,8 @@ public class Database {
                         result.put(cursor.getInt(0), name);
                     }
                     else{
-                        removeWidgetFromDatabase(cursor.getInt(0));
+                        RxUtils.backgroundSingleFromCallable(removeWidgetFromDatabase(cursor.getInt(0)))
+                                .subscribe();
                     }
                     cursor.moveToNext();
                 }

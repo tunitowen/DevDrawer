@@ -115,7 +115,8 @@ public class DDWidgetProvider extends AppWidgetProvider {
         super.onDeleted(context, appWidgetIds);
 
         for (int appWidgetId : appWidgetIds) {
-            new Database(context).removeWidgetFromDatabase(appWidgetId);
+            RxUtils.backgroundSingleFromCallable(Database.getInstance(context).removeWidgetFromDatabase(appWidgetId))
+                    .subscribe();
         }
     }
 
