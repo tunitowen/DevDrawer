@@ -12,6 +12,7 @@ import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.NotificationHelper;
+import com.owentech.DevDrawer.utils.RxUtils;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,7 +34,8 @@ public class AppInstalledReceiver extends BroadcastReceiver {
             for (int appWidgetId : appWidgetIds) {
                 long match = Database.getInstance(context).parseAndMatch(newPackage, appWidgetId);
                 if (match != Database.NOT_FOUND) {
-                    Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), match, appWidgetId);
+                    RxUtils.backgroundSingleFromCallable(Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), match, appWidgetId))
+                            .subscribe();
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -43,8 +45,9 @@ public class AppInstalledReceiver extends BroadcastReceiver {
             }
 
             long match = Database.getInstance(context).parseAndMatch(newPackage, AppConstants.NOTIFICATION);
-            if (match != Database.NOT_FOUND){
-                Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), match, AppConstants.NOTIFICATION);
+            if (match != Database.NOT_FOUND) {
+                RxUtils.backgroundSingleFromCallable(Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), match, AppConstants.NOTIFICATION))
+                        .subscribe();
                 NotificationHelper.showNotification(context, newPackage, match);
             }
         }

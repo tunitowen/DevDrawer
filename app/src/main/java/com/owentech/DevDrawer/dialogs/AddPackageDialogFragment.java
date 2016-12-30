@@ -111,7 +111,7 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
                         Database.getInstance(getActivity()).addFilterToDatabase(addPackage.getText().toString(), widgetId);
 
                         RxUtils.backgroundSingleFromCallable(getAllAppsInstalledAndAdd(addPackage.getText().toString()))
-                        .subscribe();
+                                .subscribe();
 
                         addPackage.setText("");
                         OttoManager.getInstance().post(new PackageAddedEvent());
@@ -220,7 +220,9 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
                                 .subscribe(new Consumer<List<Filter>>() {
                                     @Override
                                     public void accept(List<Filter> filters) throws Exception {
-                                        Database.getInstance(getActivity()).addAppToDatabase(s, filters.get(filters.size() - 1).id(), widgetId);
+                                        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).addAppToDatabase(s, filters.get(filters.size() - 1).id(), widgetId))
+                                                .subscribe();
+
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                                             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
                                             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getActivity(), DDWidgetProvider.class));

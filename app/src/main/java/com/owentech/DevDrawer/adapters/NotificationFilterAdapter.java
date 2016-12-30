@@ -49,7 +49,7 @@ public class NotificationFilterAdapter extends RecyclerView.Adapter<Notification
         return new ListItemViewHolder(itemView);
     }
 
-    public void updatePackageCollections(){
+    public void updatePackageCollections() {
         RxUtils.backgroundSingleFromCallable(Database.getInstance(activity).getAllFiltersInDatabase(currentWidgetId))
                 .subscribe(new Consumer<List<Filter>>() {
                     @Override
@@ -78,7 +78,6 @@ public class NotificationFilterAdapter extends RecyclerView.Adapter<Notification
     }
 
 
-
     @Override
     public void onBindViewHolder(ListItemViewHolder viewHolder, final int position) {
 
@@ -88,7 +87,8 @@ public class NotificationFilterAdapter extends RecyclerView.Adapter<Notification
         viewHolder.deleteButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {
-                Database.getInstance(activity).removeFilterFromDatabase(packageCollections.get(position).id());
+                RxUtils.backgroundSingleFromCallable(Database.getInstance(activity).removeFilterFromDatabase(packageCollections.get(position).id()))
+                        .subscribe();
                 RxUtils.backgroundSingleFromCallable(Database.getInstance(activity).removeAppFromDatabase(packageCollections.get(position).id()))
                         .subscribe();
                 updatePackageCollections();

@@ -109,16 +109,28 @@ public class Database {
         insertFilter.program.execute();
     }
 
-    public void addAppToDatabase(String packageFilter, long filterId, long widgetId) {
-        App.InsertApp insertApp = new AppModel.InsertApp(OpenHelper.getInstance(context).getWritableDatabase());
-        insertApp.bind(packageFilter, filterId, widgetId);
-        insertApp.program.execute();
+    public Callable<Boolean> addAppToDatabase(final String packageFilter, final long filterId, final long widgetId) {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                App.InsertApp insertApp = new AppModel.InsertApp(OpenHelper.getInstance(context).getWritableDatabase());
+                insertApp.bind(packageFilter, filterId, widgetId);
+                insertApp.program.execute();
+                return true;
+            }
+        };
     }
 
-    public void removeFilterFromDatabase(long i) {
-        Filter.RemoveFilter removeFilter = new FilterModel.RemoveFilter(OpenHelper.getInstance(context).getWritableDatabase());
-        removeFilter.bind(i);
-        removeFilter.program.execute();
+    public Callable<Boolean> removeFilterFromDatabase(final long i) {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                Filter.RemoveFilter removeFilter = new FilterModel.RemoveFilter(OpenHelper.getInstance(context).getWritableDatabase());
+                removeFilter.bind(i);
+                removeFilter.program.execute();
+                return true;
+            }
+        };
     }
 
     public Callable<Boolean> removeAppFromDatabase(final long filterId) {
