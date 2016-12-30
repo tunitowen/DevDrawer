@@ -14,14 +14,6 @@ package com.owentech.DevDrawer.utils;
 import android.util.Log;
 import com.owentech.DevDrawer.BuildConfig;
 
-
-/**
- * @date 21.06.2012
- * @author Mustafa Ferhan Akman
- *
- * Create a simple and more understandable Android logs.
- * */
-
 public class DebugLog{
 
     static String className;

@@ -9,9 +9,6 @@ import android.graphics.drawable.Drawable;
 
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 
-/**
- * Created by Niek on 1/12/14.
- */
 public class AppWidgetUtil {
     public static int[] findAppWidgetIds(Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);

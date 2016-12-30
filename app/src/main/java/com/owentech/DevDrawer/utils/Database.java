@@ -121,10 +121,16 @@ public class Database {
         removeFilter.program.execute();
     }
 
-    public void removeAppFromDatabase(long filterId) {
-        App.RemoveApp removeApp = new AppModel.RemoveApp(OpenHelper.getInstance(context).getWritableDatabase());
-        removeApp.bind(filterId);
-        removeApp.program.execute();
+    public Callable<Boolean> removeAppFromDatabase(final long filterId) {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                App.RemoveApp removeApp = new AppModel.RemoveApp(OpenHelper.getInstance(context).getWritableDatabase());
+                removeApp.bind(filterId);
+                removeApp.program.execute();
+                return true;
+            }
+        };
     }
 
     public Callable<List<Filter>> getAllFiltersInDatabase() {
@@ -149,21 +155,26 @@ public class Database {
         };
     }
 
-    public List<Filter> getAllFiltersInDatabase(int widgetId) {
+    public Callable<List<Filter>> getAllFiltersInDatabase(final int widgetId) {
 
-        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTFILTERSFORWIDGETID, new String[]{String.valueOf(widgetId)});
-        List<Filter> filters = new ArrayList<>();
+        return new Callable<List<Filter>>() {
+            @Override
+            public List<Filter> call() throws Exception {
+                Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTFILTERSFORWIDGETID, new String[]{String.valueOf(widgetId)});
+                List<Filter> filters = new ArrayList<>();
 
-        cursor.moveToFirst();
+                cursor.moveToFirst();
 
-        while (!cursor.isAfterLast()) {
-            Filter filter = Filter.MAPPER.map(cursor);
-            filters.add(filter);
-            cursor.moveToNext();
-        }
+                while (!cursor.isAfterLast()) {
+                    Filter filter = Filter.MAPPER.map(cursor);
+                    filters.add(filter);
+                    cursor.moveToNext();
+                }
 
-        cursor.close();
-        return filters;
+                cursor.close();
+                return filters;
+            }
+        };
     }
 
     public String[] getAllAppsInDatabase(int widgetId) {

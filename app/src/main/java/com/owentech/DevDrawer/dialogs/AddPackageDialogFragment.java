@@ -44,9 +44,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import io.reactivex.functions.Consumer;
 
-/**
- * Created by tonyowen on 09/07/2014.
- */
 public class AddPackageDialogFragment extends DialogFragment implements TextWatcher {
 
     @InjectView(R.id.addPackage)
@@ -115,8 +112,6 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
 
                         RxUtils.backgroundSingleFromCallable(getAllAppsInstalledAndAdd(addPackage.getText().toString()))
                         .subscribe();
-                        // Check existing apps and add to installed apps table if they match new filter
-//                        new AddAllAppsAsync(getActivity(), addPackage.getText().toString(), widgetId).execute();
 
                         addPackage.setText("");
                         OttoManager.getInstance().post(new PackageAddedEvent());

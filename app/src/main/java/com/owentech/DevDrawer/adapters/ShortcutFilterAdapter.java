@@ -19,9 +19,12 @@ import com.owentech.DevDrawer.activities.EditDialog;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.data.model.Filter;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RxUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by tonyowen on 17/07/2014.
@@ -47,8 +50,14 @@ public class ShortcutFilterAdapter extends RecyclerView.Adapter<ShortcutFilterAd
     }
 
     public void updatePackageCollections(){
-        packageCollections = Database.getInstance(activity).getAllFiltersInDatabase(currentWidgetId);
-        notifyDataSetChanged();
+        RxUtils.backgroundSingleFromCallable(Database.getInstance(activity).getAllFiltersInDatabase(currentWidgetId))
+                .subscribe(new Consumer<List<Filter>>() {
+                    @Override
+                    public void accept(List<Filter> filters) throws Exception {
+                        packageCollections = filters;
+                        notifyDataSetChanged();
+                    }
+                });
     }
 
     public int getCount() {
@@ -80,7 +89,8 @@ public class ShortcutFilterAdapter extends RecyclerView.Adapter<ShortcutFilterAd
 
             public void onClick(View view) {
                 Database.getInstance(activity).removeFilterFromDatabase(packageCollections.get(position).id());
-                Database.getInstance(activity).removeAppFromDatabase(packageCollections.get(position).id());
+                RxUtils.backgroundSingleFromCallable(Database.getInstance(activity).removeAppFromDatabase(packageCollections.get(position).id()))
+                .subscribe();
                 updatePackageCollections();
                 notifyDataSetChanged();
 
