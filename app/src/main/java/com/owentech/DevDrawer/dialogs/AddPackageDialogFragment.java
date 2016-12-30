@@ -108,7 +108,8 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
                     // Check filter doesn't exist
                     if (!Database.getInstance(getActivity()).doesFilterExist(addPackage.getText().toString(), widgetId)) {
                         // Add the filter to the mDatabase
-                        Database.getInstance(getActivity()).addFilterToDatabase(addPackage.getText().toString(), widgetId);
+                        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).addFilterToDatabase(addPackage.getText().toString(), widgetId))
+                                .subscribe();
 
                         RxUtils.backgroundSingleFromCallable(getAllAppsInstalledAndAdd(addPackage.getText().toString()))
                                 .subscribe();

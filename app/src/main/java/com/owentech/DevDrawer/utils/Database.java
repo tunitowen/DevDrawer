@@ -67,46 +67,57 @@ public class Database {
     }
 
     // TODO: 28/12/2016 re-write
-    public SparseArray<String> getWidgetNames(Context context) {
-        SparseArray<String> result = new SparseArray<>();
+    public Callable<SparseArray<String>> getWidgetNames(final Context context) {
+        return new Callable<SparseArray<String>>() {
+            @Override
+            public SparseArray<String> call() throws Exception {
+                SparseArray<String> result = new SparseArray<>();
 
-        Cursor cursor = OpenHelper.getInstance(this.context).getWritableDatabase().rawQuery(Widget.SELECTALLWIDGETS, new String[0]);
-        cursor.moveToFirst();
+                Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Widget.SELECTALLWIDGETS, new String[0]);
+                cursor.moveToFirst();
 
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
+                AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
 
-        while (!cursor.isAfterLast()) {
+                while (!cursor.isAfterLast()) {
 
-            String name = cursor.getString(1);
-            if (name == null || name.length() == 0){
-                name = AppConstants.UNNAMED;
-            }
+                    String name = cursor.getString(1);
+                    if (name == null || name.length() == 0){
+                        name = AppConstants.UNNAMED;
+                    }
 
-            boolean exists = false;
-            for (int i : ids){
-                if (cursor.getInt(0) == i){
-                    exists = true;
+                    boolean exists = false;
+                    for (int i : ids){
+                        if (cursor.getInt(0) == i){
+                            exists = true;
+                        }
+                    }
+
+                    if (exists) {
+                        result.put(cursor.getInt(0), name);
+                    }
+                    else{
+                        removeWidgetFromDatabase(cursor.getInt(0));
+                    }
+                    cursor.moveToNext();
                 }
-            }
 
-            if (exists) {
-                result.put(cursor.getInt(0), name);
+                cursor.close();
+                return result;
             }
-            else{
-                removeWidgetFromDatabase(cursor.getInt(0));
-            }
-            cursor.moveToNext();
-        }
-
-        cursor.close();
-        return result;
+        };
     }
 
-    public void addFilterToDatabase(String packageFilter, long widgetId) {
-        Filter.InsertFilter insertFilter = new FilterModel.InsertFilter(OpenHelper.getInstance(context).getWritableDatabase());
-        insertFilter.bind(packageFilter, widgetId);
-        insertFilter.program.execute();
+    public Callable<Boolean> addFilterToDatabase(final String packageFilter, final long widgetId) {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                Filter.InsertFilter insertFilter = new FilterModel.InsertFilter(OpenHelper.getInstance(context).getWritableDatabase());
+                insertFilter.bind(packageFilter, widgetId);
+                insertFilter.program.execute();
+                return true;
+            }
+        };
     }
 
     public Callable<Boolean> addAppToDatabase(final String packageFilter, final long filterId, final long widgetId) {

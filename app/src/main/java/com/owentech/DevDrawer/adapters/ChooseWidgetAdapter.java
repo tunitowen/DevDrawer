@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RxUtils;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by tonyowen on 14/07/2014.
@@ -19,9 +22,15 @@ public class ChooseWidgetAdapter extends BaseAdapter {
     Activity activity;
     SparseArray<String> widgets;
 
-    public ChooseWidgetAdapter(Activity activity) {
+    public ChooseWidgetAdapter(final Activity activity) {
         this.activity = activity;
-        widgets = Database.getInstance(activity).getWidgetNames(activity);
+        RxUtils.backgroundSingleFromCallable(Database.getInstance(activity).getWidgetNames(activity))
+                .subscribe(new Consumer<SparseArray<String>>() {
+                    @Override
+                    public void accept(SparseArray<String> stringSparseArray) throws Exception {
+                        widgets = stringSparseArray;
+                    }
+                });
     }
 
 

@@ -31,10 +31,12 @@ import com.owentech.DevDrawer.events.PackageAddedEvent;
 import com.owentech.DevDrawer.events.WidgetRenamedEvent;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RxUtils;
 import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by tonyowen on 09/07/2014.
@@ -100,11 +102,18 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(filterListAdapter);
 
-        String widgetName = Database.getInstance(getActivity()).getWidgetNames(getActivity()).get(FilterListAdapter.currentWidgetId);
-        if (AppConstants.UNNAMED.equals(widgetName)){
-            widgetName = "Unnamed Widget";
-        }
-        currentWidgetName.setText(widgetName);
+        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).getWidgetNames(getActivity()))
+                .subscribe(new Consumer<SparseArray<String>>() {
+                    @Override
+                    public void accept(SparseArray<String> stringSparseArray) throws Exception {
+                        String widgetName = stringSparseArray.get(FilterListAdapter.currentWidgetId);
+                        if (AppConstants.UNNAMED.equals(widgetName)){
+                            widgetName = "Unnamed Widget";
+                        }
+                        currentWidgetName.setText(widgetName);
+                    }
+                });
+
     }
 
     @Override
@@ -115,7 +124,6 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     @Override
     public void onClick(View view) {
         if (view == selectionLayout) {
-            SparseArray<String> widgetNames = Database.getInstance(getActivity()).getWidgetNames(getActivity());
             showChooseWidgetDialog();
         }
     }
@@ -199,11 +207,23 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     public void changeWidget(ChangeWidgetEvent event){
         FilterListAdapter.currentWidgetId = event.widgetId;
         filterListAdapter.notifyDataSetChanged();
-        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames(getActivity()).get(FilterListAdapter.currentWidgetId));
+        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).getWidgetNames(getActivity()))
+                .subscribe(new Consumer<SparseArray<String>>() {
+                    @Override
+                    public void accept(SparseArray<String> stringSparseArray) throws Exception {
+                        currentWidgetName.setText(stringSparseArray.get(FilterListAdapter.currentWidgetId));
+                    }
+                });
     }
 
     @Subscribe
     public void widgetRenamed(WidgetRenamedEvent event){
-        currentWidgetName.setText(Database.getInstance(getActivity()).getWidgetNames(getActivity()).get(FilterListAdapter.currentWidgetId));
+        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).getWidgetNames(getActivity()))
+                .subscribe(new Consumer<SparseArray<String>>() {
+                    @Override
+                    public void accept(SparseArray<String> stringSparseArray) throws Exception {
+                        currentWidgetName.setText(stringSparseArray.get(FilterListAdapter.currentWidgetId));
+                    }
+                });
     }
 }

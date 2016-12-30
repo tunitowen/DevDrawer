@@ -23,6 +23,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -31,6 +32,9 @@ import com.owentech.DevDrawer.activities.ClickHandlingActivity;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RxUtils;
+
+import io.reactivex.functions.Consumer;
 
 public class DDWidgetProvider extends AppWidgetProvider {
 
@@ -46,7 +50,7 @@ public class DDWidgetProvider extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-    public static RemoteViews getRemoteViews(Context context, int appWidgetId) {
+    public static RemoteViews getRemoteViews(Context context, final int appWidgetId) {
         // Setup the widget, and data source / adapter
         Intent svcIntent = new Intent(context, DDWidgetService.class);
 
@@ -54,17 +58,25 @@ public class DDWidgetProvider extends AppWidgetProvider {
         svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        RemoteViews widget = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+        final RemoteViews widget = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         widget.setRemoteAdapter(R.id.listView, svcIntent);
 
         Intent clickIntent = new Intent(context, ClickHandlingActivity.class);
         PendingIntent clickPI = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        String name = new Database(context).getWidgetNames(context).get(appWidgetId);
-        if (name == null || name.trim().isEmpty() || name.equalsIgnoreCase(AppConstants.UNNAMED)) {
-            name = "DevDrawer";
-        }
+        RxUtils.backgroundSingleFromCallable(Database.getInstance(context).getWidgetNames(context))
+                .subscribe(new Consumer<SparseArray<String>>() {
+                    @Override
+                    public void accept(SparseArray<String> stringSparseArray) throws Exception {
+                        String name = stringSparseArray.get(appWidgetId);
+                        if (name == null || name.trim().isEmpty() || name.equalsIgnoreCase(AppConstants.UNNAMED)) {
+                            name = "DevDrawer";
+                        }
+                        widget.setTextViewText(R.id.widget_layout_titletv, name);
+                    }
+                });
 
+        // TODO: 30/12/2016 why is this true
         if (true){
             widget.setViewVisibility(R.id.lightHeader, View.VISIBLE);
             widget.setViewVisibility(R.id.darkHeader, View.INVISIBLE);
@@ -85,7 +97,6 @@ public class DDWidgetProvider extends AppWidgetProvider {
         }
 
         widget.setViewVisibility(R.id.widget_layout_titletv, View.VISIBLE);
-        widget.setTextViewText(R.id.widget_layout_titletv, name);
 
         widget.setPendingIntentTemplate(R.id.listView, clickPI);
 

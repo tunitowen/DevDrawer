@@ -17,9 +17,11 @@ import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
 import com.owentech.DevDrawer.events.ChangeWidgetEvent;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RxUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by tonyowen on 10/07/2014.
@@ -57,11 +59,16 @@ public class ChooseWidgetDialogFragment extends DialogFragment implements Adapte
         ButterKnife.inject(this, view);
 
         widgetId = getArguments().getInt(WIDGET_ID);
-        widgetNames = Database.getInstance(getActivity()).getWidgetNames(getActivity());
-
-        chooseWidgetAdapter = new ChooseWidgetAdapter(getActivity());
-        listView.setAdapter(chooseWidgetAdapter);
-        listView.setOnItemClickListener(this);
+        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).getWidgetNames(getActivity()))
+                .subscribe(new Consumer<SparseArray<String>>() {
+                    @Override
+                    public void accept(SparseArray<String> stringSparseArray) throws Exception {
+                        widgetNames = stringSparseArray;
+                        chooseWidgetAdapter = new ChooseWidgetAdapter(getActivity());
+                        listView.setAdapter(chooseWidgetAdapter);
+                        listView.setOnItemClickListener(ChooseWidgetDialogFragment.this);
+                    }
+                });
 
         return view;
     }
