@@ -24,6 +24,7 @@ import com.owentech.DevDrawer.fragments.WidgetsFragment;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RxUtils;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -39,7 +40,8 @@ import butterknife.InjectView;
 
 public class MainActivity extends AppCompatActivity implements TextWatcher {
 
-    @InjectView(R.id.main_viewpager) ViewPager viewPager;
+    @InjectView(R.id.main_viewpager)
+    ViewPager viewPager;
     WidgetsFragment widgetsFragment;
     NotificationsFragment notificationsFragment;
     ShortcutFragment shortcutFragment;
@@ -64,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
                     }
                 }
 
-                Database.getInstance(this).addWidgetToDatabase(appWidgetId, "");
+                RxUtils.backgroundSingleFromCallable(Database.getInstance(this).addWidgetToDatabase(appWidgetId, ""))
+                        .subscribe();
             }
         }
     }
@@ -73,20 +76,20 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
 
-            switch(position){
-                case 0:{
+            switch (position) {
+                case 0: {
                     if (widgetsFragment == null) {
                         widgetsFragment = new WidgetsFragment();
                     }
                     return widgetsFragment;
                 }
-                case 1:{
+                case 1: {
                     if (notificationsFragment == null) {
                         notificationsFragment = new NotificationsFragment();
                     }
                     return notificationsFragment;
                 }
-                case 2:{
+                case 2: {
                     if (shortcutFragment == null) {
                         shortcutFragment = new ShortcutFragment();
                     }
@@ -100,14 +103,14 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch(position){
-                case 0:{
+            switch (position) {
+                case 0: {
                     return getString(R.string.tab_widgets);
                 }
-                case 1:{
+                case 1: {
                     return getString(R.string.tab_notifications);
                 }
-                case 2:{
+                case 2: {
                     return getString(R.string.tab_shortcut);
                 }
                 default:

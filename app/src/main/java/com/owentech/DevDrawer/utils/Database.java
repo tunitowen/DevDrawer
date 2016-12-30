@@ -38,16 +38,28 @@ public class Database {
         this.context = context;
     }
 
-    public void addWidgetToDatabase(long widgetId, String name) {
-        Widget.AddWiget addWiget = new WidgetModel.AddWiget(OpenHelper.getInstance(context).getWritableDatabase());
-        addWiget.bind(widgetId, name);
-        addWiget.program.execute();
+    public Callable<Boolean> addWidgetToDatabase(final long widgetId, final String name) {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                Widget.AddWiget addWiget = new WidgetModel.AddWiget(OpenHelper.getInstance(context).getWritableDatabase());
+                addWiget.bind(widgetId, name);
+                addWiget.program.execute();
+                return true;
+            }
+        };
     }
 
-    public void renameWidget(long widgetId, String name) {
-        Widget.RenameWidget renameWidget = new WidgetModel.RenameWidget(OpenHelper.getInstance(context).getWritableDatabase());
-        renameWidget.bind(name, widgetId);
-        renameWidget.program.execute();
+    public Callable<Boolean> renameWidget(final long widgetId, final String name) {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                Widget.RenameWidget renameWidget = new WidgetModel.RenameWidget(OpenHelper.getInstance(context).getWritableDatabase());
+                renameWidget.bind(name, widgetId);
+                renameWidget.program.execute();
+                return true;
+            }
+        };
     }
 
     public Callable<Boolean> removeWidgetFromDatabase(final long widgetId) {

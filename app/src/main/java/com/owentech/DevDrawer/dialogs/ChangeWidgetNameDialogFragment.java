@@ -17,6 +17,7 @@ import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.events.WidgetRenamedEvent;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RxUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -26,8 +27,10 @@ import butterknife.InjectView;
  */
 public class ChangeWidgetNameDialogFragment extends DialogFragment implements View.OnClickListener {
 
-    @InjectView(R.id.editText) EditText editText;
-    @InjectView(R.id.ok) Button ok;
+    @InjectView(R.id.editText)
+    EditText editText;
+    @InjectView(R.id.ok)
+    Button ok;
 
     private PartialMatchAdapter partialMatchAdapter;
     final private static String EDIT = "edit";
@@ -67,7 +70,7 @@ public class ChangeWidgetNameDialogFragment extends DialogFragment implements Vi
         widgetId = getArguments().getInt(WIDGET_ID);
         edit = getArguments().getString(EDIT);
 
-        if (edit != null && !edit.equalsIgnoreCase(AppConstants.UNNAMED)){
+        if (edit != null && !edit.equalsIgnoreCase(AppConstants.UNNAMED)) {
             editText.setText(edit);
         }
 
@@ -88,8 +91,10 @@ public class ChangeWidgetNameDialogFragment extends DialogFragment implements Vi
 
     @Override
     public void onClick(View view) {
-        if (view == ok){
-            Database.getInstance(getActivity()).renameWidget(widgetId, editText.getText().toString());
+        if (view == ok) {
+            RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).renameWidget(widgetId, editText.getText().toString()))
+                    .subscribe();
+
             OttoManager.getInstance().post(new WidgetRenamedEvent());
             getDialog().dismiss();
         }
