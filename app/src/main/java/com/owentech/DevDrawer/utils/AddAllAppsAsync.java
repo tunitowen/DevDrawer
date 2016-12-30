@@ -17,6 +17,8 @@ import com.owentech.DevDrawer.data.model.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.functions.Consumer;
+
 /**
  * Created with IntelliJ IDEA.
  * User: tony
@@ -76,16 +78,19 @@ public class AddAllAppsAsync extends AsyncTask<Void, Void, Void> {
 
         // If the list is > 0 add the packages to the database
         if (appPackages.size() != 0) {
-            for (String s : appPackages) {
-                List<Filter> packageCollections = Database.getInstance(context).getAllFiltersInDatabase();
-
-                Database.getInstance(context).addAppToDatabase(s, packageCollections.get(packageCollections.size() - 1).id(), widgetId);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-                    int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
-                    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
-                }
+            for (final String s : appPackages) {
+                RxUtils.backgroundSingleFromCallable(Database.getInstance(context).getAllFiltersInDatabase())
+                        .subscribe(new Consumer<List<Filter>>() {
+                            @Override
+                            public void accept(List<Filter> filters) throws Exception {
+                                Database.getInstance(context).addAppToDatabase(s, filters.get(filters.size() - 1).id(), widgetId);
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                                    AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+                                    int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, DDWidgetProvider.class));
+                                    appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+                                }
+                            }
+                        });
             }
         }
     }

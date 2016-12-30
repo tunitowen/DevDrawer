@@ -18,6 +18,7 @@ import com.owentech.DevDrawer.data.model.WidgetModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 public class Database {
 
@@ -126,22 +127,26 @@ public class Database {
         removeApp.program.execute();
     }
 
-    public List<Filter> getAllFiltersInDatabase() {
+    public Callable<List<Filter>> getAllFiltersInDatabase() {
 
-        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTALLFILTERS, new String[0]);
-        List<Filter> filters = new ArrayList<>();
+        return new Callable<List<Filter>>() {
+            @Override
+            public List<Filter> call() throws Exception {
+                Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTALLFILTERS, new String[0]);
+                List<Filter> filters = new ArrayList<>();
 
-        cursor.moveToFirst();
+                cursor.moveToFirst();
 
-        while (!cursor.isAfterLast()) {
-            Filter filter = Filter.MAPPER.map(cursor);
-            filters.add(filter);
-            cursor.moveToNext();
-        }
+                while (!cursor.isAfterLast()) {
+                    Filter filter = Filter.MAPPER.map(cursor);
+                    filters.add(filter);
+                    cursor.moveToNext();
+                }
 
-        cursor.close();
-        return filters;
-
+                cursor.close();
+                return filters;
+            }
+        };
     }
 
     public List<Filter> getAllFiltersInDatabase(int widgetId) {

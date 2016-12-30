@@ -1,10 +1,13 @@
 package com.owentech.DevDrawer.dialogs;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
@@ -22,10 +25,12 @@ import android.widget.Toast;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
+import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.data.model.Filter;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
-import com.owentech.DevDrawer.utils.AddAllAppsAsync;
 import com.owentech.DevDrawer.utils.Database;
+import com.owentech.DevDrawer.utils.RxUtils;
 
 import java.text.Collator;
 import java.util.ArrayList;
@@ -33,9 +38,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by tonyowen on 09/07/2014.
@@ -106,8 +113,10 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
                         // Add the filter to the mDatabase
                         Database.getInstance(getActivity()).addFilterToDatabase(addPackage.getText().toString(), widgetId);
 
+                        RxUtils.backgroundSingleFromCallable(getAllAppsInstalledAndAdd(addPackage.getText().toString()))
+                        .subscribe();
                         // Check existing apps and add to installed apps table if they match new filter
-                        new AddAllAppsAsync(getActivity(), addPackage.getText().toString(), widgetId).execute();
+//                        new AddAllAppsAsync(getActivity(), addPackage.getText().toString(), widgetId).execute();
 
                         addPackage.setText("");
                         OttoManager.getInstance().post(new PackageAddedEvent());
@@ -175,5 +184,60 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
     public void onDetach() {
         super.onDetach();
         OttoManager.getInstance().unregister(this);
+    }
+
+    public Callable<Boolean> getAllAppsInstalledAndAdd(final String newFilter) {
+
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                List<String> appPackages = new ArrayList<String>();
+                PackageManager pm;
+                List<ResolveInfo> list;
+
+                // get installed applications
+                pm = getActivity().getPackageManager();
+                Intent intent = new Intent(Intent.ACTION_MAIN, null);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                list = pm.queryIntentActivities(intent,
+                        PackageManager.PERMISSION_GRANTED);
+
+                // Loop through the installed apps and check if they match the new filter
+                for (ResolveInfo rInfo : list) {
+
+                    String currentPackage = rInfo.activityInfo.applicationInfo.packageName.toLowerCase();
+
+                    if (newFilter.contains("*")) {
+                        if (currentPackage.toLowerCase().startsWith(newFilter.toLowerCase().substring(0, newFilter.indexOf("*"))))
+                            appPackages.add(currentPackage);
+
+                    } else {
+                        if (currentPackage.toLowerCase().equals(newFilter.toLowerCase()))
+                            appPackages.add(currentPackage);
+
+                    }
+                }
+
+                // If the list is > 0 add the packages to the database
+                if (appPackages.size() != 0) {
+                    for (final String s : appPackages) {
+                        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).getAllFiltersInDatabase())
+                                .subscribe(new Consumer<List<Filter>>() {
+                                    @Override
+                                    public void accept(List<Filter> filters) throws Exception {
+                                        Database.getInstance(getActivity()).addAppToDatabase(s, filters.get(filters.size() - 1).id(), widgetId);
+                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                                            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
+                                            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getActivity(), DDWidgetProvider.class));
+                                            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
+                                        }
+                                    }
+                                });
+                    }
+                }
+
+                return true;
+            }
+        };
     }
 }
