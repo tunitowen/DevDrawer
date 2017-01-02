@@ -14,10 +14,14 @@ import android.widget.ListView;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.ChooseWidgetAdapter;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 import com.owentech.DevDrawer.events.ChangeWidgetEvent;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.RxUtils;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,6 +33,8 @@ import io.reactivex.functions.Consumer;
 public class ChooseWidgetDialogFragment extends DialogFragment implements AdapterView.OnItemClickListener {
 
     @InjectView(R.id.listView) ListView listView;
+    @Inject
+    Database database;
 
     private PartialMatchAdapter partialMatchAdapter;
     final private static String EDIT = "edit";
@@ -39,6 +45,9 @@ public class ChooseWidgetDialogFragment extends DialogFragment implements Adapte
 
     public ChooseWidgetDialogFragment() {
         // Empty constructor required for DialogFragment
+        DaggerDatabaseComponent.builder()
+                .databaseModule(new DatabaseModule(getActivity()))
+                .build().inject(this);
     }
 
     public static ChooseWidgetDialogFragment newInstance(int widget_id) {
@@ -59,7 +68,7 @@ public class ChooseWidgetDialogFragment extends DialogFragment implements Adapte
         ButterKnife.inject(this, view);
 
         widgetId = getArguments().getInt(WIDGET_ID);
-        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).getWidgetNames(getActivity()))
+        RxUtils.fromCallable(database.getWidgetNames(getActivity()))
                 .subscribe(new Consumer<SparseArray<String>>() {
                     @Override
                     public void accept(SparseArray<String> stringSparseArray) throws Exception {

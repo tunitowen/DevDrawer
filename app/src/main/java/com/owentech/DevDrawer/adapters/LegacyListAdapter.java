@@ -18,11 +18,15 @@ import android.widget.TextView;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.activities.ClickHandlingActivity;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class LegacyListAdapter extends BaseAdapter {
     PackageManager pm;
@@ -35,9 +39,14 @@ public class LegacyListAdapter extends BaseAdapter {
     SharedPreferences sp;
     boolean rootClearData;
 
+    @Inject Database database;
+
     public LegacyListAdapter(Activity activity) {
         super();
         this.activity = activity;
+        DaggerDatabaseComponent.builder()
+                .databaseModule(new DatabaseModule(activity))
+                .build().inject(this);
         getApps();
         notifyDataSetChanged();
         sp = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -152,7 +161,7 @@ public class LegacyListAdapter extends BaseAdapter {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
 
         // Get all apps from the app table
-        String[] packages = Database.getInstance(activity).getAllAppsInDatabase(AppConstants.SHORTCUT);
+        String[] packages = database.getAllAppsInDatabase(AppConstants.SHORTCUT);
         pm = activity.getPackageManager();
 
         // Defensive code, was getting some strange behaviour and forcing the lists seems to fix

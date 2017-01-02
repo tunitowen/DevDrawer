@@ -5,36 +5,38 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import com.owentech.DevDrawer.R;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.NotificationHelper;
 import com.owentech.DevDrawer.utils.RxUtils;
 
-/**
- * Created with IntelliJ IDEA.
- * User: owent
- * Date: 25/01/2013
- * Time: 19:33
- * To change this template use File | Settings | File Templates.
- */
+import javax.inject.Inject;
 
 public class AppInstalledReceiver extends BroadcastReceiver {
 
+    @Inject
+    Database database;
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        DaggerDatabaseComponent.builder()
+                .databaseModule(new DatabaseModule(context))
+                .build().inject(this);
+
         // New app has been installed, check and add to the database / widget
         String newPackage = intent.getData().getSchemeSpecificPart();
 
-        if (Database.getInstance(context).getFiltersCount() != 0) {
+        if (database.getFiltersCount() != 0) {
             int[] appWidgetIds = AppWidgetUtil.findAppWidgetIds(context);
             for (int appWidgetId : appWidgetIds) {
-                long match = Database.getInstance(context).parseAndMatch(newPackage, appWidgetId);
+                long match = database.parseAndMatch(newPackage, appWidgetId);
                 if (match != Database.NOT_FOUND) {
-                    RxUtils.backgroundSingleFromCallable(Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), match, appWidgetId))
+                    RxUtils.fromCallable(database.addAppToDatabase(intent.getData().getSchemeSpecificPart(), match, appWidgetId))
                             .subscribe();
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -44,9 +46,9 @@ public class AppInstalledReceiver extends BroadcastReceiver {
                 }
             }
 
-            long match = Database.getInstance(context).parseAndMatch(newPackage, AppConstants.NOTIFICATION);
+            long match = database.parseAndMatch(newPackage, AppConstants.NOTIFICATION);
             if (match != Database.NOT_FOUND) {
-                RxUtils.backgroundSingleFromCallable(Database.getInstance(context).addAppToDatabase(intent.getData().getSchemeSpecificPart(), match, AppConstants.NOTIFICATION))
+                RxUtils.fromCallable(database.addAppToDatabase(intent.getData().getSchemeSpecificPart(), match, AppConstants.NOTIFICATION))
                         .subscribe();
                 NotificationHelper.showNotification(context, newPackage, match);
             }

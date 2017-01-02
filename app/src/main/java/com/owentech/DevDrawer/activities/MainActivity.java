@@ -17,6 +17,8 @@ import android.widget.RemoteViews;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 import com.owentech.DevDrawer.fragments.ShortcutFragment;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.fragments.NotificationsFragment;
@@ -32,7 +34,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Filter;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -47,11 +50,18 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
     ShortcutFragment shortcutFragment;
     private int[] mAppWidgetIds;
 
+    @Inject
+    Database database;
+
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+
+        DaggerDatabaseComponent.builder()
+                .databaseModule(new DatabaseModule(this))
+                .build().inject(this);
 
         mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(this);
 
@@ -66,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
                     }
                 }
 
-                RxUtils.backgroundSingleFromCallable(Database.getInstance(this).addWidgetToDatabase(appWidgetId, ""))
+                RxUtils.fromCallable(database.addWidgetToDatabase(appWidgetId, ""))
                         .subscribe();
             }
         }
@@ -136,7 +146,8 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
 
         if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-            RemoteViews widget = DDWidgetProvider.getRemoteViews(this, appWidgetId);
+            DDWidgetProvider widgetProvider = new DDWidgetProvider();
+            RemoteViews widget = widgetProvider.getRemoteViews(this, appWidgetId);
             appWidgetManager.updateAppWidget(appWidgetId, widget);
             Intent resultValue = new Intent();
             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
@@ -166,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         // Catch the return from the EditDialog
         if (resultCode == AppConstants.EDIT_DIALOG_CHANGE) {
             Bundle bundle = data.getExtras();
-            Database.getInstance(this).amendFilterEntryTo(Long.valueOf(bundle.getString("id")), bundle.getString("newText"));
+            database.amendFilterEntryTo(Long.valueOf(bundle.getString("id")), bundle.getString("newText"));
         }
     }
 

@@ -15,34 +15,33 @@ import com.owentech.DevDrawer.data.model.Filter;
 import com.owentech.DevDrawer.data.model.FilterModel;
 import com.owentech.DevDrawer.data.model.Widget;
 import com.owentech.DevDrawer.data.model.WidgetModel;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
 public class Database {
 
     Context context;
-    private static Database instance;
+    OpenHelper openHelper;
 
-    public static Database getInstance(Context context){
-        if (instance == null){
-            instance = new Database(context);
-        }
-        return instance;
+    @Inject
+    public Database(Context context){
+        this.context = context;
+        openHelper = new OpenHelper(this.context);
     }
 
     public static int NOT_FOUND = 1000000;
-
-    public Database(Context context) {
-        this.context = context;
-    }
 
     public Callable<Boolean> addWidgetToDatabase(final long widgetId, final String name) {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                Widget.AddWiget addWiget = new WidgetModel.AddWiget(OpenHelper.getInstance(context).getWritableDatabase());
+                Widget.AddWiget addWiget = new WidgetModel.AddWiget(openHelper.getWritableDatabase());
                 addWiget.bind(widgetId, name);
                 addWiget.program.execute();
                 return true;
@@ -54,7 +53,7 @@ public class Database {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                Widget.RenameWidget renameWidget = new WidgetModel.RenameWidget(OpenHelper.getInstance(context).getWritableDatabase());
+                Widget.RenameWidget renameWidget = new WidgetModel.RenameWidget(openHelper.getWritableDatabase());
                 renameWidget.bind(name, widgetId);
                 renameWidget.program.execute();
                 return true;
@@ -66,7 +65,7 @@ public class Database {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                SQLiteDatabase db = OpenHelper.getInstance(context).getWritableDatabase();
+                SQLiteDatabase db = openHelper.getWritableDatabase();
 
                 WidgetModel.RemoveWidget removeWidget = new WidgetModel.RemoveWidget(db);
                 removeWidget.bind(widgetId);
@@ -91,7 +90,7 @@ public class Database {
             public SparseArray<String> call() throws Exception {
                 SparseArray<String> result = new SparseArray<>();
 
-                Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Widget.SELECTALLWIDGETS, new String[0]);
+                Cursor cursor = openHelper.getWritableDatabase().rawQuery(Widget.SELECTALLWIDGETS, new String[0]);
                 cursor.moveToFirst();
 
                 AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -115,7 +114,7 @@ public class Database {
                         result.put(cursor.getInt(0), name);
                     }
                     else{
-                        RxUtils.backgroundSingleFromCallable(removeWidgetFromDatabase(cursor.getInt(0)))
+                        RxUtils.fromCallable(removeWidgetFromDatabase(cursor.getInt(0)))
                                 .subscribe();
                     }
                     cursor.moveToNext();
@@ -131,7 +130,7 @@ public class Database {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                Filter.InsertFilter insertFilter = new FilterModel.InsertFilter(OpenHelper.getInstance(context).getWritableDatabase());
+                Filter.InsertFilter insertFilter = new FilterModel.InsertFilter(openHelper.getWritableDatabase());
                 insertFilter.bind(packageFilter, widgetId);
                 insertFilter.program.execute();
                 return true;
@@ -143,7 +142,7 @@ public class Database {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                App.InsertApp insertApp = new AppModel.InsertApp(OpenHelper.getInstance(context).getWritableDatabase());
+                App.InsertApp insertApp = new AppModel.InsertApp(openHelper.getWritableDatabase());
                 insertApp.bind(packageFilter, filterId, widgetId);
                 insertApp.program.execute();
                 return true;
@@ -155,7 +154,7 @@ public class Database {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                Filter.RemoveFilter removeFilter = new FilterModel.RemoveFilter(OpenHelper.getInstance(context).getWritableDatabase());
+                Filter.RemoveFilter removeFilter = new FilterModel.RemoveFilter(openHelper.getWritableDatabase());
                 removeFilter.bind(i);
                 removeFilter.program.execute();
                 return true;
@@ -167,7 +166,7 @@ public class Database {
         return new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                App.RemoveApp removeApp = new AppModel.RemoveApp(OpenHelper.getInstance(context).getWritableDatabase());
+                App.RemoveApp removeApp = new AppModel.RemoveApp(openHelper.getWritableDatabase());
                 removeApp.bind(filterId);
                 removeApp.program.execute();
                 return true;
@@ -180,7 +179,7 @@ public class Database {
         return new Callable<List<Filter>>() {
             @Override
             public List<Filter> call() throws Exception {
-                Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTALLFILTERS, new String[0]);
+                Cursor cursor = openHelper.getWritableDatabase().rawQuery(Filter.SELECTALLFILTERS, new String[0]);
                 List<Filter> filters = new ArrayList<>();
 
                 cursor.moveToFirst();
@@ -202,7 +201,7 @@ public class Database {
         return new Callable<List<Filter>>() {
             @Override
             public List<Filter> call() throws Exception {
-                Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTFILTERSFORWIDGETID, new String[]{String.valueOf(widgetId)});
+                Cursor cursor = openHelper.getWritableDatabase().rawQuery(Filter.SELECTFILTERSFORWIDGETID, new String[]{String.valueOf(widgetId)});
                 List<Filter> filters = new ArrayList<>();
 
                 cursor.moveToFirst();
@@ -222,7 +221,7 @@ public class Database {
     public String[] getAllAppsInDatabase(int widgetId) {
         String[] packages;
 
-        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(App.SELECTALLAPPSFORWIDGETID, new String[]{String.valueOf(widgetId)});
+        Cursor cursor = openHelper.getWritableDatabase().rawQuery(App.SELECTALLAPPSFORWIDGETID, new String[]{String.valueOf(widgetId)});
         cursor.moveToFirst();
         packages = new String[cursor.getCount()];
 
@@ -239,7 +238,7 @@ public class Database {
     }
 
     public int getFiltersCount() {
-        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.GETFILTERCOUNT, new String[0]);
+        Cursor cursor = openHelper.getWritableDatabase().rawQuery(Filter.GETFILTERCOUNT, new String[0]);
         cursor.moveToFirst();
         int count = cursor.getInt(0);
         cursor.close();
@@ -247,7 +246,7 @@ public class Database {
     }
 
     public boolean doesFilterExist(String s, int appWidgetId) {
-        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.GETFILTERCOUNTFORPACKAGEANDWIDGETID, new String[]{s, String.valueOf(appWidgetId)});
+        Cursor cursor = openHelper.getWritableDatabase().rawQuery(Filter.GETFILTERCOUNTFORPACKAGEANDWIDGETID, new String[]{s, String.valueOf(appWidgetId)});
 
         // get number of rows
         cursor.moveToFirst();
@@ -258,7 +257,7 @@ public class Database {
     }
 
     public int getAppsCount() {
-        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(App.GETAPPSCOUNT, new String[0]);
+        Cursor cursor = openHelper.getWritableDatabase().rawQuery(App.GETAPPSCOUNT, new String[0]);
         cursor.moveToFirst();
         int count = cursor.getInt(0);
         cursor.close();
@@ -266,14 +265,14 @@ public class Database {
     }
 
     public boolean doesAppExistInDb(String s) {
-        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(App.GETAPPSCOUNTFORPACKAGE, new String[]{s});
+        Cursor cursor = openHelper.getWritableDatabase().rawQuery(App.GETAPPSCOUNTFORPACKAGE, new String[]{s});
         int count = cursor.getCount();
         cursor.close();
         return count != 0;
     }
 
     public void deleteAppFromDb(String packageName) {
-        App.DeleteAppsForPackage deleteAppsForPackage = new AppModel.DeleteAppsForPackage(OpenHelper.getInstance(context).getWritableDatabase());
+        App.DeleteAppsForPackage deleteAppsForPackage = new AppModel.DeleteAppsForPackage(openHelper.getWritableDatabase());
         deleteAppsForPackage.bind(packageName);
         deleteAppsForPackage.program.execute();
     }
@@ -283,7 +282,7 @@ public class Database {
 
         long match = NOT_FOUND;
 
-        Cursor cursor = OpenHelper.getInstance(context).getWritableDatabase().rawQuery(Filter.SELECTFILTERSFORWIDGETID, new String[]{p});
+        Cursor cursor = openHelper.getWritableDatabase().rawQuery(Filter.SELECTFILTERSFORWIDGETID, new String[]{p});
         cursor.moveToFirst();
 
         while (!cursor.isAfterLast()) {
@@ -308,7 +307,7 @@ public class Database {
     }
 
     public void amendFilterEntryTo(long id, String newString) {
-        Filter.AmendFilter amendFilter = new FilterModel.AmendFilter(OpenHelper.getInstance(context).getWritableDatabase());
+        Filter.AmendFilter amendFilter = new FilterModel.AmendFilter(openHelper.getWritableDatabase());
         amendFilter.bind(newString, id);
         amendFilter.program.execute();
     }

@@ -21,6 +21,8 @@ import android.widget.TextView;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
 import com.owentech.DevDrawer.dialogs.ChangeWidgetNameDialogFragment;
 import com.owentech.DevDrawer.dialogs.ChooseWidgetDialogFragment;
@@ -34,13 +36,12 @@ import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.RxUtils;
 import com.squareup.otto.Subscribe;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import io.reactivex.functions.Consumer;
 
-/**
- * Created by tonyowen on 09/07/2014.
- */
 public class WidgetsFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
     @InjectView(R.id.selectionLayout) RelativeLayout selectionLayout;
@@ -49,13 +50,20 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     @InjectView(R.id.noWidgets) CardView noWidgets;
     @InjectView(R.id.currentWidgetName) TextView currentWidgetName;
     @InjectView(R.id.fab) ImageButton fab;
+    @Inject
+    Database database;
 
     private int[] mAppWidgetIds;
     private FilterListAdapter filterListAdapter;
     float originalFabY;
 
+    public WidgetsFragment() {
+        super();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.widgets_fragment, container, false);
         ButterKnife.inject(this, view);
         setHasOptionsMenu(true);
@@ -87,6 +95,10 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     @Override
     public void onStart() {
         super.onStart();
+        DaggerDatabaseComponent.builder()
+                .databaseModule(new DatabaseModule(getActivity()))
+                .build().inject(this);
+
         mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(getActivity());
         showHideListView();
 
@@ -102,7 +114,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(filterListAdapter);
 
-        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).getWidgetNames(getActivity()))
+        RxUtils.fromCallable(database.getWidgetNames(getActivity()))
                 .subscribe(new Consumer<SparseArray<String>>() {
                     @Override
                     public void accept(SparseArray<String> stringSparseArray) throws Exception {
@@ -207,7 +219,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     public void changeWidget(ChangeWidgetEvent event){
         FilterListAdapter.currentWidgetId = event.widgetId;
         filterListAdapter.notifyDataSetChanged();
-        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).getWidgetNames(getActivity()))
+        RxUtils.fromCallable(database.getWidgetNames(getActivity()))
                 .subscribe(new Consumer<SparseArray<String>>() {
                     @Override
                     public void accept(SparseArray<String> stringSparseArray) throws Exception {
@@ -218,7 +230,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
 
     @Subscribe
     public void widgetRenamed(WidgetRenamedEvent event){
-        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).getWidgetNames(getActivity()))
+        RxUtils.fromCallable(database.getWidgetNames(getActivity()))
                 .subscribe(new Consumer<SparseArray<String>>() {
                     @Override
                     public void accept(SparseArray<String> stringSparseArray) throws Exception {

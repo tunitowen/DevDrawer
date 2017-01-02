@@ -1,13 +1,5 @@
 package com.owentech.DevDrawer.appwidget;
 
-/**
- * Created with IntelliJ IDEA.
- * User: owent
- * Date: 25/01/2013
- * Time: 19:23
- * To change this template use File | Settings | File Templates.
- */
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -15,10 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -29,10 +18,14 @@ import android.widget.RemoteViews;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.activities.ClickHandlingActivity;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.RxUtils;
+
+import javax.inject.Inject;
 
 import io.reactivex.functions.Consumer;
 
@@ -40,6 +33,9 @@ public class DDWidgetProvider extends AppWidgetProvider {
 
     public static String PACKAGE_STRING = "default.package";
     public static String REFRESH = "refresh";
+
+    @Inject
+    Database database;
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -50,7 +46,9 @@ public class DDWidgetProvider extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-    public static RemoteViews getRemoteViews(Context context, final int appWidgetId) {
+    public RemoteViews getRemoteViews(Context context, final int appWidgetId) {
+        injectDependencies(context);
+
         // Setup the widget, and data source / adapter
         Intent svcIntent = new Intent(context, DDWidgetService.class);
 
@@ -64,7 +62,7 @@ public class DDWidgetProvider extends AppWidgetProvider {
         Intent clickIntent = new Intent(context, ClickHandlingActivity.class);
         PendingIntent clickPI = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        RxUtils.backgroundSingleFromCallable(Database.getInstance(context).getWidgetNames(context))
+        RxUtils.fromCallable(database.getWidgetNames(context))
                 .subscribe(new Consumer<SparseArray<String>>() {
                     @Override
                     public void accept(SparseArray<String> stringSparseArray) throws Exception {
@@ -113,11 +111,17 @@ public class DDWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
-
+        injectDependencies(context);
         for (int appWidgetId : appWidgetIds) {
-            RxUtils.backgroundSingleFromCallable(Database.getInstance(context).removeWidgetFromDatabase(appWidgetId))
+            RxUtils.fromCallable(database.removeWidgetFromDatabase(appWidgetId))
                     .subscribe();
         }
+    }
+
+    private void injectDependencies(Context context){
+        DaggerDatabaseComponent.builder()
+                .databaseModule(new DatabaseModule(context))
+                .build().inject(this);
     }
 
     @Override

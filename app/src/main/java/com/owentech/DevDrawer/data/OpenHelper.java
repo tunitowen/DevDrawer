@@ -8,21 +8,15 @@ import com.owentech.DevDrawer.data.model.AppModel;
 import com.owentech.DevDrawer.data.model.FilterModel;
 import com.owentech.DevDrawer.data.model.WidgetModel;
 
+import javax.inject.Inject;
+
 public class OpenHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "DevDrawer.db";
     public static final int DB_VERSION = 1;
 
-    private static OpenHelper instance;
-
-    public static OpenHelper getInstance(Context context) {
-        if (null == instance) {
-            instance = new OpenHelper(context);
-        }
-        return instance;
-    }
-
-    private OpenHelper(Context context) {
+    @Inject
+    public OpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

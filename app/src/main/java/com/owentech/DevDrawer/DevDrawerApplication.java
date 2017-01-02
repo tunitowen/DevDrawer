@@ -12,7 +12,8 @@ public class DevDrawerApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
-        SQLiteDatabase sqLiteDatabase = OpenHelper.getInstance(this).getWritableDatabase();
-        OpenHelper.getInstance(this).onCreate(sqLiteDatabase);
+        OpenHelper openHelper = new OpenHelper(this);
+        SQLiteDatabase sqLiteDatabase = openHelper.getWritableDatabase();
+        openHelper.onCreate(sqLiteDatabase);
     }
 }

@@ -18,11 +18,15 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.owentech.DevDrawer.R;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
@@ -36,10 +40,15 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
     public List<String> packageNames;
     public List<Drawable> applicationIcons;
 
+    @Inject
+    Database database;
+
     public DDWidgetViewsFactory(Context context, Intent intent) {
         this.context = context;
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-
+        DaggerDatabaseComponent.builder()
+                .databaseModule(new DatabaseModule(context))
+                .build().inject(this);
         onDataSetChanged();
     }
 
@@ -147,7 +156,7 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Get all apps from the app table for this widget
-        String[] packages = Database.getInstance(context).getAllAppsInDatabase(appWidgetId);
+        String[] packages = database.getAllAppsInDatabase(appWidgetId);
         pm = context.getPackageManager();
 
         // Defensive code, was getting some strange behaviour and forcing the lists seems to fix

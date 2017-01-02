@@ -9,8 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.owentech.DevDrawer.R;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.RxUtils;
+
+import javax.inject.Inject;
 
 import io.reactivex.functions.Consumer;
 
@@ -21,10 +25,14 @@ public class ChooseWidgetAdapter extends BaseAdapter {
 
     Activity activity;
     SparseArray<String> widgets;
+    @Inject Database database;
 
     public ChooseWidgetAdapter(final Activity activity) {
         this.activity = activity;
-        RxUtils.backgroundSingleFromCallable(Database.getInstance(activity).getWidgetNames(activity))
+        DaggerDatabaseComponent.builder()
+                .databaseModule(new DatabaseModule(activity))
+                .build().inject(this);
+        RxUtils.fromCallable(database.getWidgetNames(activity))
                 .subscribe(new Consumer<SparseArray<String>>() {
                     @Override
                     public void accept(SparseArray<String> stringSparseArray) throws Exception {

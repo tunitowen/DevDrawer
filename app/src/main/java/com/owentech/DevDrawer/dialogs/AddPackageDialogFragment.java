@@ -20,13 +20,14 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.data.model.Filter;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
 import com.owentech.DevDrawer.utils.Database;
@@ -40,6 +41,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import io.reactivex.functions.Consumer;
@@ -50,6 +53,8 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
     AutoCompleteTextView addPackage;
     @InjectView(R.id.addButton)
     Button addButton;
+    @Inject
+    Database database;
 
     private PartialMatchAdapter partialMatchAdapter;
     final private static String EDIT = "edit";
@@ -60,6 +65,9 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
 
     public AddPackageDialogFragment() {
         // Empty constructor required for DialogFragment
+        DaggerDatabaseComponent.builder()
+                .databaseModule(new DatabaseModule(getActivity()))
+                .build().inject(this);
     }
 
     public static AddPackageDialogFragment newInstance(String editString, int widget_id) {
@@ -106,12 +114,12 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
             public void onClick(View view) {
                 if (addPackage.getText().length() != 0) {
                     // Check filter doesn't exist
-                    if (!Database.getInstance(getActivity()).doesFilterExist(addPackage.getText().toString(), widgetId)) {
+                    if (!database.doesFilterExist(addPackage.getText().toString(), widgetId)) {
                         // Add the filter to the mDatabase
-                        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).addFilterToDatabase(addPackage.getText().toString(), widgetId))
+                        RxUtils.fromCallable(database.addFilterToDatabase(addPackage.getText().toString(), widgetId))
                                 .subscribe();
 
-                        RxUtils.backgroundSingleFromCallable(getAllAppsInstalledAndAdd(addPackage.getText().toString()))
+                        RxUtils.fromCallable(getAllAppsInstalledAndAdd(addPackage.getText().toString()))
                                 .subscribe();
 
                         addPackage.setText("");
@@ -217,11 +225,11 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
                 // If the list is > 0 add the packages to the database
                 if (appPackages.size() != 0) {
                     for (final String s : appPackages) {
-                        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).getAllFiltersInDatabase())
+                        RxUtils.fromCallable(database.getAllFiltersInDatabase())
                                 .subscribe(new Consumer<List<Filter>>() {
                                     @Override
                                     public void accept(List<Filter> filters) throws Exception {
-                                        RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).addAppToDatabase(s, filters.get(filters.size() - 1).id(), widgetId))
+                                        RxUtils.fromCallable(database.addAppToDatabase(s, filters.get(filters.size() - 1).id(), widgetId))
                                                 .subscribe();
 
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {

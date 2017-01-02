@@ -13,11 +13,15 @@ import android.widget.EditText;
 
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
+import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
+import com.owentech.DevDrawer.di.DatabaseModule;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.events.WidgetRenamedEvent;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.RxUtils;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -31,6 +35,9 @@ public class ChangeWidgetNameDialogFragment extends DialogFragment implements Vi
     EditText editText;
     @InjectView(R.id.ok)
     Button ok;
+    @Inject
+    Database database;
+
 
     private PartialMatchAdapter partialMatchAdapter;
     final private static String EDIT = "edit";
@@ -40,6 +47,9 @@ public class ChangeWidgetNameDialogFragment extends DialogFragment implements Vi
 
     public ChangeWidgetNameDialogFragment() {
         // Empty constructor required for DialogFragment
+        DaggerDatabaseComponent.builder()
+                .databaseModule(new DatabaseModule(getActivity()))
+                .build().inject(this);
     }
 
     public static ChangeWidgetNameDialogFragment newInstance(int widget_id, String edit) {
@@ -92,7 +102,7 @@ public class ChangeWidgetNameDialogFragment extends DialogFragment implements Vi
     @Override
     public void onClick(View view) {
         if (view == ok) {
-            RxUtils.backgroundSingleFromCallable(Database.getInstance(getActivity()).renameWidget(widgetId, editText.getText().toString()))
+            RxUtils.fromCallable(database.renameWidget(widgetId, editText.getText().toString()))
                     .subscribe();
 
             OttoManager.getInstance().post(new WidgetRenamedEvent());
