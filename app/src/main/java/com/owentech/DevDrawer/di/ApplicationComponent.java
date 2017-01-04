@@ -2,6 +2,7 @@ package com.owentech.DevDrawer.di;
 
 import android.widget.BaseAdapter;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.activities.MainActivity;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
 import com.owentech.DevDrawer.adapters.NotificationFilterAdapter;
@@ -22,6 +23,7 @@ import dagger.Component;
 @Singleton
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent {
+    void inject(DevDrawerApplication application);
     void inject(MainActivity activity);
     void inject(BaseAdapter baseAdapter);
     void inject(FilterListAdapter adapter);

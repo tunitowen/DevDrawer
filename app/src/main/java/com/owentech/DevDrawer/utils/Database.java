@@ -309,4 +309,26 @@ public class Database {
         amendFilter.bind(newString, id);
         amendFilter.program.execute();
     }
+
+    public void cleanWidgets(List<Integer> widgets){
+        String widgetsArrayString = createInArray(widgets);
+        openHelper.getWritableDatabase().rawQuery("DELETE FROM devdrawer_widgets WHERE id NOT IN " + widgetsArrayString, new String[0]);
+        openHelper.getWritableDatabase().rawQuery("DELETE FROM devdrawer_filter WHERE widgetid NOT IN " + widgetsArrayString, new String[0]);
+        openHelper.getWritableDatabase().rawQuery("DELETE FROM devdrawer_app WHERE widgetid NOT IN " + widgetsArrayString, new String[0]);
+    }
+
+    private String createInArray(List<Integer> widgets){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("(");
+        for (Integer widget : widgets) {
+            if (stringBuilder.length() != 1){
+                stringBuilder.append(", ");
+            }
+            stringBuilder.append("\'");
+            stringBuilder.append(Integer.toString(widget));
+            stringBuilder.append("\'");
+        }
+        stringBuilder.append(")");
+        return stringBuilder.toString();
+    }
 }
