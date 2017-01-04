@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Activity Launcher">
+        <CheckBoxPreference android:key="showActivityChoice"
+                            android:title="Show activity choice on launch"
+                            android:defaultValue="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Launching Intents">
+        <ListPreference android:key="launchingIntents"
+                        android:title="Launching Intent"
+                        android:defaultValue="aosp"
+                        android:entries="@array/launching_intents"
+                        android:entryValues="@array/launching_intents_values"
+                        />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Sorting">
+        <ListPreference android:key="widgetSorting"
+                        android:title="Widget Sorting Options"
+                        android:entries="@array/sorting_options"
+                        android:entryValues="@array/sorting_options_values"
+                        android:defaultValue="added"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

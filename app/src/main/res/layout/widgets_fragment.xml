@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/selectionLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:elevation="3dp"
+        android:background="#FFFFFF">
+
+        <TextView android:id="@+id/currentWidgetName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="OWENTECH"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/down_arrow" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/selectionShadow"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/selectionLayout"
+        android:background="#ccc"
+        android:visibility="gone"/>
+
+    <android.support.v7.widget.CardView
+
+        android:id="@+id/noWidgets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        card_view:cardCornerRadius="4dp"
+        card_view:contentPadding="16dp"
+        android:padding="10dp"
+        android:layout_centerInParent="true">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-condensed"
+        android:gravity="center"
+        android:text="There are no widgets created yet,\nadd one to start"
+        android:textColor="#333333"
+        android:textSize="18sp"
+        android:layout_below="@+id/selectionLayout"/>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/selectionLayout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingTop="5dp"
+        android:background="#f9f9f9"
+        />
+
+    <ImageButton
+        android:id="@+id/fab"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/ripple"
+        android:stateListAnimator="@anim/anim"
+        android:src="@drawable/addwhite"
+        android:elevation="4dp"
+        />
+
+</RelativeLayout>

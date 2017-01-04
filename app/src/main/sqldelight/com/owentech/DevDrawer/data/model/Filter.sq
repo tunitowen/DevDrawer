@@ -1,0 +1,25 @@
+CREATE TABLE IF NOT EXISTS devdrawer_filter (id INTEGER PRIMARY KEY, package TEXT, widgetid INTEGER);
+
+InsertFilter:
+INSERT INTO devdrawer_filter (package, widgetid) VALUES (?, ?);
+
+RemoveFilter:
+DELETE FROM devdrawer_filter WHERE id = ?;
+
+SelectAllFilters:
+SELECT * FROM devdrawer_filter;
+
+SelectFiltersForWidgetId:
+SELECT * FROM devdrawer_filter WHERE widgetid = ?;
+
+GetFilterCount:
+SELECT count(*) FROM devdrawer_filter;
+
+GetFilterCountForPackageAndWidgetId:
+SELECT count(*) FROM devdrawer_filter WHERE package = ? AND widgetid = ?;
+
+AmendFilter:
+UPDATE devdrawer_filter SET package = ? WHERE id = ?;
+
+DeleteFiltersForWidgetId:
+DELETE FROM devdrawer_filter WHERE widgetid = ?;

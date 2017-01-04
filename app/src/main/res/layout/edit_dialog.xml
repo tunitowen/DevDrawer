@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ecf0f1"
+    android:baselineAligned="false"
+    android:minWidth="1000dp"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/editDialogEditText"
+        style="@style/AutoCompleteDevDrawerTheme"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:inputType="textNoSuggestions" />
+
+    <Button
+        android:id="@+id/changeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/change"
+        android:layout_below="@+id/editDialogEditText"
+        android:layout_alignParentRight="true"
+        style="@android:style/Widget.Material.Button.Borderless"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"/>
+
+</RelativeLayout>
