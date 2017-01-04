@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.data.model.Filter;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.ApplicationModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.events.PackageAddedEvent;
 import com.owentech.DevDrawer.utils.Database;
@@ -49,12 +51,9 @@ import io.reactivex.functions.Consumer;
 
 public class AddPackageDialogFragment extends DialogFragment implements TextWatcher {
 
-    @InjectView(R.id.addPackage)
-    AutoCompleteTextView addPackage;
-    @InjectView(R.id.addButton)
-    Button addButton;
-    @Inject
-    Database database;
+    @InjectView(R.id.addPackage) AutoCompleteTextView addPackage;
+    @InjectView(R.id.addButton) Button addButton;
+    @Inject Database database;
 
     private PartialMatchAdapter partialMatchAdapter;
     final private static String EDIT = "edit";
@@ -65,9 +64,6 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
 
     public AddPackageDialogFragment() {
         // Empty constructor required for DialogFragment
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(getActivity()))
-                .build().inject(this);
     }
 
     public static AddPackageDialogFragment newInstance(String editString, int widget_id) {
@@ -88,7 +84,7 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        ((DevDrawerApplication)getActivity().getApplication()).getApplicationComponent().inject(this);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         View view = inflater.inflate(R.layout.add_package_dialog_fragment, container);
@@ -120,7 +116,12 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
                                 .subscribe();
 
                         RxUtils.fromCallable(getAllAppsInstalledAndAdd(addPackage.getText().toString()))
-                                .subscribe();
+                                .subscribe(new Consumer<Boolean>() {
+                                    @Override
+                                    public void accept(Boolean aBoolean) throws Exception {
+                                        getDialog().dismiss();
+                                    }
+                                });
 
                         addPackage.setText("");
                         OttoManager.getInstance().post(new PackageAddedEvent());
@@ -128,7 +129,6 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
                         Toast.makeText(getActivity(), "Filter already exists", Toast.LENGTH_SHORT).show();
                     }
                 }
-                getDialog().dismiss();
             }
         });
 
@@ -233,7 +233,8 @@ public class AddPackageDialogFragment extends DialogFragment implements TextWatc
                                                 .subscribe();
 
                                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                                            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getActivity());
+                                            Log.d("Context", AddPackageDialogFragment.this.getActivity().toString());
+                                            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(AddPackageDialogFragment.this.getActivity());
                                             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(getActivity(), DDWidgetProvider.class));
                                             appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.listView);
                                         }

@@ -6,12 +6,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
+import com.owentech.DevDrawer.di.ApplicationModule;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.NotificationHelper;
@@ -32,9 +32,7 @@ public class AppUninstalledReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(context))
-                .build().inject(this);
+        ((DevDrawerApplication)context.getApplicationContext()).getApplicationComponent().inject(this);
 
         // App has been removed, if it is in the app table remove from the widget
         String uninstalledPackage = intent.getData().getSchemeSpecificPart();

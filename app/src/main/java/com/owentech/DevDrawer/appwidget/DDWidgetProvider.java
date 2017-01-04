@@ -16,10 +16,11 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.activities.ClickHandlingActivity;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
+import com.owentech.DevDrawer.di.ApplicationModule;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
@@ -119,9 +120,7 @@ public class DDWidgetProvider extends AppWidgetProvider {
     }
 
     private void injectDependencies(Context context){
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(context))
-                .build().inject(this);
+        ((DevDrawerApplication)context.getApplicationContext()).getApplicationComponent().inject(this);
     }
 
     @Override

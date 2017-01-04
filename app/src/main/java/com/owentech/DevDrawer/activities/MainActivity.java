@@ -15,10 +15,11 @@ import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.widget.RemoteViews;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.ApplicationModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
 import com.owentech.DevDrawer.fragments.ShortcutFragment;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.fragments.NotificationsFragment;
@@ -59,9 +60,7 @@ public class MainActivity extends AppCompatActivity implements TextWatcher {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(this))
-                .build().inject(this);
+        ((DevDrawerApplication)this.getApplication()).getApplicationComponent().inject(this);
 
         mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(this);
 

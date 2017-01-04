@@ -11,10 +11,11 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
+import com.owentech.DevDrawer.di.ApplicationModule;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.events.WidgetRenamedEvent;
 import com.owentech.DevDrawer.utils.AppConstants;
@@ -47,9 +48,7 @@ public class ChangeWidgetNameDialogFragment extends DialogFragment implements Vi
 
     public ChangeWidgetNameDialogFragment() {
         // Empty constructor required for DialogFragment
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(getActivity()))
-                .build().inject(this);
+        ((DevDrawerApplication)getActivity().getApplication()).getApplicationComponent().inject(this);
     }
 
     public static ChangeWidgetNameDialogFragment newInstance(int widget_id, String edit) {

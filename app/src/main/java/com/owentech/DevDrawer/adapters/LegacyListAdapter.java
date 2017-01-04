@@ -16,10 +16,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.activities.ClickHandlingActivity;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.ApplicationModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
 
@@ -44,9 +45,7 @@ public class LegacyListAdapter extends BaseAdapter {
     public LegacyListAdapter(Activity activity) {
         super();
         this.activity = activity;
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(activity))
-                .build().inject(this);
+        ((DevDrawerApplication)activity.getApplication()).getApplicationComponent().inject(this);
         getApps();
         notifyDataSetChanged();
         sp = PreferenceManager.getDefaultSharedPreferences(activity);

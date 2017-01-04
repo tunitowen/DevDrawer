@@ -12,14 +12,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
+import com.owentech.DevDrawer.di.ApplicationModule;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.Database;
 
@@ -46,9 +46,7 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
     public DDWidgetViewsFactory(Context context, Intent intent) {
         this.context = context;
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(context))
-                .build().inject(this);
+        ((DevDrawerApplication)context.getApplicationContext()).getApplicationComponent().inject(this);
         onDataSetChanged();
     }
 

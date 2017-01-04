@@ -21,12 +21,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.activities.EditDialog;
 import com.owentech.DevDrawer.appwidget.DDWidgetProvider;
 import com.owentech.DevDrawer.data.model.Filter;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.ApplicationModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.RxUtils;
@@ -49,9 +50,7 @@ public class FilterListAdapter extends RecyclerView.Adapter<FilterListAdapter.Li
     public FilterListAdapter(Activity activity) {
         this.activity = activity;
         packageCollections = new ArrayList<>();
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(activity))
-                .build().inject(this);
+        ((DevDrawerApplication)activity.getApplication()).getApplicationComponent().inject(this);
         updatePackageCollections();
     }
 

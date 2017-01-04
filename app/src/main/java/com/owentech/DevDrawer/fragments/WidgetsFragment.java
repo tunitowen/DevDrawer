@@ -19,10 +19,11 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.FilterListAdapter;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
+import com.owentech.DevDrawer.di.ApplicationModule;
 import com.owentech.DevDrawer.dialogs.AddPackageDialogFragment;
 import com.owentech.DevDrawer.dialogs.ChangeWidgetNameDialogFragment;
 import com.owentech.DevDrawer.dialogs.ChooseWidgetDialogFragment;
@@ -95,9 +96,7 @@ public class WidgetsFragment extends Fragment implements View.OnClickListener, V
     @Override
     public void onStart() {
         super.onStart();
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(getActivity()))
-                .build().inject(this);
+        ((DevDrawerApplication)getActivity().getApplication()).getApplicationComponent().inject(this);
 
         mAppWidgetIds = AppWidgetUtil.findAppWidgetIds(getActivity());
         showHideListView();

@@ -9,11 +9,11 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class DatabaseModule {
+public class ApplicationModule {
 
     Context context;
 
-    public DatabaseModule(Context context){
+    public ApplicationModule(Context context){
         this.context = context;
     }
 

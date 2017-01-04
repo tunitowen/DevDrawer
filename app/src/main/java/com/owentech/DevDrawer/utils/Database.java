@@ -15,8 +15,6 @@ import com.owentech.DevDrawer.data.model.Filter;
 import com.owentech.DevDrawer.data.model.FilterModel;
 import com.owentech.DevDrawer.data.model.Widget;
 import com.owentech.DevDrawer.data.model.WidgetModel;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
 
 import java.util.ArrayList;
 import java.util.List;

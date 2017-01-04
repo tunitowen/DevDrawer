@@ -8,9 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
+import com.owentech.DevDrawer.di.ApplicationModule;
 import com.owentech.DevDrawer.utils.Database;
 import com.owentech.DevDrawer.utils.RxUtils;
 
@@ -29,9 +30,7 @@ public class ChooseWidgetAdapter extends BaseAdapter {
 
     public ChooseWidgetAdapter(final Activity activity) {
         this.activity = activity;
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(activity))
-                .build().inject(this);
+        ((DevDrawerApplication)activity.getApplication()).getApplicationComponent().inject(this);
         RxUtils.fromCallable(database.getWidgetNames(activity))
                 .subscribe(new Consumer<SparseArray<String>>() {
                     @Override

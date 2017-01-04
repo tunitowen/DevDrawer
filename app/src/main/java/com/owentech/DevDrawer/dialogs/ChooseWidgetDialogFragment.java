@@ -11,11 +11,12 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
 import com.owentech.DevDrawer.adapters.ChooseWidgetAdapter;
 import com.owentech.DevDrawer.adapters.PartialMatchAdapter;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
+import com.owentech.DevDrawer.di.ApplicationModule;
 import com.owentech.DevDrawer.events.ChangeWidgetEvent;
 import com.owentech.DevDrawer.utils.OttoManager;
 import com.owentech.DevDrawer.utils.Database;
@@ -45,9 +46,7 @@ public class ChooseWidgetDialogFragment extends DialogFragment implements Adapte
 
     public ChooseWidgetDialogFragment() {
         // Empty constructor required for DialogFragment
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(getActivity()))
-                .build().inject(this);
+        ((DevDrawerApplication)getActivity().getApplication()).getApplicationComponent().inject(this);
     }
 
     public static ChooseWidgetDialogFragment newInstance(int widget_id) {

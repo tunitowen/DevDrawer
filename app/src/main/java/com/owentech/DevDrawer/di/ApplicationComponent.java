@@ -1,9 +1,5 @@
 package com.owentech.DevDrawer.di;
 
-import android.content.BroadcastReceiver;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.widget.BaseAdapter;
 
 import com.owentech.DevDrawer.activities.MainActivity;
@@ -18,15 +14,14 @@ import com.owentech.DevDrawer.dialogs.ChooseWidgetDialogFragment;
 import com.owentech.DevDrawer.fragments.WidgetsFragment;
 import com.owentech.DevDrawer.receivers.AppInstalledReceiver;
 import com.owentech.DevDrawer.receivers.AppUninstalledReceiver;
-import com.owentech.DevDrawer.utils.Database;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
 @Singleton
-@Component(modules = {DatabaseModule.class})
-public interface DatabaseComponent {
+@Component(modules = {ApplicationModule.class})
+public interface ApplicationComponent {
     void inject(MainActivity activity);
     void inject(BaseAdapter baseAdapter);
     void inject(FilterListAdapter adapter);

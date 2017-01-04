@@ -6,9 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import com.owentech.DevDrawer.DevDrawerApplication;
 import com.owentech.DevDrawer.R;
-import com.owentech.DevDrawer.di.DaggerDatabaseComponent;
-import com.owentech.DevDrawer.di.DatabaseModule;
+import com.owentech.DevDrawer.di.ApplicationModule;
+import com.owentech.DevDrawer.di.DaggerApplicationComponent;
 import com.owentech.DevDrawer.utils.AppConstants;
 import com.owentech.DevDrawer.utils.AppWidgetUtil;
 import com.owentech.DevDrawer.utils.Database;
@@ -24,9 +25,7 @@ public class AppInstalledReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        DaggerDatabaseComponent.builder()
-                .databaseModule(new DatabaseModule(context))
-                .build().inject(this);
+        ((DevDrawerApplication)context.getApplicationContext()).getApplicationComponent().inject(this);
 
         // New app has been installed, check and add to the database / widget
         String newPackage = intent.getData().getSchemeSpecificPart();
