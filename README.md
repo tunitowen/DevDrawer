@@ -1,5 +1,8 @@
 # DevDrawer
 
+** No longer maintained. Sorry I just don't have the time. **
+** The code is disgusting in here, but if there's anything you want, feel free to take **
+
 An Android application by [Tony Owen](https://plus.google.com/111365666249481367719) designed to help developers by automatically adding their apps to a widget for easy launching / uninstalling / reinstalling etc.
 
 Root features such as one click uninstall, and clear cache added by [Ronald Ammann](https://plus.google.com/115926327659831685384/posts).
