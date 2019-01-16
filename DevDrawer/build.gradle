@@ -1,0 +1,27 @@
+repositories {
+    mavenCentral()
+}
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        applicationId "com.owentech.DevDrawer"
+        minSdkVersion 7
+        targetSdkVersion 19
+        versionCode 16
+        versionName "1.6.1"
+    }
+}
+
+dependencies {
+
+	// You must install or update the Support Repository through the SDK manager to use this dependency.
+	// The Support Repository (separate from the corresponding library) can be found in the Extras category.
+	// compile 'com.android.support:appcompat-v7:18.0.0'
+
+    compile project(':libraries:libsuperuser')
+    compile 'com.google.code.gson:gson:2.2.4'
+}
