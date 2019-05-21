@@ -8,6 +8,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -212,9 +213,16 @@ public class DDWidgetViewsFactory implements RemoteViewsService.RemoteViewsFacto
 
     }
 
-	// Method to return a bitmap from drawable
-    public Bitmap convertFromDrawable(Drawable d)
-    {
-        return ((BitmapDrawable)d).getBitmap();
+    // Method to return a bitmap from drawable
+    public Bitmap convertFromDrawable(Drawable d) {
+        if (d instanceof BitmapDrawable) {
+            return ((BitmapDrawable) d).getBitmap();
+        }
+
+        Bitmap bmp = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bmp);
+        d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+        d.draw(canvas);
+        return bmp;
     }
 }
